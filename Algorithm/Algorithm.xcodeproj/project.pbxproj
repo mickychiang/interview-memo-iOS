@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4FA0D11224766C1100C3C60B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11124766C1100C3C60B /* main.c */; };
+		4FA0D11A2476794F00C3C60B /* OCAlgorithm.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D1192476794F00C3C60B /* OCAlgorithm.m */; };
+		4FA0D11D24767AF800C3C60B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11C24767AF800C3C60B /* MainViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,10 @@
 /* Begin PBXFileReference section */
 		4FA0D10E24766C1100C3C60B /* Algorithm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Algorithm; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA0D11124766C1100C3C60B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		4FA0D1182476794F00C3C60B /* OCAlgorithm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCAlgorithm.h; sourceTree = "<group>"; };
+		4FA0D1192476794F00C3C60B /* OCAlgorithm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCAlgorithm.m; sourceTree = "<group>"; };
+		4FA0D11B24767AF800C3C60B /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		4FA0D11C24767AF800C3C60B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,10 @@
 			isa = PBXGroup;
 			children = (
 				4FA0D11124766C1100C3C60B /* main.c */,
+				4FA0D11B24767AF800C3C60B /* MainViewController.h */,
+				4FA0D11C24767AF800C3C60B /* MainViewController.m */,
+				4FA0D1182476794F00C3C60B /* OCAlgorithm.h */,
+				4FA0D1192476794F00C3C60B /* OCAlgorithm.m */,
 			);
 			path = Algorithm;
 			sourceTree = "<group>";
@@ -120,6 +130,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4FA0D11224766C1100C3C60B /* main.c in Sources */,
+				4FA0D11D24767AF800C3C60B /* MainViewController.m in Sources */,
+				4FA0D11A2476794F00C3C60B /* OCAlgorithm.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
