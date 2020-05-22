@@ -20,13 +20,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [OCAlgorithm test];
+//    [OCAlgorithm test];
 
 //    int arr[8] = {4,6,78,99,4,56,22,5};
 //    selectSort(arr, 8);
 //    [SwiftAl]
 
-    NSLog(@"1234 -> %d", [SwiftAlgorithm reverseIntegerWithX:1234]);
+//    NSLog(@"1234 -> %d", [SwiftAlgorithm reverseIntegerWithX:1234]);
+    
+    [SortAlgorithm sortAlgorithm];
 }
 
 

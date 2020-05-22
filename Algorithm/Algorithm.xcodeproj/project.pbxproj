@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4F08879624775FFD003C3D8F /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F08879524775FFD003C3D8F /* LinkedList.swift */; };
+		4F0887982477A456003C3D8F /* SortAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0887972477A456003C3D8F /* SortAlgorithm.swift */; };
+		4F08879B2477C612003C3D8F /* SortAlgorithmPerformance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F08879A2477C612003C3D8F /* SortAlgorithmPerformance.swift */; };
 		4FA0D11224766C1100C3C60B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11124766C1100C3C60B /* main.c */; };
 		4FA0D11D24767AF800C3C60B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11C24767AF800C3C60B /* MainViewController.m */; };
 		BDD0A90E24769D2B004FF665 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A90D24769D2B004FF665 /* AppDelegate.m */; };
@@ -37,6 +39,8 @@
 
 /* Begin PBXFileReference section */
 		4F08879524775FFD003C3D8F /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
+		4F0887972477A456003C3D8F /* SortAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAlgorithm.swift; sourceTree = "<group>"; };
+		4F08879A2477C612003C3D8F /* SortAlgorithmPerformance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAlgorithmPerformance.swift; sourceTree = "<group>"; };
 		4FA0D10E24766C1100C3C60B /* Algorithm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Algorithm; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA0D11124766C1100C3C60B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4FA0D11B24767AF800C3C60B /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -117,6 +121,8 @@
 				BDD0A92324769F94004FF665 /* OCAlgorithm.h */,
 				BDD0A92424769F94004FF665 /* OCAlgorithm.m */,
 				BDD0A92A2476AD97004FF665 /* SwiftAlgorithm.swift */,
+				4F0887972477A456003C3D8F /* SortAlgorithm.swift */,
+				4F08879A2477C612003C3D8F /* SortAlgorithmPerformance.swift */,
 				4F08879524775FFD003C3D8F /* LinkedList.swift */,
 				BDEBD6C02476CBC800D65084 /* Stack.swift */,
 				BDEBD6C22476CED100D65084 /* Queue.swift */,
@@ -236,9 +242,11 @@
 				4F08879624775FFD003C3D8F /* LinkedList.swift in Sources */,
 				BDD0A91424769D2B004FF665 /* ViewController.m in Sources */,
 				BDD0A92524769F94004FF665 /* OCAlgorithm.m in Sources */,
+				4F0887982477A456003C3D8F /* SortAlgorithm.swift in Sources */,
 				BDEBD6C12476CBC800D65084 /* Stack.swift in Sources */,
 				BDEBD6C32476CED100D65084 /* Queue.swift in Sources */,
 				BDD0A90E24769D2B004FF665 /* AppDelegate.m in Sources */,
+				4F08879B2477C612003C3D8F /* SortAlgorithmPerformance.swift in Sources */,
 				BDD0A9282476AC33004FF665 /* Stack.m in Sources */,
 				BDD0A91F24769D2F004FF665 /* main.m in Sources */,
 				BDD0A92B2476AD97004FF665 /* SwiftAlgorithm.swift in Sources */,
