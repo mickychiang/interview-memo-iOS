@@ -9,11 +9,34 @@
 import Foundation
 
 class SwiftAlgorithm: NSObject {
+    @objc static func baseAlgorithm() {
+   
+    }
+}
+
+// MARK: - 计算从1到100数字的总和
+extension SwiftAlgorithm {
+    /// 法1. 1到100循环遍历逐步相加
+    // 时间复杂度：O(n)
+    static func sum1(_ n: Int) -> Int {
+        var sum = 0
+        for i in 1...n {
+            sum += i
+        }
+        return sum
+    }
     
-    // 1. 字典和集合
-    // 1.1 给出一个整型数组和一个目标值，判断数组中是否有两个数之和等于目标值。
-    // 时间复杂度O(n)
-    static func twoSum(nums: [Int], _ target: Int) -> Bool {
+    /// 法2. 等差数列求和
+    // 时间复杂度：O(1)
+    static func sum2(_ n: Int) -> Int {
+        return (n + 1) * n / 2
+    }
+}
+
+// MARK: - 给出一个整型数组和一个目标值，判断数组中是否有两个数之和等于目标值
+extension SwiftAlgorithm {
+    // 时间复杂度：O(n)
+    static func twoSumEqualTarget(nums: [Int], _ target: Int) -> Bool {
         // 初始化集合
         var set = Set<Int>()
         // 遍历整型数组
@@ -29,9 +52,13 @@ class SwiftAlgorithm: NSObject {
         // 都不包含 返回false
         return false
     }
-    // 1.2 给出一个整型数组和目标值，且数组中有且仅有两个数之和等于目标值，求这两个数在数组中的序号。
+}
+
+// MARK: - 给出一个整型数组和目标值，且数组中有且仅有两个数之和等于目标值，求这两个数在数组中的index
+extension SwiftAlgorithm {
     // 巧妙的用到了字典的特性，用key表示数组的值，通过判断字典中是否含有目标值的key来取出索引。
-    static func twoSum2(nums: [Int], _ target: Int) -> [Int] {
+    // 时间复杂度：O(n)
+    static func twoSumEqualTarget(nums: [Int], _ target: Int) -> [Int] {
         // 初始化字典
         var dict = [Int: Int]()
         // 通过索引i和对应的num进行判断
@@ -48,8 +75,19 @@ class SwiftAlgorithm: NSObject {
         // 致命错误来终止程序
         fatalError("No valid output!")
     }
-    
-    // ********** 反转题 **********
+}
+
+// MARK: - 实现阶乘n!的算法：3！= 3 * 2 * 1 ； 4！= 4 * 3 * 2 * 1
+extension SwiftAlgorithm {
+    // 递归
+    static func factorial(_ n: Int) -> Int {
+        return n < 2 ? 1: n * factorial(n-1)
+    }
+}
+
+
+// MARK: - ********** 反转题 **********
+extension SwiftAlgorithm {
     // 2. 字符串
     // 给出一个字符串，要求将其按照单词顺序进行反转。
     // eg：如果是"hello world"，那么反转后的结果就是"world hello"，这个题比较常规了，但是要注意空格的特殊处理。看代码:
@@ -124,14 +162,6 @@ class SwiftAlgorithm: NSObject {
     }
     
 }
-
-//class Algorithm {
-//    static func swap<T>(a: T, b: T) {
-//        var a = a, b = b
-//        (a, b) = (b, a)
-//        return (a, b)
-//    }
-//}
 
 /*
  待总结归类：
