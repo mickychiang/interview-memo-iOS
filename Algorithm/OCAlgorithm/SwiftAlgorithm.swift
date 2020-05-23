@@ -85,6 +85,96 @@ extension SwiftAlgorithm {
     }
 }
 
+// MARK: - 交换A和B的值
+extension SwiftAlgorithm {
+    /// 方法1. 中间变量
+    func swap1(a: inout Int, b: inout Int) -> (Int, Int) {
+        let temp = a
+        a = b
+        b = temp
+        return (a, b)
+    }
+    /// 方法2. 加法
+    func swap2(a: inout Int, b: inout Int) -> (Int, Int) {
+        a = a + b
+        b = a - b
+        a = a - b
+        return (a, b)
+    }
+    /// 方法3. 异或（相同为0，不同为1。可以理解为不进位加法）
+    func swap3(a: inout Int, b: inout Int) -> (Int, Int) {
+        a = a ^ b
+        b = a ^ b
+        a = a ^ b
+        return (a, b)
+    }
+}
+
+// MARK: - 最大公约数
+extension SwiftAlgorithm {
+    // 比如：20和4的最大公约数为4；18和27的最大公约数为9
+    /// 方法1. 直接遍历法
+    func maxCommonDivisor1(a: Int, b: Int) -> Int {
+        var max = 0
+        for i in 1...b {
+            if (a % i == 0 && b % i == 0) {
+                max = i
+            }
+        }
+        return max
+    }
+    /// 方法2. 辗转相除法：其中a为大数，b为小数
+    func maxCommonDivisor2(a: inout Int, b: inout Int) -> Int {
+        var r: Int
+        while (a % b > 0) {
+            r = a % b
+            a = b
+            b = r
+        }
+        return b
+    }
+}
+
+// MARK: - 最小公倍数
+extension SwiftAlgorithm {
+    // 比如：20和4的最大公约数为4；18和27的最大公约数为9
+    // 最小公倍数 = (a * b)/最大公约数
+    /// 方法1. 直接遍历法
+    func minimumCommonMultiple1(a: Int, b: Int) -> Int {
+        var max = 0
+        for i in 1...b {
+            if (a % i == 0 && b % i == 0) {
+                max = i
+            }
+        }
+        return (a * b) / max
+    }
+    /// 方法2. 辗转相除法：其中a为大数，b为小数
+    func minimumCommonMultiple2(a: inout Int, b: inout Int) -> Int {
+        var r: Int
+        let aa = a, bb = b
+        while (a % b > 0) {
+            r = a % b
+            a = b
+            b = r
+        }
+        return (aa * bb) / b
+    }
+}
+
+// MARK: - 判断质数
+extension SwiftAlgorithm {
+    // 比如：2、3、5、7、11、13、19等只能被1和自身整除的数叫质数
+    // 直接判断：一个个除，看余数是否为零，如果不为零，则是质数。
+    func isPrime(n: Int) -> Int {
+        for i in 2...Int(sqrt(Double(n))) { // sqrt(n) 返回n的平方根 比如sqrt(100.0) = 10
+            if (n % i == 0) {
+                return 0
+            }
+        }
+        return 1
+    }
+}
 
 // MARK: - ********** 反转题 **********
 extension SwiftAlgorithm {
