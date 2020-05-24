@@ -43,7 +43,8 @@
 ### 时间复杂度
 算法的时间复杂度是指算法需要消耗的时间资源。  
 一般来说，计算机算法是问题规模!n的函数f(n)，算法的时间复杂度也因此记做：  
-![时间复杂度公式](https://github.com/mickychiang/iOSInterviewMemo/tree/master/Algorithm/images/TimeComplexity.png)
+<!-- ![时间复杂度公式](./images/TimeComplexity.png) -->
+![TimeComplexity.png](https://i.loli.net/2020/05/24/fkCHL8JhZnlQdRF.png)
 
 常见的时间复杂度有：常数阶O(1)，对数阶O(log n），线性阶 O(n)，线性对数阶O(nlog n)，平方阶O(n^{2})，立方阶O(n^{3})，!k次方阶O(n^{k})，指数阶 O(2^{n})}。  
 随着问题规模n的不断增大，上述时间复杂度不断增大，算法的执行效率越低。
@@ -447,7 +448,8 @@ static func insertSort(_ array: inout [Int]) -> [Int] {
 
 <h3 id="3-4">4. 归并排序</h3>
 
-![归并排序](https://github.com/mickychiang/iOSInterviewMemo/tree/master/Algorithm/images/mergeSort.png)
+<!-- ![归并排序](./images/mergeSort.png) -->
+![mergeSort.png](https://i.loli.net/2020/05/24/5bljd7ZYVyCDXvF.png)
 
 归并操作(采用分治思想)是建立在归并操作的排序算法，是将需要排序的序列进行拆分，拆分成每一个单一元素。  
 这时再按每个元素进行比较排序，两两合并，生成新的有序序列。再对新的有序序列进行两两合并操作，直到整个序列有序。  
