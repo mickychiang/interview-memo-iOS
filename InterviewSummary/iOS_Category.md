@@ -63,7 +63,7 @@ struct category_t {
 ## 加载调用栈(底层)
 images：镜像
 ![category_t_use.png](https://i.loli.net/2020/05/23/nxRt9QVrchb7kZ3.png)
-
+<!-- ![加载调用栈](./images/category/category_t_use.png) -->
 
 ## 源码分析
 **注释写在了源码里且只分析了添加实例方法的逻辑**
@@ -83,3 +83,16 @@ images：镜像
 - 分类添加的方法可以"覆盖"宿主类的同名方法  
 - 同名分类方法谁能生效取决于编译顺序  
 - 名字相同的分类会引起编译报错  
+
+## 能否给分类添加"实例变量"？添加的"实例变量"存在于哪里？
+注意：[实例变量=成员变量]  
+可以通过**runtime的关联对象机制**为分类添加"实例变量"。 
+添加的"实例变量"放到了一个全局容器中，并且为不同的分类添加的关联对象的值全都放在同一个全局容器中。
+```
+void objc_setAssociatedObject(id _Nonnull object, const void * _Nonnull key, id _Nullable value, objc_AssociationPolicy policy)
+
+id _Nullable objc_getAssociatedObject(id _Nonnull object, const void * _Nonnull key)
+
+void objc_removeAssociatedObjects(id _Nonnull object)
+```
+
