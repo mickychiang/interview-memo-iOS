@@ -1,5 +1,8 @@
 # 属性关键字
 所有源码基于[objc-runtime-objc.680版本](https://opensource.apple.com/source/objc4/)
+https://images.ac.cn/cn.html?btwaf=61224463
+
+
 
 # 前言
 
@@ -11,11 +14,15 @@
 [<span id="jump-1-3">3. 自定义对象实现的copy和mutableCopy分别为浅拷贝还是深拷贝？</span>](#1-3)  
 [<span id="jump-1-4">4. 判断当前的深拷贝的类型？(区别是单层深拷贝还是完全深拷贝)，2种深拷贝类型的相互转换？</span>](#1-4)  
 [<span id="jump-1-5">5. 代码如下所示：既然对象的mutableCopy是深拷贝，那为什么更改dataArray2，dataArray3也发生了改变？如何解决这个问题？</span>](#1-5) 
-![深拷贝面试题](./images/property/深拷贝_01.png)
-![代码输出](./images/property/深拷贝_02.png)   
+<!-- ![深拷贝面试题](./images/property/深拷贝_01.png) -->
+![深拷贝_01.png](https://ae01.alicdn.com/kf/H110d5c2f48f54f6c8aa571f236d0fdd9S.jpg)
+<!-- ![代码输出](./images/property/深拷贝_02.png)    -->
+![深拷贝_02.png](https://ae01.alicdn.com/kf/Haac1d4faebb44371a04477592ecedee5G.jpg)
 [<span id="jump-1-6">6. 代码如下图所示：initWithArray:copyItems:YES 仅仅能进行一层深拷贝，对于第二层或者更多层的就无效了。如果想要对象每层都是深拷贝，该怎么做？</span>](#1-6)
-![深拷贝面试题](./images/property/深拷贝_03.png)
-![代码输出](./images/property/深拷贝_04.png)
+<!-- ![深拷贝面试题](./images/property/深拷贝_03.png) -->
+![深拷贝_03.png](https://ae01.alicdn.com/kf/Hfd26772d0b2f4b378a358e2b0d5b57a3F.jpg)
+<!-- ![代码输出](./images/property/深拷贝_04.png) -->
+![深拷贝_04.png](https://ae01.alicdn.com/kf/H8011e3abe86941b4a0dd41149044e6bfg.jpg)
 
 # 正文
 <h2 id="1">一. 深拷⻉和浅拷⻉</h2>
@@ -24,7 +31,8 @@
 
 OC对象(集合类型和非集合类型)有2种拷贝方式，分别为浅拷贝和深拷贝。
 
-![浅拷贝和深拷贝](./images/property/浅拷贝和深拷贝的概念.png)
+<!-- ![浅拷贝和深拷贝](./images/property/浅拷贝和深拷贝的概念.png) -->
+![浅拷贝和深拷贝的概念.png](https://ae01.alicdn.com/kf/H845c898c78bc4e6581dd9630bb068a25Q.jpg)
 
 - 浅拷贝：指针拷贝，即源对象和副本对象的指针指向了同一个区域。  
 - 深拷贝：内容拷贝，即源对象和副本对象的指针分别指向不同的两块区域。  
@@ -41,16 +49,19 @@ OC对象(集合类型和非集合类型)有2种拷贝方式，分别为浅拷贝
 - 不可变对象(集合类型/非集合类型)的copy是浅拷贝，mutableCopy是深拷贝。
 - copy方法返回的都是不可变对象。
 
-![浅拷贝和深拷贝](./images/property/shallowcopyanddeepcopy.png)
+<!-- ![浅拷贝和深拷贝](./images/property/shallowcopyanddeepcopy.png) -->
+![shallowcopyanddeepcopy.png](https://ae01.alicdn.com/kf/H323acf35c60c45c290c133f6fa069424a.jpg)
 
 **具体实现如下：**  
 1). 可变对象(集合类型/非集合类型)的copy和mutableCopy都是深拷贝。
 
-![可变对象的copy和mutableCopy都是深拷贝](./images/property/可变对象的copy和mutableCopy都是深拷贝.png)
+<!-- ![可变对象的copy和mutableCopy都是深拷贝](./images/property/可变对象的copy和mutableCopy都是深拷贝.png) -->
+![可变对象的copy和mutableCopy都是深拷贝.png](https://ae01.alicdn.com/kf/Ha296ef1e8e7d4f0ab38513020a6ed638e.jpg)
 
 2). 不可变对象(集合类型/非集合类型)的copy是浅拷贝，mutableCopy是深拷贝。
 
-![不可变对象的copy是浅拷⻉，mutableCopy是深拷贝](./images/property/不可变对象的copy是浅拷贝mutableCopy是深拷贝.png)
+<!-- ![不可变对象的copy是浅拷⻉，mutableCopy是深拷贝](./images/property/不可变对象的copy是浅拷贝mutableCopy是深拷贝.png) -->
+![不可变对象的copy是浅拷贝mutableCopy是深拷贝.png](https://ae01.alicdn.com/kf/H9b9b54dd3b69467e88ef058afca18563p.jpg)
 
 [回到目录](#jump-1)
 
@@ -63,24 +74,30 @@ OC对象(集合类型和非集合类型)有2种拷贝方式，分别为浅拷贝
 **具体实现如下：**   
 1). **自定义对象的copy是深拷贝：自定义对象实现的copy，要遵守NSCopying协议，且实现copyWithZone:方法。**
 - 遵守NSCopying协议
-![自定义类遵守NSCopying协议](./images/property/自定义类遵守NSCopying协议.png)
+<!-- ![自定义类遵守NSCopying协议](./images/property/自定义类遵守NSCopying协议.png) -->
+![自定义类遵守NSCopying协议.png](https://ae01.alicdn.com/kf/H2985f2d76cf94bbc91e167d60bf1e289A.jpg)
 
 - 实现CopyWithZone⽅法
-![自定义类实现copyWithZone方法](./images/property/自定义类实现copyWithZone方法.png)
+<!-- ![自定义类实现copyWithZone方法](./images/property/自定义类实现copyWithZone方法.png) -->
+![自定义类实现copyWithZone方法.png](https://ae01.alicdn.com/kf/Hb4f2883892eb48ebae8e8b3352aa610f4.jpg)
 
 - 自定义对象实现的copy，是深拷⻉。
-![自定义对象实现的copy是深拷贝](./images/property/自定义对象实现的copy是深拷贝.png)
+<!-- ![自定义对象实现的copy是深拷贝](./images/property/自定义对象实现的copy是深拷贝.png) -->
+![自定义对象实现的copy是深拷贝.png](https://ae01.alicdn.com/kf/H5ebab1d51bf64e2ea1e388cc571740bbJ.jpg)
 
 2). **自定义对象的mutableCopy是深拷贝：⾃定义对象实现的mutableCopy，要遵守NSMutableCopying协议，且实现mutableCopyWithZone:方法。**
 
 - 遵守NSMutableCopying协议
-![自定义类遵守NSMutableCopying协议](./images/property/自定义类遵守NSMutableCopying协议.png)
+<!-- ![自定义类遵守NSMutableCopying协议](./images/property/自定义类遵守NSMutableCopying协议.png) -->
+![自定义类遵守NSMutableCopying协议.png](https://ae01.alicdn.com/kf/H675cf73cf43149d1b024784601fc1c20t.jpg)
 
 - 实现mutableCopyWithZone⽅法
-![自定义类实现mutableCopyWithZone方法](./images/property/自定义类实现mutableCopyWithZone方法.png)
+<!-- ![自定义类实现mutableCopyWithZone方法](./images/property/自定义类实现mutableCopyWithZone方法.png) -->
+![自定义类实现mutableCopyWithZone方法.png](https://ae01.alicdn.com/kf/H2db8f6105e71453694cdf21a8430bc76q.jpg)
 
 - ⾃定义对象实现的mutableCopy，是深拷贝。
-![自定义对象实现的mutableCopy是深拷贝。](./images/property/自定义对象实现的mutableCopy是深拷⻉.png)
+<!-- ![自定义对象实现的mutableCopy是深拷贝。](./images/property/自定义对象实现的mutableCopy是深拷⻉.png) -->
+![自定义对象实现的mutableCopy是深拷⻉.png](https://ae01.alicdn.com/kf/Hf2df503ae1d549a989874499d7a3cd33L.jpg)
 
 [回到目录](#jump-1)
 
@@ -100,9 +117,11 @@ OC对象(集合类型和非集合类型)有2种拷贝方式，分别为浅拷贝
 
 <h3 id="1-5">5. 代码如下所示：既然对象的mutableCopy是深拷贝，那为什么更改dataArray2，dataArray3也发生了改变？如何解决这个问题？</h3>
 
-![深拷贝面试题](./images/property/深拷贝_01.png)
+<!-- ![深拷贝面试题](./images/property/深拷贝_01.png) -->
+![深拷贝_01.png](https://ae01.alicdn.com/kf/H110d5c2f48f54f6c8aa571f236d0fdd9S.jpg)
 
-![代码输出](./images/property/深拷贝_02.png)
+<!-- ![代码输出](./images/property/深拷贝_02.png) -->
+![深拷贝_02.png](https://ae01.alicdn.com/kf/Haac1d4faebb44371a04477592ecedee5G.jpg)
 
 问题(1). 对象的mutableCopy是深拷贝，那为什么更改dataArray2，dataArray3也发生了改变？
 ```  
@@ -127,9 +146,11 @@ dataArray3 = [[NSMutableArray alloc] initWithArray:dataArray2 copyItems:YES];
 
 <h3 id="1-6">6. 代码如下图所示：initWithArray:copyItems:YES 仅仅能进行一层深拷贝，对于第二层或者更多层的就无效了。如果想要对象每层都是深拷贝，该怎么做？</h3>
 
-![深拷贝面试题](./images/property/深拷贝_03.png)
+<!-- ![深拷贝面试题](./images/property/深拷贝_03.png) -->
+![深拷贝_03.png](https://ae01.alicdn.com/kf/Hfd26772d0b2f4b378a358e2b0d5b57a3F.jpg)
 
-![代码输出](./images/property/深拷贝_04.png)
+<!-- ![代码输出](./images/property/深拷贝_04.png) -->
+![深拷贝_04.png](https://ae01.alicdn.com/kf/H8011e3abe86941b4a0dd41149044e6bfg.jpg)
 
 使用**归档和解档**来实现对象的**完全深拷贝。**
 ```
