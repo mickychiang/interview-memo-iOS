@@ -7,8 +7,11 @@ iOS面试题备忘录包含初级、中级和高级面试题，试题来源于�
 注：《iOS面试题备忘录》持续整理中。
 
 ## 目录
-<!-- ### [属性关键字](./InterviewSummary/PropertyModifier.md) -->
+<!-- ### [属性关键字](./InterviewSummary/PropertyModifier.md)  -->
+### [属性关键字](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)
+
 <!-- ### [算法](./Algorithm/Algorithm.md) -->
+### [算法](https://github.com/mickychiang/iOSInterviewMemo/blob/master/Algorithm/Algorithm.md)
 
 
 <!-- ### [KVO和KVC]()
