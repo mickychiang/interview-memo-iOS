@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [SwiftAlgorithm baseAlgorithm]; // 简单算法
-    [SortAlgorithm sortAlgorithm]; // 排序算法
+//    [SortAlgorithm sortAlgorithm]; // 排序算法
 }
 
 

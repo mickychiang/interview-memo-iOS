@@ -10,7 +10,10 @@ import Foundation
 
 class SwiftAlgorithm: NSObject {
     @objc static func baseAlgorithm() {
-   
+        print(reverseWords(s: "Hello world"))
+        print(reverseWords2(s: "Hello world"))
+
+        print(reverseString2(s: "Hello World"))
     }
 }
 
@@ -174,29 +177,34 @@ extension SwiftAlgorithm {
         }
         return 1
     }
+    
+    
+    
 }
+
+
+
+
+
 
 // MARK: - ********** 反转题 **********
 extension SwiftAlgorithm {
-    // 2. 字符串
-    // 给出一个字符串，要求将其按照单词顺序进行反转。
-    // eg：如果是"hello world"，那么反转后的结果就是"world hello"，这个题比较常规了，但是要注意空格的特殊处理。看代码:
+    // MARK: - 1. 反转字符串，要求将其按照单词顺序进行反转。举例："Hello World" -> "world Hello"
     // 方法1. 系统提供的方法 不过时间复杂度过大
-    static func reverseWords(s: String) -> String? {
+    static func reverseWords(s: String) -> String {
         // 用空格划分字符串
         let chars = s.components(separatedBy: " ")
         // 将字符串数组进行反转，并通过空格重新组合
         let reserString = chars.reversed().joined(separator: " ")
         return reserString
     }
-    
     // 方法2.
     /*
      1. 以输入字符串为"Hello World"为例，首先将该字符串分割成一个个的小字符数组，然后反转成"dlroW olleH"。
      2. 接着我们通过判断字符数组中的空格位和最后一位字符，对单一的单词进行分段反转，更新start位置。
      3. 最后输出我们需要的结果"World Hello"
      */
-    static func reverseWords2(s: String) -> String? {
+    static func reverseWords2(s: String) -> String {
         // 将字符串s分割成字符数组
         var chars = Array(s)
         var start = 0
@@ -215,7 +223,7 @@ extension SwiftAlgorithm {
         return String(chars)
     }
     // 反转字符串
-    fileprivate static func _reverse<T>(_ chars: inout[T], _ start: Int, _ end: Int) {
+    static func _reverse<T>(_ chars: inout[T], _ start: Int, _ end: Int) {
         // 接收字符串反转的起始和结束位置
         var start = start, end = end
         // 判断反转字符串的位置
@@ -228,9 +236,36 @@ extension SwiftAlgorithm {
         }
     }
     // 将p、q字符的位置进行互换，这种写法也是swift里的一大亮点
-    fileprivate static func swap<T>(_ chars: inout[T], _ p: Int, _ q: Int) {
+    static func swap<T>(_ chars: inout[T], _ p: Int, _ q: Int) {
         (chars[p], chars[q]) = (chars[q], chars[p])
     }
+    
+    // MARK: - 2. 反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH"
+    // 方法1. 系统方法
+    static func reverseString(s: String) -> String {
+        return String(s.reversed())
+    }
+    // 方法2.
+    static func reverseString2(s: String) -> String {
+        // 将字符串s分割成字符数组
+        var chars = Array(s)
+        // 反转chars字符数组
+        var start = 0
+        var end = chars.count - 1
+        // 判断反转字符串的位置
+        while start < end {
+            // start、end位置的字符互换
+            (chars[start], chars[end]) = (chars[end], chars[start])
+            // 往中间位置靠拢
+            start += 1
+            end -= 1
+        }
+        return String(chars)
+    }
+    
+    
+    
+    
     
     // 3. 整数反转
     // 例题：给定一个16位有符号整数，要求将其反转后输出（eg:输入：1234，输出：4321）
