@@ -18,6 +18,9 @@
 [<span id="jump-1-8">8. 分类添加的方法可以"覆盖"宿主类的方法</span>](#1-8)  
 [<span id="jump-1-9">9. 分类的总结</span>](#1-9)  
 [<span id="jump-1-10">10. 能否给分类添加"实例变量"？添加的"实例变量"存在于哪里？</span>](#1-10)  
+[<span id="jump-1-11">11. 关联对象的本质</span>](#1-11)  
+[<span id="jump-1-12">12. 如何删除已经被关联到对象的值？</span>](#1-12)  
+[<span id="jump-1-13">13. 关联进去的数据结构</span>](#1-13)  
 
 [<span id="jump-2"><h2>二. 扩展Extension</h2></span>](#2)
 [<span id="jump-2-1">1. 一般用扩展做什么？</span>](#2-1)  
@@ -159,6 +162,44 @@ void objc_removeAssociatedObjects(id _Nonnull object)
 ```
 
 [回到目录](#jump-1)
+
+
+<h3 id="1-11">11. 关联对象的本质</h3>
+ 
+```
+void objc_setAssociatedObject(id _Nonnull object, const void * _Nonnull key, id _Nullable value, objc_AssociationPolicy policy)
+
+id _Nullable objc_getAssociatedObject(id _Nonnull object, const void * _Nonnull key)
+
+void objc_removeAssociatedObjects(id _Nonnull object)
+```
+关联对象由**AssociationsManager管理**并在**AssociationsHashMap存储**。  
+所有对象的关联内容都在**同一个全局容器**中。 
+![关联对象的本质](./images/runtime/AssociatedObjectNature.png) 
+1.传递进来的value和policy封装成一个ObjcAssociation结构。
+2.通过ObjcAssociation和key建立一个映射结构ObjectAssociationMap。
+3.ObjectAssociationMap作为object的一个value放到全局容器AssociationsHashMap中。
+
+设置关联对象的源码分析：  
+
+![设置关联对象的源码分析](./images/runtime/objc_setAssociatedObject.png)
+
+[回到目录](#jump-1)
+
+
+<h3 id="1-12">12. 如何删除已经被关联到对象的值？</h3>
+
+可以把value传为nil来实现。(源码中通过擦除来解决这个场景)
+
+[回到目录](#jump-1)
+
+
+<h3 id="1-13">13. 关联进去的数据结构</h3>
+ 
+![数据结构](./images/runtime/AssociatedDataStructure.png)
+
+[回到目录](#jump-1)
+
 
 <h2 id="2">二. 扩展Extension</h2>
 
