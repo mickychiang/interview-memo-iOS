@@ -4,7 +4,7 @@
 # 前言
 《iOS面试题备忘录(四)代理和通知》是关于iOS代理和通知的知识点及面试题的整理。  
 本篇内容会一直持续整理并完善，有理解不正确的地方请路过的大神告知，共勉。  
-[github原文地址]()
+[github原文地址](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/DelegateAndNSNotification.md)
 
 <span id="jump"><h1>目录</h1></span>
 
