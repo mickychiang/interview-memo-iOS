@@ -1,10 +1,11 @@
-# 属性关键字
+# iOS面试题备忘录(一)属性关键字
 所有源码基于[objc-runtime-objc.680版本](https://opensource.apple.com/source/objc4/)
 https://images.ac.cn/cn.html?btwaf=61224463
 
-
-
 # 前言
+《iOS面试题备忘录(一)属性关键字》是关于iOS的属性关键字相关的知识点及面试题的整理。  
+本篇内容会一直持续整理并完善，有理解不正确的地方请路过的大神告知，共勉。  
+[github原文地址](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)
 
 <span id="jump"><h1>目录</h1></span>
 
@@ -47,7 +48,9 @@ https://images.ac.cn/cn.html?btwaf=61224463
 @property (nonatomic, strong) NSArray *array;
 ```
 [<span id="jump-2-15">15. 为什么@property属性用copy修饰不可变对象，而用strong修饰可变对象呢？</span>](#2-15)  
-[<span id="jump-2-16">16. 为什么用copy关键字来修饰block？</span>](#2-16)  
+[<span id="jump-2-16">16. 为什么用copy关键字来修饰block？</span>](#2-16)   
+[<span id="jump-2-17">17. MRC下如何重写retain修饰变量的setter方法？不等判断的目的？</span>](#2-17) 
+
 
 # 正文
 <h2 id="1">一. 深拷⻉和浅拷⻉</h2>
@@ -527,6 +530,26 @@ block使用copy是从MRC遗留下来的“传统”。
 
 [回到目录](#jump-2)
 
+<h3 id="2-17">17. MRC下如何重写retain修饰变量的setter方法？不等判断的目的？</h3>
+
+```
+@property (nonatomic, retain) id obj;
+
+// setter方法
+- (void)setObj:(id)obj {
+    if (_obj != obj) { // 不等判断的目的：防止异常所做的处理， 
+        [_obj release];
+        _obj = [obj retain];
+    }
+}
+```
+**不等判断的目的**：防止异常所做的处理  
+如果传递进来的obj对象恰好就是原来的_obj对象，  
+没有不等判断的话，  
+先对原来的对象进行release操作，实际上也是对传递进来的obj对象进行release操作，  
+很有可能obj对象被我们无辜的释放了，如果这个时候再通过obj指针去访问被释放的对象就会导致程序crash。  
+
+[回到目录](#jump-2)
 
 # 参考文档
 [苹果官网 拷贝集合-Copying Collections](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Collections/Articles/Copying.html#//apple_ref/doc/uid/TP40010162-SW3)  
