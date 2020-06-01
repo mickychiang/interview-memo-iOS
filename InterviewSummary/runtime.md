@@ -14,11 +14,30 @@
 
 
 # 正文
-<h2 id="1">一. runtime的数据结构分析</h2>
 
-<h3 id="1-1">1. objc_object包含哪些内容？</h3>
+1.编译时语言与OC这种运行时语言的区别？
+2.消息传递与函数调用的区别？
+3.当我们调用一个方法却没有实现的时候，系统是如何为我们实现消息转发过程的？
+4.简述一下runtime的基础数据结构
+5.类对象与元类对象分别是什么？
+6.实例对象与类对象之间的关系？
+7.类对象与元类对象之间的关系？
+8.Objective-C语言中的消息传递机制？
+9.当我们进行消息传递的过程中，如何进行缓存的方法查找？
+10.消息转发流程是怎样的？
+11.Method Swizzling的应用
+12.动态添加方法
+13.动态方法解析
 
-**id类型 => objc_object结构体**
+
+<h2 id="1">一. 数据结构</h2>
+
+<h3 id="1-1">1. 简述一下objc_object</h3>
+
+![objc_object结构体](./images/runtime/objc_object.png)
+
+#### id类型 = objc_object结构体 
+平时开发使用的所有对象都是id类型的，id类型的对象对应到runtime当中是objc_object结构体。
 ```
 /// A pointer to an instance of a class.
 typedef struct objc_object *id;
@@ -29,15 +48,26 @@ struct objc_object {
     Class isa  OBJC_ISA_AVAILABILITY;
 };
 ```
-![objc_object结构体](./images/runtime/objc_object.png)
+#### objc_object结构体主要包含以下内容：  
+- isa_t：是一个共用体。
+- 关于isa操作的相关方法：比如，通过objc_object的isa指针获取其指向的类对象；通过类对象的isa指针来获取其指向的元类对象等。
+- 弱引用的相关方法：比如，标记一个对象它是否曾有过弱引用指针。
+- 关联对象的相关方法：比如，为对象设置关联属性。
+- 内存管理的相关方法：比如，MRC下的retain和release；MRC和ARC下的@autoReleasePool。
+
+**延伸：**
+内存管理的相关方法都是封装在objc_object结构体中。
 
 [回到目录](#jump-1)
 
 
-<h3 id="1-2">2. objc_class包含哪些内容？和objc_object有什么关系？</h3>
+<h3 id="1-2">2. 简述一下objc_class？和objc_object有什么关系？</h3>
 
-**Class类型 => objc_class结构体**  
-**objc_class结构体继承自objc_object结构体**
+![objc_class结构体](./images/runtime/objc_class.png)
+
+#### Class类型 = objc_class结构体 
+在OC中使用到的Class是一个类，对应到runtime当中是objc_class结构体。  
+**objc_class结构体继承自objc_object结构体**  
 ```
 /// An opaque type that represents an Objective-C class.
 typedef struct objc_class *Class;
@@ -51,14 +81,17 @@ struct objc_class : objc_object {
     ...
 }
 ```
-![objc_class结构体](./images/runtime/objc_class.png)
+#### objc_class结构体主要包含以下内容： 
+- superClass指针：指向Class，比如：如果是类对象，那么它的superClass指针指向的是它的父类对象。也就是类与父类之间的关系是通过objc_class中的superClass来定义的。
+- cache_t：是一个方法缓存的结构体，在消息传递过程中会使用到。
+- class_data_bits_t：关于类的变量、属性、方法都在class_data_bits_t结构体中。
 
 [回到目录](#jump-1)
 
 
-<h3 id="1-3">3. Class类是否是对象？(什么是类对象？)</h3>
+<h3 id="1-3">3. Class是否是对象？(什么是类对象？)</h3>
 
-**Class是对象，称作类对象。**   
+**Class是一个对象，称作类对象。**   
 Class类型对应runtime底层的写法为objc_class。  
 objc_class继承自objc_object。  
 objc_object结构体对应着id类型，而id类型是对象，所以Class是类对象。  
@@ -134,7 +167,7 @@ const char *types;
 [回到目录](#jump-1)
 
 
-<h3 id="1-8">8. 请简单介绍一下runtime的数据结构</h3>
+<h3 id="1-8">8. 简述一下runtime的基础数据结构</h3>
 
 ![runtimeStruct](./images/runtime/runtimeStruct.png)
 
@@ -194,7 +227,8 @@ const char *types;
 
  
 
-## 消息传递
+## 消息传递机制？
+
 ### void objc_msgSend(void /* id self, SEL op, ... */ )
 ```
 void objc_msgSend(void /* id self, SEL op, ... */ )
