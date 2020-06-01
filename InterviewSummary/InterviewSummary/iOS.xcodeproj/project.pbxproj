@@ -15,6 +15,7 @@
 		81AA7C881FE9F50A0070087E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C871FE9F50A0070087E /* main.m */; };
 		81AA7C921FE9F50A0070087E /* iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C911FE9F50A0070087E /* iOSTests.m */; };
 		81AA7C9D1FE9F50A0070087E /* iOSUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 81AA7C9C1FE9F50A0070087E /* iOSUITests.m */; };
+		BD7505FF2484FC3700310BF1 /* RuntimeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BD7505FE2484FC3700310BF1 /* RuntimeObject.m */; };
 		BDFCA3E7247A9E15007E3042 /* MObject.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFCA3E6247A9E15007E3042 /* MObject.m */; };
 		BDFCA3EA247A9ECC007E3042 /* MObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFCA3E9247A9ECC007E3042 /* MObserver.m */; };
 /* End PBXBuildFile section */
@@ -53,6 +54,8 @@
 		81AA7C981FE9F50A0070087E /* iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AA7C9C1FE9F50A0070087E /* iOSUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOSUITests.m; sourceTree = "<group>"; };
 		81AA7C9E1FE9F50A0070087E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD7505FD2484FC3700310BF1 /* RuntimeObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RuntimeObject.h; sourceTree = "<group>"; };
+		BD7505FE2484FC3700310BF1 /* RuntimeObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RuntimeObject.m; sourceTree = "<group>"; };
 		BDFCA3E5247A9E15007E3042 /* MObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MObject.h; sourceTree = "<group>"; };
 		BDFCA3E6247A9E15007E3042 /* MObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MObject.m; sourceTree = "<group>"; };
 		BDFCA3E8247A9ECC007E3042 /* MObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MObserver.h; sourceTree = "<group>"; };
@@ -115,6 +118,8 @@
 				BDFCA3E6247A9E15007E3042 /* MObject.m */,
 				BDFCA3E8247A9ECC007E3042 /* MObserver.h */,
 				BDFCA3E9247A9ECC007E3042 /* MObserver.m */,
+				BD7505FD2484FC3700310BF1 /* RuntimeObject.h */,
+				BD7505FE2484FC3700310BF1 /* RuntimeObject.m */,
 				81AA7C7E1FE9F50A0070087E /* Main.storyboard */,
 				81AA7C811FE9F50A0070087E /* Assets.xcassets */,
 				81AA7C831FE9F50A0070087E /* LaunchScreen.storyboard */,
@@ -278,6 +283,7 @@
 				BDFCA3E7247A9E15007E3042 /* MObject.m in Sources */,
 				BDFCA3EA247A9ECC007E3042 /* MObserver.m in Sources */,
 				81AA7C7D1FE9F50A0070087E /* ViewController.m in Sources */,
+				BD7505FF2484FC3700310BF1 /* RuntimeObject.m in Sources */,
 				81AA7C881FE9F50A0070087E /* main.m in Sources */,
 				81AA7C7A1FE9F50A0070087E /* AppDelegate.m in Sources */,
 			);

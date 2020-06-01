@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "RuntimeObject.h"
 
 @interface ViewController ()
 
@@ -16,6 +17,11 @@
 
 - (void )viewDidLoad {
     [super viewDidLoad];
+    
+    RuntimeObject *obj = [[RuntimeObject alloc] init];
+    // 调用test方法，只有声明，没有实现
+    [obj test];
+    
 }
 
 - (void)didReceiveMemoryWarning {
