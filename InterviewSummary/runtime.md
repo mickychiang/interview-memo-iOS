@@ -36,16 +36,14 @@
 ![classAndMetaClassExample.png](https://i.loli.net/2020/06/04/jAfaxET8u3ZHFMr.png)  
 [<span id="jump-3-4">4. [obj foo]和objc_msgSend()函数之间有什么关系？ </span>](#3-4)  
 [<span id="jump-3-5">5. runtime是如何通过selector找到对应的IMP地址的？</span>](#3-5)   
-[<span id="jump-3-6">6. 当我们进行消息传递的过程中，如何进行缓存的方法查找？</span>](#3-6)   
+[<span id="jump-3-6">6. 当我们进行消息传递的过程中，如何进行缓存的方法查找？/缓存查找的具体流程和步骤</span>](#3-6)   
 [<span id="jump-3-7">7. 消息转发流程是怎样的？</span>](#3-7)   
 
-[<span id="jump-4"><h2>四. 应用场景</h2></span>](#4)
-[<span id="jump-4-1">1. Method Swizzling是什么？平日开发的使用场景？</span>](#4-1)  
-[<span id="jump-4-2">2. 你是否使用过performSelector:方法？实际应用场景？</span>](#4-2)  
-[<span id="jump-4-3">3. 如何为类动态添加方法？</span>](#4-3)  
-[<span id="jump-4-4">4. 编译时语言与OC这种运行时语言的区别？</span>](#4-4)  
-[<span id="jump-4-5">5. 能否向编译后的类中添加实例变量？</span>](#4-5)    
-[<span id="jump-4-6">6. 能否向动态添加的类中添加实例变量？</span>](#4-6) 
+[<span id="jump-4"><h2>四. runtime应用场景</h2></span>](#4)
+[<span id="jump-4-1">1. Method Swizzling是什么？实际应用场景？</span>](#4-1)  
+[<span id="jump-4-2">2. 你是否使用过performSelector:方法？实际应用场景？/如何为类动态添加方法？</span>](#4-2)    
+[<span id="jump-4-3">3. 编译时语言与OC这种运行时语言的区别？</span>](#4-3)  
+[<span id="jump-4-4">4. 能否向编译后的类中添加实例变量？能否向运行时创建的类中添加实例变量？</span>](#4-4)    
 
 [<span id="jump-5"><h2>五. 总结 - 消息传递机制具体解析</h2></span>](#5)
 
@@ -296,6 +294,8 @@ const char *types;
 
 <h3 id="3-2">2. objc_msgSend()和objc_msgSendSuper()的区别？</h3>
 
+消息传递 = 函数调用
+
 #### objc_msgSend()
 ```
 void objc_msgSend(void /* id self, SEL op, ... */ )
@@ -351,7 +351,7 @@ objc_msgSendSuper(super, @selector(class))的super里包含的receiver就是当�
 **打印结果都是：Phone**  
 - [self class] => objc_msgSend(self, @selector(class))  
 - [super class] => objc_msgSendSuper(super, @selector(class))  
-- super的objc_super结构体里面有一个receiver，它代表当前对象即self。  
+- super是objc_super结构体，里面有一个receiver，它代表当前对象即self。  
 所以，无论是调用[self class]还是[super class]，消息的实际接收者都是当前对象self。  
 
 具体分析请参考上一题。
@@ -384,14 +384,15 @@ runtime消息传递过程如下：
 [回到目录](#jump-3)
 
 
-<h3 id="3-6">6. 当我们进行消息传递的过程中，如何进行缓存的方法查找？</h3>
+<h3 id="3-6">6. 当我们进行消息传递的过程中，如何进行缓存的方法查找？/缓存查找的具体流程和步骤</h3>
 
-解析：给定值是SEL，目标值是对应bucket_t中的IMP。
+思路：给定值是SEL，目标值是对应bucket_t中的IMP。
 
 类对象中有一个cache_t结构体，用来存放缓存。  
 cache_t数组包含多个bucket_t结构体。  
-bucket_t是方法选择器(selector)和方法实现(IMP)的封装。  
-根据方法选择器利用哈希算法通过一个函数来映射出对应的bucket_t在cache_t数组中的索引位置，提取对应的IMP实现。
+bucket_t是方法选择器(selector)和方法实现(IMP)的封装。 
+
+**哈希查找**：根据方法选择器通过一个函数来映射出对应的bucket_t在cache_t数组中的索引位置，提取对应的IMP实现。
 
 [回到目录](#jump-3)
 
@@ -402,45 +403,68 @@ bucket_t是方法选择器(selector)和方法实现(IMP)的封装。
 ![MessageForwardingProcess_02](./images/runtime/MessageForwardingProcess_02.png)
 ![MessageForwardingProcess_03](./images/runtime/MessageForwardingProcess_03.png) -->
 
-当走消息转发流程的时候会顺次执行以下方法直到找到或者没找到。
+当走消息转发流程的时候会顺次执行以下方法直到找到或者没找到。  
 
+举例：实例方法的消息转发流程  
 - resolveInstanceMethod:
 - forwardingTargetForSelector:
 - methodSignatureForSelector:
-- forwardInvocation:
+  - 如果返回了方法签名，那么执行forwardInvocation: => 消息已处理/消息无法处理
+  - 如果返回了nil => 消息无法处理
 
 ![MessageForwardingProcess_01.png](https://i.loli.net/2020/06/04/er5zmyavJ2nQ917.png)
 ![MessageForwardingProcess_02.png](https://i.loli.net/2020/06/04/kyaCYdioUJSb3WP.png)
 ![MessageForwardingProcess_03.png](https://i.loli.net/2020/06/04/JxR9jIS3KymHM2Z.png)
 
+完整代码实例请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
+
 [回到目录](#jump-3)
 
 
-<h2 id="4">四. 应用场景</h2>
+<h2 id="4">四. runtime应用场景</h2>
 
-<h3 id="4-1">1. Method Swizzling是什么？平日开发的使用场景？</h3>
+<h3 id="4-1">1. Method Swizzling是什么？实际应用场景？</h3>
 
-![methodSwizzling](./images/runtime/methodSwizzling.png)
+runtime应用 - 方法交换
+<!-- ![methodSwizzling](./images/runtime/methodSwizzling.png) -->
+![methodSwizzling.png](https://i.loli.net/2020/06/04/a8Ae6RgPC39xpvY.png)
+
 具体代码实现~
-#### 平日开发的使用场景？
+<!-- ![methodSwizzling_01](./images/runtime/methodSwizzling_01.png)
+![methodSwizzling_02](./images/runtime/methodSwizzling_02.png)
+![methodSwizzling_03](./images/runtime/methodSwizzling_03.png) -->
+![methodSwizzling_01.png](https://i.loli.net/2020/06/04/UNO4i6mSs85RarG.png)
+![methodSwizzling_02.png](https://i.loli.net/2020/06/04/8MyPfZQnhrA7uO4.png)
+![methodSwizzling_03.png](https://i.loli.net/2020/06/04/q8DKn2Zl7fcP4vz.png)
+
+完整代码实例请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
+
+#### 实际应用场景
+- 统计日志信息
 
 [回到目录](#jump-4)
 
-<h3 id="4-2">2. 你是否使用过performSelector:方法？实际应用场景？</h3>
 
-实际应用场景：一个类在编译时没有方法，在运行时才产生方法。
+<h3 id="4-2">2. 你是否使用过performSelector:方法？实际应用场景？/如何为类动态添加方法？</h3>
+
+runtime应用 - 动态添加方法
+
+具体代码实现~
+<!-- ![dynamicAddMethod](./images/runtime/dynamicAddMethod.png) -->
+![dynamicAddMethod.png](https://i.loli.net/2020/06/04/XMVJWms95Gz72Ab.png)
+
+完整代码实例请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
+
+#### 实际应用场景
+- 一个类在编译时没有方法，在运行时才产生方法。
 
 [回到目录](#jump-4)
 
 
-<h3 id="4-3">3. 如何为类动态添加方法？</h3>
+<h3 id="4-3">3. 编译时语言与OC这种运行时语言的区别？</h3>
 
-查看代码实现~
+runtime应用 - 动态方法解析@dynamic
 
-[回到目录](#jump-4)
-
-<h3 id="4-4">4. 编译时语言与OC这种运行时语言的区别？</h3>
- 
 - 编译时语言：在编译期进行函数决议。  
 在编译期，我们就确定了一个方法名称所对应的函数执行体是哪个，在运行时是无法修改的。
 
@@ -451,24 +475,20 @@ bucket_t是方法选择器(selector)和方法实现(IMP)的封装。
 [回到目录](#jump-4)
 
 
-<h3 id="4-5">5. 能否向编译后的类中添加实例变量？</h3>
+<h3 id="4-4">4. 能否向编译后的类中添加实例变量？能否向运行时创建的类中添加实例变量？</h3>
 
-不能向编译后的类中添加实例变量
+- 不能向编译后的类中添加实例变量  
+- 可以向运行时创建的类中添加实例变量   
 
-[回到目录](#jump-4)
-
-
-<h3 id="4-6">6. 能否向动态添加的类中添加实例变量？</h3>
-
-可以向动态添加的类中添加实例变量  
-runtime支持运行时动态添加类
+因为编译后的类已经注册在 runtime 中，类结构体中的 objc_ivar_list 实例变量的链表和 instance_size 实例变量的内存大小已经确定，同时 runtime 会调用 class_setIvarLayout 或 class_setWeakIvarLayout 来处理 strong weak 引用。所以不能向存在的类中添加实例变量。
+运行时创建的类是可以添加实例变量，调用 class_addIvar 函数。但是得在调用 objc_allocateClassPair 之后，objc_registerClassPair 之前，原因同上。
 
 [回到目录](#jump-4)
 
 
-<h2 id="5">五. 消息传递机制具体解析</h2>
+<h2 id="5">五. 消息传递机制具体解析（完整具体答案）</h2>
 
-**缓存是否命中 => 当前类方法列表是否命中 => 逐级父类的类方法列表是否命中 => 消息转发流程**
+**缓存是否命中 => 当前类的方法列表是否命中 => 逐级父类的方法列表是否命中 => 消息转发流程**
 <!-- ![消息传递机制的流程图](./images/runtime/messageSend.png) -->
 ![messageSend.png](https://i.loli.net/2020/06/04/MjWKT7goPQdfNtn.png)
 
@@ -480,7 +500,7 @@ runtime支持运行时动态添加类
 **根据给定的方法选择器，来查找它对应的方法实现。**  
 根据选择器因子到cache_t把对应的bucket_t查找出来。
 
-缓存查找是一个哈希查找。  
+**缓存查找是一个哈希查找**：  
 根据给定的方法选择器通过一个函数来映射出对应的bucket_t在数组中的索引位置。  
 作用：利用哈希查找来提高查找效率。
 <!-- ![缓存查找](./images/runtime/cacheSearch.png) -->
@@ -491,7 +511,8 @@ runtime支持运行时动态添加类
 - 对于**没有排序**的列表，采用**一般遍历**来查找方法对应的执行函数实现。
 
 ### 3. 父类逐级查找
-父类缓存 => 父类类方法列表 逐级向上。
+当前类的superClass指针向上查找。  
+父类缓存 => 父类方法列表 => 逐级向上。
 <!-- ![父类逐级查找流程图](./images/runtime/superClassLevelByLevelSearch.png) -->
 ![superClassLevelByLevelSearch.png](https://i.loli.net/2020/06/04/AJChpINQufeygnV.png)
 

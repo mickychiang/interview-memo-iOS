@@ -486,7 +486,7 @@ NSLog(@"self.array:%@", self.array);
 2017-12-21 10:56:06.921463+0800 iOS[1281:60000] self.array:( )
 ```
 
-array的值发⽣生了了改变，这不不是我们所期望的
+array的值发生了改变，这不是我们所期望的
 所以改成:
 ```
 @property (nonatomic, copy) NSArray *array;
