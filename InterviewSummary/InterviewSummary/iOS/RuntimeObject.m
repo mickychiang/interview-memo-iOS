@@ -36,18 +36,29 @@
 
 
 
-void testImp (void) {
-    NSLog(@"test invoke");
-}
+//void testImp (void) {
+//    NSLog(@"test invoke");
+//}
+//
+//+ (BOOL)resolveInstanceMethod:(SEL)sel {
+//    // 如果调用了test方法，打印日志
+//    if (sel == @selector(test)) {
+//        NSLog(@"resolveInstanceMethod:");
+////        return NO;
+//        // 动态添加test方法的实现
+//        class_addMethod(self, @selector(test), testImp, "v@:");
+//        return YES;
+//    } else {
+//        // 返回父类的默认调用
+//        return [super resolveInstanceMethod:sel];
+//    }
+//}
 
 + (BOOL)resolveInstanceMethod:(SEL)sel {
     // 如果调用了test方法，打印日志
     if (sel == @selector(test)) {
         NSLog(@"resolveInstanceMethod:");
-//        return NO;
-        // 动态添加test方法的实现
-        class_addMethod(self, @selector(test), testImp, "v@:");
-        return YES;
+        return NO;
     } else {
         // 返回父类的默认调用
         return [super resolveInstanceMethod:sel];
@@ -66,7 +77,7 @@ void testImp (void) {
         // v -> void类型
         // @ -> 第一个参数是id类型 即self
         // : -> 第二个参数是SEL类型 即@selector(test)
-        return [NSMethodSignature methodSignatureForSelector:"v@:"];
+        return [NSMethodSignature methodSignatureForSelector:(SEL)"v@:"];
     } else {
         return [super methodSignatureForSelector:aSelector];
     }
