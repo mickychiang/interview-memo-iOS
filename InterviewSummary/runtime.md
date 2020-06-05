@@ -426,10 +426,16 @@ bucket_t是方法选择器(selector)和方法实现(IMP)的封装。
 <h3 id="4-1">1. Method Swizzling是什么？实际应用场景？</h3>
 
 runtime应用 - 方法交换
+
+#### 1.1 Method Swizzling
+
+Method Swizzing是发生在运行时的，主要用于在运行时将两个Method进行交换。  
+我们可以将Method Swizzling代码写到任何地方，但是只有在这段Method Swilzzling代码执行完毕之后互换才起作用。
+
 <!-- ![methodSwizzling](./images/runtime/methodSwizzling.png) -->
 ![methodSwizzling.png](https://i.loli.net/2020/06/04/a8Ae6RgPC39xpvY.png)
 
-具体代码实现~
+#### 1.2 简单实现(不是最佳写法，仅当例子参考)
 <!-- ![methodSwizzling_01](./images/runtime/methodSwizzling_01.png)
 ![methodSwizzling_02](./images/runtime/methodSwizzling_02.png)
 ![methodSwizzling_03](./images/runtime/methodSwizzling_03.png) -->
@@ -437,10 +443,24 @@ runtime应用 - 方法交换
 ![methodSwizzling_02.png](https://i.loli.net/2020/06/04/8MyPfZQnhrA7uO4.png)
 ![methodSwizzling_03.png](https://i.loli.net/2020/06/04/q8DKn2Zl7fcP4vz.png)
 
-完整代码实例请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
+简单实现的完整代码请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
 
-#### 实际应用场景
-- 统计日志信息
+#### 1.3 方法交换的最佳写法
+- Swizzling应该总在+load中执行
+- Swizzling应该总是在dispatch_once中执行
+- Swizzling在+load中执行时，不要调用[super load]。  
+如果多次调用了[super load]，可能会出现“Swizzle无效”的假象。
+- 为了避免Swizzling的代码被重复执行，我们可以通过GCD的dispatch_once函数来解决，利用dispatch_once函数内代码只会执行一次的特性。
+
+<!-- ![methodSwizzlingAboutInstanceAndClass](./images/runtime/methodSwizzlingAboutInstanceAndClass.png) -->
+![methodSwizzlingAboutInstanceAndClass.png](https://i.loli.net/2020/06/05/rdkM3Aznxlf9bP6.png)
+
+#### 1.4 实际应用场景
+- 统计VC加载次数并打印
+- 防止UI控件短时间多次激活事件
+- 防奔溃处理：数组越界问题
+
+实际应用场景的完整代码请查看：[RuntimeDemo工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/RuntimeDemo/RuntimeDemo)
 
 [回到目录](#jump-4)
 
@@ -455,7 +475,7 @@ runtime应用 - 动态添加方法
 
 完整代码实例请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
 
-#### 实际应用场景
+####  实际应用场景
 - 一个类在编译时没有方法，在运行时才产生方法。
 
 [回到目录](#jump-4)
