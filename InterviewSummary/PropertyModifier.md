@@ -1,10 +1,10 @@
-# iOS面试题备忘录(一)属性关键字
+# iOS面试题备忘录(一) - 属性关键字
 所有源码基于[objc-runtime-objc.680版本](https://opensource.apple.com/source/objc4/)
-https://images.ac.cn/cn.html?btwaf=61224463
 
 # 前言
-《iOS面试题备忘录(一)属性关键字》是关于iOS的属性关键字相关的知识点及面试题的整理。  
-本篇内容会一直持续整理并完善，有理解不正确的地方请路过的大神告知，共勉。  
+《iOS面试题备忘录(一) - 属性关键字》是关于iOS的属性关键字相关的知识点及面试题的整理，难易程度没做区分，即默认是必须掌握的内容。   
+本篇内容会持续整理并不断更新完善，如果哪里有理解不正确的地方请路过的大神告知，共勉。  
+**可通过目录自行检测掌握程度**   
 [github原文地址](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)
 
 <span id="jump"><h1>目录</h1></span>
@@ -32,7 +32,7 @@ https://images.ac.cn/cn.html?btwaf=61224463
 [<span id="jump-2-3">3. ARC下@property的默认属性？</span>](#2-3)  
 [<span id="jump-2-4">4. 属性的读写权限关键字的含义？</span>](#2-4)  
 [<span id="jump-2-5">5. 属性的原子操作关键字的含义？</span>](#2-5)  
-[<span id="jump-2-6">6. 属性的内存管理(引用计数)关键字的含义？</span>](#2-6)  
+[<span id="jump-2-6">6. 属性的内存管理关键字的含义？</span>](#2-6)  
 [<span id="jump-2-7">7. assign和weak的比较？分别的使用场景？</span>](#2-7)  
 [<span id="jump-2-8">8. delegate应该使用哪种关键字修饰？</span>](#2-8)  
 [<span id="jump-2-9">9. 如果说weak指针指向一个对象，当这个对象dealloc或废弃之后，它的weak指针为何会被自动设置为nil?(当⼀个对象被释放或废弃，weak变量是怎样处理的呢?)</span>](#2-9)  
@@ -244,8 +244,12 @@ dataArray3 = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archive
 <h3 id="2-5">5. 属性的原子操作关键字的含义？</h3>
 
 原子操作：属性是否有原子性可以理解为线程是否安全。
-- atomic：原子性，默认修饰符。使用atomic会损耗性能，也不一定保证线程安全。如果保证线程安全需要使用锁机制。
-- nonatomic：非原子性，声明属性时基本设置为nonatomic。使用nonatomic能够提高访问性能。
+
+- atomic：原子性，加同步锁，默认修饰符。  
+使用atomic会损耗性能，也不一定保证线程安全。如果保证线程安全需要使用其他锁机制。
+
+- nonatomic：非原子性，不实用同步锁。  
+声明属性时基本设置为nonatomic。使用nonatomic能够提高访问性能。
 
 atomic使⽤了同步锁，会在创建时生成⼀些额外的代码⽤于帮助编写多线程程序，这会带来性能问题。      
 通过声明nonatomic关键字，可以节省这些虽然很小但是不必要的额外开销。   
@@ -274,15 +278,20 @@ atomic使⽤了同步锁，会在创建时生成⼀些额外的代码⽤于帮�
 [回到目录](#jump-2)
 
 
-<h3 id="2-6">6. 属性的内存管理(引用计数)关键字的含义？</h3>
+<h3 id="2-6">6. 属性的内存管理关键字的含义？</h3>
 
-内存管理/引用计数：  
-assign、weak、unsafe_unretained、strong、weak 、copy
+- assign：纯量类型(scalar type)的简单赋值操作。
+- strong：拥有关系，保留新值，释放旧值，再设置新值。
+- weak：非拥有关系(nonowning relationship)，属性所指的对象遭到摧毁时，属性也会清空。
+- assign：非拥有关系，属性所指的对象遭到摧毁时，属性不会清空。
+- unsafe_unretained：类似assign，适用于对象类型，非拥有关系，属性所指的对象遭到摧毁时，属性不会清空。
+- copy：不保留新值，而是将其拷贝。
 
 注意：  
-unsafe_unretained：对属性进行简单的赋值操作。setter方法既不保留新值也不释放旧值，即不改变引用计数。  
+1.unsafe_unretained：对属性进行简单的赋值操作。setter方法既不保留新值也不释放旧值，即不改变引用计数。  
 unsafe_unretained只能修饰OC对象。且对象销毁时会出现野指针也会导致程序crash。  
-retain：在ARC环境下使用较少，在MRC下使用效果与strong一致。    
+2.retain：在ARC环境下使用较少，在MRC下使用效果与strong一致。    
+
 **扩展**：使用时机？
 
 [回到目录](#jump-2)
@@ -477,7 +486,7 @@ NSLog(@"self.array:%@", self.array);
 2017-12-21 10:56:06.921463+0800 iOS[1281:60000] self.array:( )
 ```
 
-array的值发⽣生了了改变，这不不是我们所期望的
+array的值发生了改变，这不是我们所期望的
 所以改成:
 ```
 @property (nonatomic, copy) NSArray *array;
@@ -553,4 +562,13 @@ block使用copy是从MRC遗留下来的“传统”。
 
 # 参考文档
 [苹果官网 拷贝集合-Copying Collections](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Collections/Articles/Copying.html#//apple_ref/doc/uid/TP40010162-SW3)  
-[iOS深浅拷贝](http://www.cocoachina.com/articles/17275)
+[iOS深浅拷贝](http://www.cocoachina.com/articles/17275)  
+
+# 其他
+《iOS面试题备忘录》系列文章的github原文地址：  
+
+[iOS面试题备忘录(一) - 属性关键字](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)    
+[iOS面试题备忘录(三) - 分类和类别](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)  
+[iOS面试题备忘录(四) - 代理和通知](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/DelegateAndNSNotification.md)  
+[iOS面试题备忘录(五) - KVO和KVC](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/KVOAndKVC.md)  
+[iOS面试题备忘录(六) - runtime](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)  

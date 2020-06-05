@@ -22,6 +22,8 @@
     // 调用test方法，只有声明，没有实现
     [obj test];
     
+//    [obj method1];
+    
 }
 
 - (void)didReceiveMemoryWarning {

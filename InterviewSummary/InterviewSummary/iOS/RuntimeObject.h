@@ -13,7 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface RuntimeObject : NSObject
 
 - (void)test;
-//- (void)otherTest;
+
+- (void)method1;
+- (void)method2;
 
 @end
 
