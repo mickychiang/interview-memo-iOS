@@ -40,9 +40,9 @@
 [<span id="jump-3-7">7. 消息转发流程是怎样的？</span>](#3-7)   
 
 [<span id="jump-4"><h2>四. runtime应用场景</h2></span>](#4)
-[<span id="jump-4-1">1. Method Swizzling是什么？实际应用场景？</span>](#4-1)  
-[<span id="jump-4-2">2. 你是否使用过performSelector:方法？实际应用场景？/如何为类动态添加方法？</span>](#4-2)    
-[<span id="jump-4-3">3. 编译时语言与OC这种运行时语言的区别？</span>](#4-3)  
+[<span id="jump-4-1">1. Method Swizzling是什么？实际应用场景？(Method Swizzling)</span>](#4-1)  
+[<span id="jump-4-2">2. 你是否使用过performSelector:方法？实际应用场景？(动态添加方法)</span>](#4-2)    
+[<span id="jump-4-3">3. 编译时语言与OC这种运行时语言的区别？(动态方法解析)</span>](#4-3)  
 [<span id="jump-4-4">4. 能否向编译后的类中添加实例变量？能否向运行时创建的类中添加实例变量？</span>](#4-4)    
 
 [<span id="jump-5"><h2>五. 总结 - 消息传递机制具体解析</h2></span>](#5)
@@ -50,16 +50,16 @@
 # 正文
 
 1.编译时语言与OC这种运行时语言的区别？- 👌  
-2.消息传递与函数调用的区别？  
-3.当我们调用一个方法却没有实现的时候，系统是如何为我们实现消息转发过程的？  
+2.消息传递与函数调用的区别？- 👌  
+3.当我们调用一个方法却没有实现的时候，系统是如何为我们实现消息转发过程的？- 👌  
 4.简述一下runtime的基础数据结构-👌  
 5.类对象与元类对象分别是什么？-👌  
 6.实例对象与类对象之间的关系？-👌  
 7.类对象与元类对象之间的关系？-👌  
-8.Objective-C语言中的消息传递机制？  
+8.Objective-C语言中的消息传递机制？- 👌  
 9.当我们进行消息传递的过程中，如何进行缓存的方法查找？- 👌  
-10.消息转发流程是怎样的？  
-11.Method Swizzling的应用  
+10.消息转发流程是怎样的？- 👌  
+11.Method Swizzling的应用- 👌  
 12.动态添加方法  
 13.动态方法解析  
 
@@ -423,7 +423,7 @@ bucket_t是方法选择器(selector)和方法实现(IMP)的封装。
 
 <h2 id="4">四. runtime应用场景</h2>
 
-<h3 id="4-1">1. Method Swizzling是什么？实际应用场景？</h3>
+<h3 id="4-1">1. Method Swizzling是什么？实际应用场景？(Method Swizzling)</h3>
 
 runtime应用 - 方法交换
 
@@ -465,23 +465,33 @@ Method Swizzing是发生在运行时的，主要用于在运行时将两个Metho
 [回到目录](#jump-4)
 
 
-<h3 id="4-2">2. 你是否使用过performSelector:方法？实际应用场景？/如何为类动态添加方法？</h3>
+<h3 id="4-2">2. 你是否使用过performSelector:方法？实际应用场景？(动态添加方法)</h3>
 
 runtime应用 - 动态添加方法
 
-具体代码实现~
+#### 1.1 动态添加方法
+一个类在编译时没有方法，在运行时才产生方法。
+
+- 任何方法默认都有两个隐式参数：self、_cmd
+- 什么时候调用：只要一个对象调用了一个未实现的方法就会调用这个方法进行处理
+- 作用：动态添加方法，处理未实现
+
+#### 1.2 简单实现
+
 <!-- ![dynamicAddMethod](./images/runtime/dynamicAddMethod.png) -->
 ![dynamicAddMethod.png](https://i.loli.net/2020/06/04/XMVJWms95Gz72Ab.png)
 
-完整代码实例请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
+简单实现的完整代码请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
 
-####  实际应用场景
-- 一个类在编译时没有方法，在运行时才产生方法。
+#### 1.3 实际应用场景
+- performSelector
+
+实际应用场景的代码待整理。。。
 
 [回到目录](#jump-4)
 
 
-<h3 id="4-3">3. 编译时语言与OC这种运行时语言的区别？</h3>
+<h3 id="4-3">3. 编译时语言与OC这种运行时语言的区别？(动态方法解析)</h3>
 
 runtime应用 - 动态方法解析@dynamic
 
@@ -498,9 +508,8 @@ runtime应用 - 动态方法解析@dynamic
 <h3 id="4-4">4. 能否向编译后的类中添加实例变量？能否向运行时创建的类中添加实例变量？</h3>
 
 - 不能向编译后的类中添加实例变量  
-- 可以向运行时创建的类中添加实例变量   
-
 因为编译后的类已经注册在 runtime 中，类结构体中的 objc_ivar_list 实例变量的链表和 instance_size 实例变量的内存大小已经确定，同时 runtime 会调用 class_setIvarLayout 或 class_setWeakIvarLayout 来处理 strong weak 引用。所以不能向存在的类中添加实例变量。
+- 可以向运行时创建的类中添加实例变量   
 运行时创建的类是可以添加实例变量，调用 class_addIvar 函数。但是得在调用 objc_allocateClassPair 之后，objc_registerClassPair 之前，原因同上。
 
 [回到目录](#jump-4)
@@ -545,6 +554,7 @@ runtime应用 - 动态方法解析@dynamic
 # 参考文档
 
 《新浪微博资深大牛全方位剖析 iOS 高级面试》  
+[iOS开发·runtime原理与实践: 方法交换篇(Method Swizzling)(iOS“黑魔法”，埋点统计，禁止UI控件连续点击，防奔溃处理)](https://juejin.im/post/5aebc6ae6fb9a07aad1761a4)
 
 # 其他
 《iOS面试题备忘录》系列文章的github原文地址：  
