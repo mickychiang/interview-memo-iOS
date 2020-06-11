@@ -295,7 +295,8 @@ SideTable结构包括了自旋锁、引用计数表和弱引用表。
 
 #### MRC
 MRC是手动引用计数来进行对象的内存管理。
-![MRC](./images/memoryManagement/MRC.png)
+<!-- ![MRC](./images/memoryManagement/MRC.png) -->
+![MRC](https://ae01.alicdn.com/kf/H08bdb380667b49eea9b0472004adc448c.jpg)
 
 #### ARC
 **ARC是由LLVM编译器和Runtime共同协作来为我们实现自动引用计数的管理。**
@@ -404,7 +405,8 @@ refcnt_result += it->second >> SIDE_TABLE_RC_SHIFT;
 
 #### 4.5 dealloc的实现(重点!!!!!)
 
-![dealloc实现原理流程图](./images/memoryManagement/dealloc.png)
+<!-- ![dealloc实现原理流程图](./images/memoryManagement/dealloc.png) -->
+![dealloc实现原理流程图](https://ae01.alicdn.com/kf/H1108e41d3ec44a02b66bc696bef7e97bQ.jpg)
 
 - 是否可以释放：右边5个必须同时满足为0，则YES那么直接C函数释放。
     - nonpointer_isa：判断当前对象是否使用了**非指针型isa**。
@@ -414,13 +416,17 @@ refcnt_result += it->second >> SIDE_TABLE_RC_SHIFT;
     - has_sidetable_rc：判断当前**对象的引用计数**是否是通过**SideTable中的引用计数表**来维护的。
 
 - object_dispose()实现  
-![object_dispose()实现](./images/memoryManagement/object_dispose().png)
+<!-- ![object_dispose()实现](./images/memoryManagement/object_dispose().png) -->
+![object_dispose()实现](https://ae01.alicdn.com/kf/H4d28bcf4fcb04e4ea91ff3759b70931c6.jpg)
 
 - objc_destructInstance()实现  
-![objc_destructInstance()实现](./images/memoryManagement/objc_destructInstance().png)
+<!-- ![objc_destructInstance()实现](./images/memoryManagement/objc_destructInstance().png) -->
+![objc_destructInstance()实现](https://ae01.alicdn.com/kf/Hf13dc3c1f56b4c38a993543ec54ee84b5.jpg)
 
 - clearDeallocating()实现
-![clearDeallocating()实现](./images/memoryManagement/clearDeallocating().png)
+<!-- ![clearDeallocating()实现](./images/memoryManagement/clearDeallocating().png) -->
+![clearDeallocating()实现](https://ae01.alicdn.com/kf/H50a1e5ac202d415580718683942ff1fbt.jpg)
+
 
 [回到目录](#jump-5)
 
