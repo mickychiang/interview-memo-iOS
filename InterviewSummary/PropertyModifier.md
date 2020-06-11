@@ -27,29 +27,30 @@
 
 
 [<span id="jump-2"><h2>二. 属性关键字</h2></span>](#2)
-[<span id="jump-2-1">1. 常用的基本类型对应Foundation数据类型？</span>](#2-1)  
-[<span id="jump-2-2">2. 定义属性的格式？(定义属性时修饰符的顺序？)</span>](#2-2)  
-[<span id="jump-2-3">3. ARC下@property的默认属性？</span>](#2-3)  
-[<span id="jump-2-4">4. 属性的读写权限关键字的含义？</span>](#2-4)  
-[<span id="jump-2-5">5. 属性的原子操作关键字的含义？</span>](#2-5)  
-[<span id="jump-2-6">6. 属性的内存管理关键字的含义？</span>](#2-6)  
-[<span id="jump-2-7">7. assign和weak的比较？分别的使用场景？</span>](#2-7)  
-[<span id="jump-2-8">8. delegate应该使用哪种关键字修饰？</span>](#2-8)  
-[<span id="jump-2-9">9. 如果说weak指针指向一个对象，当这个对象dealloc或废弃之后，它的weak指针为何会被自动设置为nil?(当⼀个对象被释放或废弃，weak变量是怎样处理的呢?)</span>](#2-9)  
-[<span id="jump-2-10">10. 为什么assign可以修饰基本数据类型?(为何assign修饰基本数据类型没有野指针的问题?)</span>](#2-10)  
-[<span id="jump-2-111">11. 修饰符strong和weak的比较？</span>](#2-11)  
-[<span id="jump-2-12">12. strong和copy关键字的用法？</span>](#2-12)  
-[<span id="jump-2-13">13. 以下属性的声明有什么问题？如果一定要这么定义，如何修改成正确的呢？</span>](#2-13)  
+[<span id="jump-2-1">1. 常用的基本类型对应到Foundation的数据类型分别是什么？</span>](#2-1)  
+[<span id="jump-2-2">2. 定义属性的格式？(声明属性的关键字的顺序？)</span>](#2-2)  
+[<span id="jump-2-3">3. ARC下@property的默认属性？MRC下@property的默认属性？</span>](#2-3)  
+[<span id="jump-2-4">4. @property中有哪些属性关键字？</span>](#2-4)  
+[<span id="jump-2-5">5. 属性的读写权限关键字的含义？</span>](#2-5)  
+[<span id="jump-2-6">6. 属性的原子操作关键字的含义？</span>](#2-6)  
+[<span id="jump-2-7">7. 属性的内存管理关键字的含义？</span>](#2-7)  
+[<span id="jump-2-8">8. assign和weak的比较？分别的使用场景？</span>](#2-8)  
+[<span id="jump-2-9">9. delegate应该使用哪种关键字修饰？</span>](#2-9)  
+[<span id="jump-2-10">10. 如果说weak指针指向一个对象，当这个对象dealloc或废弃之后，它的weak指针为何会被自动设置为nil?(当⼀个对象被释放或废弃，weak变量是怎样处理的呢?)</span>](#2-10)  
+[<span id="jump-2-11">11. 为什么assign可以修饰基本数据类型?(为何assign修饰基本数据类型没有野指针的问题?)</span>](#2-11)  
+[<span id="jump-2-12">12. 修饰符strong和weak的比较？</span>](#2-12)  
+[<span id="jump-2-13">13. strong和copy关键字的用法？</span>](#2-13)  
+[<span id="jump-2-14">14. 以下属性的声明有什么问题？如果一定要这么定义，如何修改成正确的呢？</span>](#2-14)  
 ```
 @property (nonatomic, copy) NSMutableArray *mutableArray;
 ```
-[<span id="jump-2-14">14. 以下属性的声明有什么问题？如果一定要这么定义，如何修改成正确的呢？</span>](#2-14)  
+[<span id="jump-2-15">15. 以下属性的声明有什么问题？如果一定要这么定义，如何修改成正确的呢？</span>](#2-15)  
 ```
 @property (nonatomic, strong) NSArray *array;
 ```
-[<span id="jump-2-15">15. 为什么@property属性用copy修饰不可变对象，而用strong修饰可变对象呢？</span>](#2-15)  
-[<span id="jump-2-16">16. 为什么用copy关键字来修饰block？</span>](#2-16)   
-[<span id="jump-2-17">17. MRC下如何重写retain修饰变量的setter方法？不等判断的目的？</span>](#2-17) 
+[<span id="jump-2-16">16. 为什么@property属性用copy修饰不可变对象，而用strong修饰可变对象呢？</span>](#2-16)  
+[<span id="jump-2-17">17. 为什么用copy关键字来修饰block？</span>](#2-17)   
+[<span id="jump-2-18">18. MRC下如何重写retain修饰变量的setter方法？不等判断的目的？</span>](#2-18) 
 
 
 # 正文
@@ -197,10 +198,10 @@ dataArray3 = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archive
 
 
 <h2 id="2">二. 属性关键字</h2>
-<h3 id="2-1">1. 常用的基本类型对应Foundation数据类型？</h3>
+<h3 id="2-1">1. 常用的基本类型对应到Foundation的数据类型分别是什么？</h3>
 
-在声明一个属性时，尽量使用Foundation框架的数据类型，使代码的数据类型更统一。  
-基本类型和Foundation数据类型的对应关系如下：  
+声明一个属性时，尽量使用Foundation框架的数据类型，使代码的数据类型更统一。  
+  
 - int -> NSInteger
 - unsigned -> NSUInteger
 - float -> CGFloat
@@ -209,30 +210,48 @@ dataArray3 = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archive
 [回到目录](#jump-2)
 
 
-<h3 id="2-2">2. 定义属性的格式？(定义属性时修饰符的顺序？)</h3>
+<h3 id="2-2">2. 定义属性的格式？(声明属性的关键字的顺序？)</h3>
 
-推荐按照下面的格式来定义属性
+**原子操作 -> 读写权限 -> 内存管理** 
 ```
 @property (nonatomic, readwrite, copy) NSString *name;
 ```
-属性的修饰符应该按照上面的顺序排列：**原子操作、读写权限、内存管理。**  
 原因：  
-1.属性更容易修改正确，并且更好阅读。  
-2.习惯上修改某个属性的修饰符时，一般从属性名从右向左的顺序搜索需要改动的修饰符。  
-3.最可能从最右边开始修改这些属性的修饰符，根据经验这些修饰符被修改的可能性从高到底应为：内存管理 > 读写权限 > 原子操作。  
+- 属性更容易修改正确，并且更好阅读。  
+- 习惯上修改某个属性的修饰符时，一般从属性名从右向左的顺序搜索需要改动的修饰符。  
+- 最可能从最右边开始修改这些属性的修饰符，根据经验这些修饰符被修改的可能性从高到底应为：内存管理 > 读写权限 > 原子操作。  
 
 [回到目录](#jump-2)
 
 
-<h3 id="2-3">3. ARC下@property的默认属性？</h3>
+<h3 id="2-3">3. ARC下@property的默认属性？MRC下@property的默认属性？</h3>
 
-- 对于基本数据类型：atomic、readwrite、assign 
-- 对于普通的Objective-C对象：atomic、readwrite、strong
+#### 3.1 ARC下@property的默认属性  
+- 基本数据类型：atomic、readwrite、assign 
+- Objective-C对象：atomic、readwrite、strong
 
 [回到目录](#jump-2)
 
 
 <h3 id="2-4">4. 属性的读写权限关键字的含义？</h3>
+
+- 原子操作
+    - atomic：原子性，加同步锁，默认修饰符。  
+    - nonatomic：非原子性，不使用同步锁。  
+- 读写权限  
+    - readwrite：可读可写，默认修饰符。会自动生成getter和setter。    
+    - readonly：只读。只会生成getter而不生成setter。
+- 内存管理
+    - strong：拥有关系，保留新值，释放旧值，再设置新值。
+    - weak：非拥有关系(nonowning relationship)，属性所指的对象遭到摧毁时，属性也会清空。
+    - assign：纯量类型(scalar type)的简单赋值操作。非拥有关系，属性所指的对象遭到摧毁时，属性不会清空。
+    - unsafe_unretained：类似assign，适用于对象类型，非拥有关系，属性所指的对象遭到摧毁时，属性不会清空。
+    - copy：不保留新值，而是将其拷贝。 
+
+[回到目录](#jump-2)
+
+
+<h3 id="2-5">5. 属性的读写权限关键字的含义？</h3>
 
 读写权限  
 - readwrite：可读可写，默认修饰符。会自动生成getter和setter。    
@@ -241,7 +260,7 @@ dataArray3 = [NSKeyedUnarchiver unarchiveObjectWithData:[NSKeyedArchiver archive
 [回到目录](#jump-2)
 
 
-<h3 id="2-5">5. 属性的原子操作关键字的含义？</h3>
+<h3 id="2-6">6. 属性的原子操作关键字的含义？</h3>
 
 原子操作：属性是否有原子性可以理解为线程是否安全。
 
@@ -278,7 +297,7 @@ atomic使⽤了同步锁，会在创建时生成⼀些额外的代码⽤于帮�
 [回到目录](#jump-2)
 
 
-<h3 id="2-6">6. 属性的内存管理关键字的含义？</h3>
+<h3 id="2-7">7. 属性的内存管理关键字的含义？</h3>
 
 - assign：纯量类型(scalar type)的简单赋值操作。
 - strong：拥有关系，保留新值，释放旧值，再设置新值。
@@ -297,7 +316,7 @@ unsafe_unretained只能修饰OC对象。且对象销毁时会出现野指针也�
 [回到目录](#jump-2)
 
 
-<h3 id="2-7">7. assign和weak的比较？分别的使用场景？</h3>
+<h3 id="2-8">8. assign和weak的比较？分别的使用场景？</h3>
 
 **assign**：对属性进行简单的赋值操作。为属性设置新值时，setter方法既不保留新值也不释放旧值，即不改变引用计数。
 - 修饰基本数据类型，比如int、bool等
@@ -309,7 +328,7 @@ unsafe_unretained只能修饰OC对象。且对象销毁时会出现野指针也�
 大多用来解决循环引用问题
 - 所指对象被释放后悔自动置为nil
 
-#### 7.1 assign和weak的比较
+#### 8.1 assign和weak的比较
 相同点：对对象的引用计数没有影响，即都是弱引用。  
 
 不同点：  
@@ -329,17 +348,17 @@ unsafe_unretained与assign相同。
 官方来说，如果不想增加持有对象的引用计数的话，推荐使用weak而不是assign，这一点从Apple提供的头文件就可以看出——-所有delegate的修饰符都是weak。  
 [野指针：不是NULL指针，是指向"垃圾"内存（不可用内存）的指针。]
 
-#### 7.2 什么时候使用weak关键字
+#### 8.2 什么时候使用weak关键字
 1.在ARC中，在有可能出现循环引用的时候，往往要通过让其中一端使用weak来解决。比如：delegate代理属性。   
 2.自身已经对它进行一次强引用，没有必要再强引用一次，此时也会使用weak。比如：自定义IBOutlet控件属性一般使用weak。  
 
-#### 7.3 什么时候使用assign关键字
+#### 8.3 什么时候使用assign关键字
 修饰基本数据类型
 
 [回到目录](#jump-2)
 
 
-<h3 id="2-8">8. delegate应该使用哪种关键字修饰？</h3>
+<h3 id="2-9">9. delegate应该使用哪种关键字修饰？</h3>
 
 - MRC时期：使用assign，这样不会造成循环引用，但是需要手动释放。
 - ARC时期：最好使用weak，如果使⽤了assign需要⼿动释放(看例子)。
@@ -366,14 +385,14 @@ unsafe_unretained与assign相同。
 [回到目录](#jump-2)
 
 
-<h3 id="2-9">9. 如果说weak指针指向一个对象，当这个对象dealloc或废弃之后，它的weak指针为何会被自动设置为nil?(当⼀个对象被释放或废弃，weak变量是怎样处理的呢?) *** </h3>
+<h3 id="2-10">10. 如果说weak指针指向一个对象，当这个对象dealloc或废弃之后，它的weak指针为何会被自动设置为nil?(当⼀个对象被释放或废弃，weak变量是怎样处理的呢?) *** </h3>
  
 当对象被废弃时，dealloc方法的内部实现中会调⽤清除弱引用的⽅法， 在清除弱引用的方法中会通过哈希算法查找被废弃对象在弱引用表中的位置来提取它所对应的弱引⽤指针的列表数组，对这个数组进⾏for循环遍历，将每一个weak指针都置为nil。
 
 [回到目录](#jump-2)
 
 
-<h3 id="2-10">10. 为什么assign可以修饰基本数据类型?(为何assign修饰基本数据类型没有野指针的问题?)</h3>
+<h3 id="2-11">11. 为什么assign可以修饰基本数据类型?(为何assign修饰基本数据类型没有野指针的问题?)</h3>
  
 基本数据类型是分配在栈上，栈上空间的分配和回收都是系统来处理的，因此开发者无需关注，也就不会产生野指针的问题。所以assign可以修饰基本数据类型。  
 OC对象是分配在堆中，需要开发者⾃己去释放。
@@ -381,7 +400,7 @@ OC对象是分配在堆中，需要开发者⾃己去释放。
 [回到目录](#jump-2)
 
 
-<h3 id="2-11">11. 修饰符strong和weak的比较？</h3>
+<h3 id="2-12">12. 修饰符strong和weak的比较？</h3>
 
 strong：关键字为strong属性(MRC中的retain属性)的setter方法中，会自动对旧的值进行一次release操作，对新的值进行一次retain操作，也就是保留新值释放旧值。
 
@@ -394,14 +413,14 @@ strong：关键字为strong属性(MRC中的retain属性)的setter方法中，会
 [回到目录](#jump-2)
 
 
-<h3 id="2-12">12. strong和copy关键字的用法？</h3>
+<h3 id="2-13">13. strong和copy关键字的用法？</h3>
 
 @property属性用copy修饰不可变对象，用strong修饰可变对象。
 
 [回到目录](#jump-2)
 
 
-<h3 id="2-13">13. 以下属性的声明有什么问题？如果一定要这么定义，如何修改成正确的呢？</h3>
+<h3 id="2-14">14. 以下属性的声明有什么问题？如果一定要这么定义，如何修改成正确的呢？</h3>
 
 ```
 @property (nonatomic, copy) NSMutableArray *mutableArray;
@@ -461,7 +480,7 @@ self.mutableArray:( 2
 [回到目录](#jump-2)
 
 
-<h3 id="2-14">14. 以下属性的声明有什么问题？如果一定要这么定义，如何修改成正确的呢？</h3>
+<h3 id="2-15">15. 以下属性的声明有什么问题？如果一定要这么定义，如何修改成正确的呢？</h3>
  
 ```
 @property (nonatomic, strong) NSArray *array;
@@ -514,9 +533,9 @@ NSLog(@"self.array:%@", self.array);
 [回到目录](#jump-2)
 
 
-<h3 id="2-15">15. 为什么@property属性用copy修饰不可变对象，而用strong修饰可变对象呢？</h3>
+<h3 id="2-16">16. 为什么@property属性用copy修饰不可变对象，而用strong修饰可变对象呢？</h3>
  
-答案结合13、14题
+答案结合14、15题
 
 - 用copy修饰不可变对象：  
 copy修饰的属性会在内存里拷贝一份对象，即两个指针指向不同的内存地址。  
@@ -531,7 +550,7 @@ strong修饰的属性是对属性进行了强引用，即两个指针会指向�
 [回到目录](#jump-2)
 
 
-<h3 id="2-16">16. 为什么用copy关键字来修饰block？</h3>
+<h3 id="2-17">17. 为什么用copy关键字来修饰block？</h3>
 
 block使用copy是从MRC遗留下来的“传统”。  
 在MRC中，方法内部的block是在栈区的，由于手动管理引用计数，需要copy到堆区来防止野指针错误。  
@@ -539,7 +558,7 @@ block使用copy是从MRC遗留下来的“传统”。
 
 [回到目录](#jump-2)
 
-<h3 id="2-17">17. MRC下如何重写retain修饰变量的setter方法？不等判断的目的？</h3>
+<h3 id="2-18">18. MRC下如何重写retain修饰变量的setter方法？不等判断的目的？</h3>
 
 ```
 @property (nonatomic, retain) id obj;
@@ -568,6 +587,7 @@ block使用copy是从MRC遗留下来的“传统”。
 《iOS面试题备忘录》系列文章的github原文地址：  
 
 [iOS面试题备忘录(一) - 属性关键字](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)    
+[iOS面试题备忘录(二) - 内存管理](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/memoryManagement.md)   
 [iOS面试题备忘录(三) - 分类和类别](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)  
 [iOS面试题备忘录(四) - 代理和通知](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/DelegateAndNSNotification.md)  
 [iOS面试题备忘录(五) - KVO和KVC](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/KVOAndKVC.md)  
