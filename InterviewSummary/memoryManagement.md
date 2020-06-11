@@ -11,16 +11,6 @@
 <!-- ![memoryManagement](./images/memoryManagement/memoryManagementSummary.png) -->
 ![memoryManagementSummary.png](https://i.loli.net/2020/06/10/N1gGxu8iZo4Cc2t.png)
 
-<!-- 1.iOS下的内存布局是怎样的？- 👌  
-2.简述一下不同场景下的内存管理方案？- 👌  
-3.不同内存管理方案对应的数据结构是怎样的？- 👌  
-4.ARC和MRC是什么？两者的区别？各自的实现机制和原理？- 👌  
-5.什么是引用计数？内存是怎样管理的？- 👌  
-6.weak修饰的变量在内存释放的时候为什么weak指针会被自动置为nil？- 👌  
-7.弱引用变量的内存是如何管理的？- 👌  
-8.什么是自动释放池？autoreleasepool的实现原理？ - 👌 
-9.循环引用的问题和解决？- 🙅‍♂️   -->
-
 <span id="jump"><h1>目录</h1></span>
 
 [<span id="jump-1"><h2>一. 内存布局</h2></span>](#1)
@@ -342,7 +332,10 @@ ARC是编译器自动为我们插入retain、release操作之外，还需要Runt
 
 <h3 id="5-3">3. 如果说weak指针指向一个对象，当这个对象dealloc或废弃之后，它的weak指针为何会被自动设置为nil？</h3>
 
-在dealloc的内部实现当中，有做关于弱引用指针置为nil的操作weak_clear_no_lock()。具体的回答请看六.弱引用管理
+当对象被废弃时，dealloc方法的内部实现中会调用清除弱引用的方法，在清除弱引用的方法中会通过哈希算法查找被废弃对象在弱引用表中的位置来提取它所对应的弱引用指针的列表数组，对这个数组进行for循环遍历，将每一个weak指针都置为nil。
+
+在dealloc的内部实现当中，有做关于弱引用指针置为nil的操作weak_clear_no_lock()。  
+具体的回答请看六.弱引用管理
 
 [回到目录](#jump-5)
 
@@ -443,8 +436,10 @@ refcnt_result += it->second >> SIDE_TABLE_RC_SHIFT;
 
 
 <h3 id="6-2">2. 如果说weak指针指向一个对象，当这个对象dealloc或废弃之后，它的weak指针为何会被自动设置为nil？/ 当一个对象被释放或废弃，weak变量是怎样处理的呢？</h3>
+  
+当对象被废弃时，dealloc方法的内部实现中会调用清除弱引用的方法。  
+在清除弱引用的方法中会通过哈希算法查找被废弃对象在弱引用表中的位置来提取它所对应的弱引用指针列表数组，对这个数组进行for循环遍历，将每一个weak指针都置为nil。
 
-当一个对象被dealloc废弃之后，在dealloc的内部实现当中，会去调用弱引用清除的相关函数，在这个函数的内部实现当中，会根据当前对象指针查找弱引用表，找到当前对象对应的弱引用数组，然后遍历数组当中的所有弱引用指针，分别置为nil。
 
 [回到目录](#jump-6)
 
@@ -606,7 +601,8 @@ objc_autoreleasePoolPop(ctx);
 对象A和对象B都有一个id类型的成员变量obj。  
 当我们把对象A中的obj声明为__weak关键字的话，就能破除一个相互循环引用。  
 即对象B强持有对象A，而对象A弱引用对象B。  
-![__weakCrack](./images/memoryManagement/__weakCrack.png)
+<!-- ![__weakCrack](./images/memoryManagement/__weakCrack.png) -->
+![__weakCrack.png](https://i.loli.net/2020/06/11/nAI7r1QGSE9zuj8.png)
 
 - __block破解  
     - 在MRC下，__block修饰对象不会增加其引用计数，避免了循环引用。  
@@ -625,15 +621,20 @@ objc_autoreleasePoolPop(ctx);
 - Block的循环引用问题 ----Block章节！！！
 
 - NSTimer的循环引用问题
-![循环引用_NSTimer](./images/memoryManagement/循环引用_NSTimer.png)
+<!-- ![循环引用_NSTimer](./images/memoryManagement/循环引用_NSTimer.png) -->
+![循环引用_NSTimer](https://ae01.alicdn.com/kf/H43f82b10abcc4145966df4675d7c351eu.jpg)
 **代码实现**  
 中间对象
-![NSTimer-中间对象](./images/memoryManagement/NSTimer-中间对象.png)
+<!-- ![NSTimer-中间对象](./images/memoryManagement/NSTimer-中间对象.png) -->
+![NSTimer-中间对象](https://ae01.alicdn.com/kf/H79ac83fef1fc470dbb37f19a204f4fee9.jpg)
 NSTimer的分类
-![NSTimer-分类h文件](./images/memoryManagement/NSTimer-分类h文件.png)
-![NSTimer-分类m文件](./images/memoryManagement/NSTimer-分类m文件.png)
+<!-- ![NSTimer-分类h文件](./images/memoryManagement/NSTimer-分类h文件.png)
+![NSTimer-分类m文件](./images/memoryManagement/NSTimer-分类m文件.png) -->
+![NSTimer-分类h文件](https://ae01.alicdn.com/kf/Hf71ede3708084d0a82b11b3d153f9ecb6.jpg)
+![NSTimer-分类m文件](https://ae01.alicdn.com/kf/H44cc91a496b64edd8fe16bb4e20206e8S.jpg)
 解决NSTimer的循环引用
-![循环引用_NSTimer_02](./images/memoryManagement/循环引用_NSTimer_02.png)
+<!-- ![循环引用_NSTimer_02](./images/memoryManagement/循环引用_NSTimer_02.png) -->
+![循环引用_NSTimer_02](https://ae01.alicdn.com/kf/Hda789ea1c0064b40b40b81b6badf88a5z.jpg)
 为了解决NSTimer的循环引用。  
 创建一个中间对象，让中间对象持有两个弱引用变量，分别是NSTimer和对象。    
 NSTimer直接分派的回调是在中间对象中实现的，在中间对象中实现的NSTimer回调方法当中对它持有的对象进行了值判断。    
@@ -652,19 +653,22 @@ NSTimer直接分派的回调是在中间对象中实现的，在中间对象中�
 
 #### 自循环引用
 对象强持有它的成员变量obj，如果给成员变量obj赋值给源对象的话，就会造成一个自循环引用。  
-![SelfCircularReference](./images/memoryManagement/SelfCircularReference.png) 
+<!-- ![SelfCircularReference](./images/memoryManagement/SelfCircularReference.png)  -->
+![SelfCircularReference](https://ae01.alicdn.com/kf/H30f6bde24c6d4f50b56e998b434e70e9a.jpg) 
 
 #### 相互循环引用
 对象A有一个id类型的obj，对象B有一个id类型的obj。    
 如果此时对象A中的obj指向对象B，同时对象B中的obj指向对象A。
 就会造成相互循环引用。  
-![CrossCircularReference](./images/memoryManagement/CrossCircularReference.png)
+<!-- ![CrossCircularReference](./images/memoryManagement/CrossCircularReference.png) -->
+![CrossCircularReference](https://ae01.alicdn.com/kf/Hfe847fb6d754428293108900b2d268a4k.jpg)
 
 #### 多循环引用
 某一个类中有N个对象分别为对象1、对象2、...、对象n。  
 每个对象中都有一个id类型的obj。  
 假如每个对象的obj都指向下一个对象的话，就会产生一个大环，造成多循环引用。  
-![MulticycleReference](./images/memoryManagement/MulticycleReference.png)
+<!-- ![MulticycleReference](./images/memoryManagement/MulticycleReference.png) -->
+![MulticycleReference](https://ae01.alicdn.com/kf/He526b2cf34a34e76896efc167dd41bc7G.jpg)
 
 #### 考点 
 - 代理 - 相互循环引用
@@ -675,23 +679,9 @@ NSTimer直接分派的回调是在中间对象中实现的，在中间对象中�
 [回到目录](#jump-8)
 
 
-【内存管理面试题总结】
-<!-- 1.什么是ARC？  
-ARC是由LLVM编译器和Runtime共同协作来为我们实现自动引用计数的管理。 -->
-
-2.为什么weak指针指向的对象在废弃之后会被自动置为nil？  
-当对象被废弃时，dealloc方法的内部实现中会调用清除弱引用的方法，在清除弱引用的方法中会通过哈希算法查找被废弃对象在弱引用表中的位置来提取它所对应的弱引用指针的列表数组，对这个数组进行for循环遍历，将每一个weak指针都置为nil。
-
-3.苹果是如何实现AutoreleasePool的？  
-AutoreleasePool是以栈为结点通过双向链表形式来合成的数据结构。
-
-4.什么是循环引用？你遇到过哪些循环引用？是怎么解决的？
-
-
-
-
 # 参考文档
 《新浪微博资深大牛全方位剖析 iOS 高级面试》  
+
 
 # 其他
 《iOS面试题备忘录》系列文章的github原文地址：  
