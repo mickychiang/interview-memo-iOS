@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "OCAlgorithm.h"
+#import "ReverseList.h"
 #import "OCAlgorithm-Swift.h"
 
 @interface ViewController ()
@@ -18,6 +19,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    // 单链表反转
+    struct Node *head = constructList();
+    printList(head);
+    printf("----------\n");
+    struct Node *newHead = reverseList(head);
+    printList(newHead);
+    
+    
     [SwiftAlgorithm baseAlgorithm]; // 简单算法
 //    [SortAlgorithm sortAlgorithm]; // 排序算法
 }

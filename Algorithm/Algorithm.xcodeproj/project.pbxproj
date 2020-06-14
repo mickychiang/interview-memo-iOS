@@ -12,6 +12,7 @@
 		4F08879B2477C612003C3D8F /* SortAlgorithmPerformance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F08879A2477C612003C3D8F /* SortAlgorithmPerformance.swift */; };
 		4FA0D11224766C1100C3C60B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11124766C1100C3C60B /* main.c */; };
 		4FA0D11D24767AF800C3C60B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11C24767AF800C3C60B /* MainViewController.m */; };
+		4FAFDEF82496693900A1DC9F /* ReverseList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FAFDEF72496693900A1DC9F /* ReverseList.m */; };
 		BDD0A90E24769D2B004FF665 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A90D24769D2B004FF665 /* AppDelegate.m */; };
 		BDD0A91424769D2B004FF665 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A91324769D2B004FF665 /* ViewController.m */; };
 		BDD0A91724769D2B004FF665 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDD0A91524769D2B004FF665 /* Main.storyboard */; };
@@ -45,6 +46,8 @@
 		4FA0D11124766C1100C3C60B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4FA0D11B24767AF800C3C60B /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		4FA0D11C24767AF800C3C60B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		4FAFDEF62496693900A1DC9F /* ReverseList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReverseList.h; sourceTree = "<group>"; };
+		4FAFDEF72496693900A1DC9F /* ReverseList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReverseList.m; sourceTree = "<group>"; };
 		BDD0A90A24769D2B004FF665 /* OCAlgorithm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OCAlgorithm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD0A90C24769D2B004FF665 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BDD0A90D24769D2B004FF665 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -120,10 +123,12 @@
 				BDD0A91324769D2B004FF665 /* ViewController.m */,
 				BDD0A92324769F94004FF665 /* OCAlgorithm.h */,
 				BDD0A92424769F94004FF665 /* OCAlgorithm.m */,
+				4F08879524775FFD003C3D8F /* LinkedList.swift */,
+				4FAFDEF62496693900A1DC9F /* ReverseList.h */,
+				4FAFDEF72496693900A1DC9F /* ReverseList.m */,
 				BDD0A92A2476AD97004FF665 /* SwiftAlgorithm.swift */,
 				4F0887972477A456003C3D8F /* SortAlgorithm.swift */,
 				4F08879A2477C612003C3D8F /* SortAlgorithmPerformance.swift */,
-				4F08879524775FFD003C3D8F /* LinkedList.swift */,
 				BDEBD6C02476CBC800D65084 /* Stack.swift */,
 				BDEBD6C22476CED100D65084 /* Queue.swift */,
 				BDD0A9262476AC33004FF665 /* Stack.h */,
@@ -247,6 +252,7 @@
 				BDEBD6C32476CED100D65084 /* Queue.swift in Sources */,
 				BDD0A90E24769D2B004FF665 /* AppDelegate.m in Sources */,
 				4F08879B2477C612003C3D8F /* SortAlgorithmPerformance.swift in Sources */,
+				4FAFDEF82496693900A1DC9F /* ReverseList.m in Sources */,
 				BDD0A9282476AC33004FF665 /* Stack.m in Sources */,
 				BDD0A91F24769D2F004FF665 /* main.m in Sources */,
 				BDD0A92B2476AD97004FF665 /* SwiftAlgorithm.swift in Sources */,

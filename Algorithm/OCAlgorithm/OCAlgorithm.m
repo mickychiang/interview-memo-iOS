@@ -14,6 +14,22 @@
     NSLog(@"test");
 }
 
+// MARK: - 反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH"
+void char_reverse(char* cha) {
+    // 指向第一个字符
+    char* begin = cha;
+    // 指向最后一个字符
+    char* end  = cha + strlen(cha) - 1;
+    
+    while (begin > end) {
+        // 交换前后两个字符，同时移动指针
+        char temp = *begin;
+        *(begin++) = *end;
+        *(end--) = temp;
+    }
+}
+
+
 // ********** 排序算法（C版） **********
 // 1. 选择排序
 /*
