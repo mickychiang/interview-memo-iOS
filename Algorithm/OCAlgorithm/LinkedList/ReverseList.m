@@ -1,22 +1,25 @@
 //
 //  ReverseList.m
 //  OCAlgorithm
-//
+//  数据结构：链表
 //  Created by JXT on 2020/6/14.
 //  Copyright © 2020 JXT. All rights reserved.
 //
+//  链表是一串在存储空间上非连续性、顺序的存储结构。
+//  由节点进行头尾依次连接而形成链表。
+//  每个结点包括两个部分：数据域和下个节点的指针域。
 
 #import "ReverseList.h"
 
 @implementation ReverseList
 
-// 反转列表
+// 反转链表
 // 参数为 - 原链表的头结点
 // 返回值为 - 新链表的头结点
 struct Node* reverseList(struct Node *head) {
     // 定义遍历指针，初始化为原链表的头结点
     struct Node *p = head;
-    // 反转后的链表头部
+    // 定义反转后的新链表头部
     struct Node *newH = NULL;
     
     // 遍历链表
@@ -43,9 +46,11 @@ struct Node* constructList(void) {
     struct Node *cur = NULL;
     
     for (int i = 0; i < 5; i++) {
+        // 创建结点
         struct Node *node = malloc(sizeof(struct Node));
         node->data = i;
         node->next = NULL;
+        
         if (head == NULL) {
             // 头结点为空，新结点即为头结点
             head = node;

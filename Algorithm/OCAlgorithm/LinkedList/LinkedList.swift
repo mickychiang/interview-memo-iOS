@@ -11,8 +11,7 @@
 
 import Foundation
 
-// 实现一个链表
-// 1. 生成节点
+// MARK: - 节点
 class ListNode {
     // 数据域
     var val: Int
@@ -25,14 +24,15 @@ class ListNode {
     }
 }
 
-// 2. 实现头插法和尾插法
+// MARK: - 链表
+// 实现头插法和尾插法
 // 头插法：当前节点插到第一个节点之前
 // 尾插法：当前节点插入到链表最后一个节点之后
 class List {
     var head: ListNode?
     var tail: ListNode?
     
-    // 头插法
+    // MARK: - 链表 头插法
     func appendToHead(_ val: Int) {
         if head == nil {
             head = ListNode(val)
@@ -45,7 +45,7 @@ class List {
         }
     }
     
-    // 尾插法
+    // MARK: - 链表 尾插法
     func appendToTail(_ val: Int) {
         if tail == nil {
             tail = ListNode(val)
@@ -57,6 +57,7 @@ class List {
     }
 }
 
+// MARK: - 1 -> 3 -> 5 -> 2 -> 4 -> 2，当给定x=3时，要求返回 1 -> 2 -> 2 -> 3 -> 5 -> 4。
 /*
  例题：1 -> 3 -> 5 -> 2 -> 4 -> 2，当给定x=3时，要求返回 1 -> 2 -> 2 -> 3 -> 5 -> 4。
  思路：将完整的链表通过条件判断(入参x)分割成2个新的链表，然后再将2个新链表拼接成完整的链表。

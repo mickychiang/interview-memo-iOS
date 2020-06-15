@@ -3,17 +3,13 @@
 # 前言
 此篇文章是对数据结构和常见算法的整理，根据日常知识的积累会不断的更新与完善。  
 有理解不对的地方还请指正，互相学习。  
-**重点理解排序算法和优化时间复杂度的问题，面试会经常提问**
+**重点理解排序算法和优化时间复杂度的问题还有实战题，面试会经常提问**
 
+# 目录
 
+<span id="jump-1">[<h2>一. 算法基础</h2>](#1)</span>
 
-
-<span id="jump"><h1>目录</h1></span>
-
-[<h2>一. 算法基础</h2>](#1)
-
-
-[<h2>二. 常见简单算法</h2>](#2)
+<span id="jump-2">[<h2>二. 常见简单算法</h2>](#2)</span>
 [1. 计算从1到100数字的总和](#2-1)  
 [2. 给出一个整型数组和一个目标值，判断数组中是否有两个数之和等于目标值](#2-2)  
 [3. 给出一个整型数组和目标值，且数组中有且仅有两个数之和等于目标值，求这两个数在数组中的index](#2-3)  
@@ -23,8 +19,7 @@
 [7. 最小公倍数](#2-7)  
 [8. 判断质数](#2-8)  
 
-
-[<h2>三. 排序算法</h2>](#3)
+<span id="jump-3">[<h2>三. 排序算法</h2>](#3)</span>
 [1. 冒泡排序](#3-1)  
 [2. 选择排序](#3-2)  
 [3. 插入排序](#3-3)  
@@ -34,10 +29,10 @@
 [7. 桶排序](#3-7)  
 
 
-[<h2>四. 实战</h2>](#4)
+<span id="jump-4">[<h2>四. 实战</h2>](#4)</span>
+[1. 反转字符串](#4-1)  
+[2. 反转单链表](#4-2) 
 
-
-[<h2>五. 参考文档</h2>](#5)
 
 
 # 正文
@@ -49,14 +44,23 @@
 <!-- ![时间复杂度公式](./images/TimeComplexity.png) -->
 ![TimeComplexity.png](https://i.loli.net/2020/05/24/fkCHL8JhZnlQdRF.png)
 
-常见的时间复杂度有：常数阶O(1)，对数阶O(log n），线性阶 O(n)，线性对数阶O(nlog n)，平方阶O(n^{2})，立方阶O(n^{3})，!k次方阶O(n^{k})，指数阶 O(2^{n})}。  
+常见的时间复杂度有：
+- 常数阶O(1)
+- 对数阶O(log n）
+- 线性阶 O(n)
+- 线性对数阶O(nlog n)
+- 平方阶O(n^{2})
+- 立方阶O(n^{3})
+- !k次方阶O(n^{k})
+- 指数阶 O(2^{n})}
+
 随着问题规模n的不断增大，上述时间复杂度不断增大，算法的执行效率越低。
 
 ### 空间复杂度
 
 算法的空间复杂度是指算法需要消耗的空间资源。其计算和表示方法与时间复杂度类似，一般都用复杂度的渐近性来表示。同时间复杂度相比，空间复杂度的分析要简单得多。而且控件复杂度不属于本文讨论的重点，因此在这里不展开介绍了。
 
-[回到目录](#jump)
+[回到目录](#jump-1)
 
 <h2 id="2">二. 常见简单算法</h2>
 
@@ -80,7 +84,7 @@ static func sum2(_ n: Int) -> Int {
     return (n + 1) * n / 2
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-2)
 
 <h3 id="2-2">2. 给出一个整型数组和一个目标值，判断数组中是否有两个数之和等于目标值</h3>
 
@@ -103,7 +107,7 @@ static func twoSumEqualTarget(nums: [Int], _ target: Int) -> Bool {
     return false
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-2)
 
 <h3 id="2-3">3. 给出一个整型数组和目标值，且数组中有且仅有两个数之和等于目标值，求这两个数在数组中的index</h3>
 
@@ -128,7 +132,8 @@ static func twoSumEqualTarget(nums: [Int], _ target: Int) -> [Int] {
     fatalError("No valid output!")
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-2)
+
 <h3 id="2-4">4. 实现阶乘n!的算法 3！= 3 * 2 * 1 = 6</h3>
 
 使用递归
@@ -137,7 +142,7 @@ static func factorial(_ n: Int) -> Int {
     return n < 2 ? 1: n * factorial(n-1)
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-2)
 
 <h3 id="2-5">5. 交换A和B的值</h3>
 
@@ -170,7 +175,7 @@ func swap3(a: inout Int, b: inout Int) -> (Int, Int) {
     return (a, b)
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-2)
 
 <h3 id="2-6">6. 最大公约数</h3>
 
@@ -199,7 +204,7 @@ func maxCommonDivisor2(a: inout Int, b: inout Int) -> Int {
     return b
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-2)
 
 <h3 id="2-7">7. 最小公倍数</h3>
 
@@ -229,7 +234,7 @@ func minimumCommonMultiple2(a: inout Int, b: inout Int) -> Int {
     return (aa * bb) / b
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-2)
 
 <h3 id="2-8">8. 判断质数</h3>
 
@@ -245,7 +250,7 @@ func isPrime(n: Int) -> Int {
     return 1
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-2)
 
 <h2 id="3">三. 排序算法</h2>
 关于排序的介绍，常见的主要有7种：  
@@ -383,7 +388,7 @@ static func bubbleSortAdvancedFinal(_ array: inout [Int]) -> [Int] {
     return array
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-3)
 
 <h3 id="3-2">2. 选择排序</h3>
 
@@ -419,7 +424,7 @@ static func selectSort(_ array: inout [Int]) -> [Int] {
     return array
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-3)
 
 <h3 id="3-3">3. 插入排序</h3>
 
@@ -447,7 +452,7 @@ static func insertSort(_ array: inout [Int]) -> [Int] {
     return array
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-3)
 
 <h3 id="3-4">4. 归并排序</h3>
 
@@ -518,7 +523,7 @@ static func _merge(leftPile: [Int], rightPile: [Int]) -> [Int] {
     return sortedPile
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-3)
 
 <h3 id="3-5">5. 快速排序</h3>
 
@@ -545,7 +550,7 @@ static func quickSort(_ array: [Int]) -> [Int] {
     return quickSort(left) + middle + quickSort(right)
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-3)
 
 <h3 id="3-6">6. 堆排序</h3>
 
@@ -599,7 +604,7 @@ static func adjustHeap(_ array: inout [Int], i: Int, length: Int) {
     array[j] = tmp
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-3)
 
 <h3 id="3-7">7. 桶排序</h3>
 
@@ -642,7 +647,7 @@ static func bucketSort(_ array: inout [Int]) -> [Int] {
     return array
 }
 ```
-[回到目录](#jump)
+[回到目录](#jump-3)
 
 
 ### 代码完整实例请参照：[Algorithm工程](https://github.com/mickychiang/iOSInterviewMemo/blob/master/Algorithm)
@@ -651,7 +656,127 @@ static func bucketSort(_ array: inout [Int]) -> [Int] {
 
 <h2 id="4">四. 实战</h2>
 
-<h2 id="5">五. 参考文档</h2>
+<h3 id="4-1">1. 反转字符串</h3>
+
+```
+static func reverseString2(s: String) -> String {
+    // 将待反转字符串分割成字符数组
+    var chars = Array(s)
+    // 指向第一个字符的索引值
+    var start = 0
+    // 指向最后一个字符的索引值
+    var end = chars.count - 1
+        
+    // 判断反转字符串的位置
+    while start < end {
+        // start、end位置的字符互换
+        (chars[start], chars[end]) = (chars[end], chars[start])
+        // 往中间位置靠拢
+        start += 1
+        end -= 1
+    }
+        
+    return String(chars)
+}
+```
+
+[回到目录](#jump-4)
+
+<h3 id="4-2">2. 反转单链表</h3>
+
+![reverseList.png](./images/reverseList.png)
+![reverseList-HeadInsertion.png](./images/reverseList-HeadInsertion.png)
+
+ReverseList.h
+```
+// 定义一个链表
+struct Node {
+    int data; // 结点数据
+    struct Node *next; // 链表的下一个节点
+};
+
+@interface ReverseList : NSObject
+
+// 反转列表
+struct Node* reverseList(struct Node *head);
+
+// 构造一个链表
+struct Node* constructList(void);
+
+// 打印链表中的数据
+void printList(struct Node *head);
+
+@end
+```
+
+ReverseList.m
+```
+// 反转链表
+// 参数为 - 原链表的头结点
+// 返回值为 - 新链表的头结点
+struct Node* reverseList(struct Node *head) {
+    // 定义遍历指针，初始化为原链表的头结点
+    struct Node *p = head;
+    // 定义反转后的新链表头部
+    struct Node *newH = NULL;
+    
+    // 遍历链表
+    while (p != NULL) {
+        // 记录下一个结点
+        struct Node *temp = p->next;
+        // 当前结点的next指向新链表的头部
+        p->next = newH;
+        // 更改新链表的头部为当前结点
+        newH = p;
+        // 移动p指针
+        p = temp;
+    }
+    
+    // 返回反转后的链表头结点
+    return newH;
+}
+
+// 构造一个链表
+struct Node* constructList(void) {
+    // 定义头结点
+    struct Node *head = NULL;
+    // 定义当前结点
+    struct Node *cur = NULL;
+    
+    for (int i = 0; i < 5; i++) {
+        // 创建结点
+        struct Node *node = malloc(sizeof(struct Node));
+        node->data = i;
+        node->next = NULL;
+        
+        if (head == NULL) {
+            // 头结点为空，新结点即为头结点
+            head = node;
+        } else {
+            // 当前结点的next为新结点
+            cur->next = node;
+        }
+        
+        // 设置当前结点为新结点
+        cur = node;
+    }
+    
+    return head;
+}
+
+// 打印链表中的数据
+void printList(struct Node *head) {
+    struct Node *temp = head;
+    while (temp != NULL) {
+        printf("node is %d \n", temp->data);
+        temp = temp->next;
+    }
+}
+```
+
+[回到目录](#jump-4)
+
+# 参考文档
 
 [数据结构 & 算法 in Swift （一）：Swift基础和数据结构](https://juejin.im/post/5a7096fa6fb9a01cb64f163b)  
 [数据结构 & 算法 in Swift （二）：算法概述和排序算法](https://juejin.im/post/5a7b4101f265da4e7071b097)  
@@ -659,3 +784,14 @@ static func bucketSort(_ array: inout [Int]) -> [Int] {
 [《iOS面试之道》算法基础学习(下)](https://juejin.im/post/5b9b81676fb9a05cf22fe649)  
 [iOS数据结构与算法面试题合集](https://juejin.im/post/5dd297616fb9a02023605c46)  
 [iOS冒泡算法优化](https://juejin.im/post/5b9b819f6fb9a05d0c37be57)
+
+
+# 其他
+《iOS面试题备忘录》系列文章的github原文地址：  
+
+[iOS面试题备忘录(一) - 属性关键字](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)    
+[iOS面试题备忘录(二) - 内存管理](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/memoryManagement.md)   
+[iOS面试题备忘录(三) - 分类和类别](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)  
+[iOS面试题备忘录(四) - 代理和通知](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/DelegateAndNSNotification.md)  
+[iOS面试题备忘录(五) - KVO和KVC](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/KVOAndKVC.md)  
+[iOS面试题备忘录(六) - runtime](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)  

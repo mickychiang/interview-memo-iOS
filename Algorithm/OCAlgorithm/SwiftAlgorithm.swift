@@ -10,9 +10,9 @@ import Foundation
 
 class SwiftAlgorithm: NSObject {
     @objc static func baseAlgorithm() {
-//        print(reverseWords(s: "Hello World"))
-//        print(reverseWords2(s: "Hello World"))
-        
+        print("反转字符串，要求将其按照单词顺序进行反转。举例：\"Hello World\" -> \"World Hello\"")
+        print(reverseWords1(s: "Hello World"))
+        print(reverseWords2(s: "Hello World"))
         print("反转字符串，要求将其按照字符顺序进行反转。举例：\"Hello World\" -> \"dlroW olleH\"")
         print(reverseString1(s: "Hello World"))
         print(reverseString2(s: "Hello World"))
@@ -191,9 +191,9 @@ extension SwiftAlgorithm {
 
 // MARK: - ****************************** 反转题 ******************************
 extension SwiftAlgorithm {
-    // MARK: - 1. 反转字符串，要求将其按照单词顺序进行反转。举例："Hello World" -> "world Hello"
+    // MARK: - 1. 反转字符串，要求将其按照单词顺序进行反转。举例："Hello World" -> "World Hello"
     // 方法1. 系统提供的方法 不过时间复杂度过大
-    static func reverseWords(s: String) -> String {
+    static func reverseWords1(s: String) -> String {
         // 用空格划分字符串
         let chars = s.components(separatedBy: " ")
         // 将字符串数组进行反转，并通过空格重新组合
