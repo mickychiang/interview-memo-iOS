@@ -202,7 +202,7 @@ void objc_removeAssociatedObjects(id _Nonnull object)
 
 <h3 id="1-12">12. 关联对象的数据结构</h3>
  
-![数据结构](./images/runtime/AssociatedDataStructure.png)
+<!-- ![数据结构](./images/runtime/AssociatedDataStructure.png) -->
 ![AssociatedDataStructure.png](https://i.loli.net/2020/06/15/z415gWQd69LhlGP.png)
 
 [回到目录](#jump-1)
