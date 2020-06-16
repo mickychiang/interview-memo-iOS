@@ -4,7 +4,7 @@
 # 前言
 《iOS面试题备忘录(六) - runtime》是关于iOS的runtime机制的相关知识点及面试题的整理，难易程度没做区分，即默认是必须掌握的内容。  
 本篇内容会持续整理并不断更新完善，如果哪里有理解不正确的地方请路过的大神告知，共勉。  
-**可通过目录自行检测掌握程度**  
+**可通过目录自行检测掌握程度，都是重点。**  
 [github原文地址](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)
 
 <!-- ![runtime总结](./images/runtime/runtimeSummary.png) -->
@@ -14,9 +14,9 @@
 
 [<span id="jump-1"><h2>一. 数据结构</h2></span>](#1)
 
-[<span id="jump-1-1">1. 简述一下runtime的基础数据结构</span>](#1-1)   
-[<span id="jump-1-2">2. 简述一下objc_object </span>](#1-2)   
-[<span id="jump-1-3">3. 简述一下objc_class？和objc_object有什么关系？</span>](#1-3)   
+[<span id="jump-1-1">1. runtime的基础数据结构</span>](#1-1)   
+[<span id="jump-1-2">2. objc_object是什么？objc_object包含哪些内容？</span>](#1-2)   
+[<span id="jump-1-3">3. objc_class是什么？objc_class包含哪些内容？和objc_object有什么关系？</span>](#1-3)   
 [<span id="jump-1-4">4. Class是否是对象？(什么是类对象？) </span>](#1-4)   
 [<span id="jump-1-5">5. isa指针的含义？</span>](#1-5)   
 [<span id="jump-1-6">6. isa指针的指向？</span>](#1-6)   
@@ -65,20 +65,21 @@
 
 <h2 id="1">一. 数据结构</h2>
 
-<h3 id="1-1">1. 简述一下runtime的基础数据结构</h3>
+<h3 id="1-1">1. runtime的基础数据结构</h3>
 
+记住图中的内容即可
 <!-- ![runtimeStruct](./images/runtime/runtimeStruct.png) -->
 ![runtimeStruct.png](https://i.loli.net/2020/06/04/Rs1TMvgFdz6Nbrm.png)
 
 [回到目录](#jump-1)
 
 
-<h3 id="1-2">2. 简述一下objc_object</h3>
+<h3 id="1-2">2. objc_object是什么？objc_object包含哪些内容？</h3>
 
 <!-- ![objc_object结构体](./images/runtime/objc_object_pic.png) -->
 ![objc_object_pic.png](https://i.loli.net/2020/06/04/D8lfNy9BKxZhSrU.png)
 
-- id类型 = objc_object结构体   
+- id类型 => objc_object结构体   
 平时开发使用的所有对象都是id类型的，id类型的对象对应到runtime当中是objc_object结构体。
 <!-- ![objc_object结构体源码](./images/runtime/objc_object.png) -->
 ![objc_object.png](https://i.loli.net/2020/06/04/aGi6yo71ISZnLNV.png)
@@ -96,12 +97,12 @@
 [回到目录](#jump-1)
 
 
-<h3 id="1-3">3. 简述一下objc_class？和objc_object有什么关系？</h3>
+<h3 id="1-3">3. objc_class是什么？objc_class包含哪些内容？和objc_object有什么关系？</h3>
 
 <!-- ![objc_class结构体](./images/runtime/objc_class_pic.png) -->
 ![objc_class_pic.png](https://i.loli.net/2020/06/04/qKXjHPbyw1gzJ5n.png)
 
-- Class类型 = objc_class结构体   
+- Class类型 => objc_class结构体   
 在OC中使用到的Class是一个类，对应到runtime当中是objc_class结构体。
 
 - objc_class结构体继承自objc_object结构体  
