@@ -24,7 +24,8 @@
     MObserver *observer = [[MObserver alloc] init];
     // 调用KVO监听obj的value属性的变化
     [obj addObserver:observer forKeyPath:@"value" options:(NSKeyValueObservingOptionNew) context:NULL];
-    // 通过setter方法修改value
+    
+    // 0.通过setter方法修改value
     obj.value = 1;
     
     // 1.通过KVC设置value，KVO能否生效？
