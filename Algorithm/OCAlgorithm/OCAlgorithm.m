@@ -29,6 +29,47 @@ void char_reverse(char* cha) {
     }
 }
 
+// MARK: - 有序数组合并
+// 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
+void mergeList(int a[], int aLen, int b[], int bLen, int result[]) {
+    int p = 0; // 遍历数组a的指针
+    int q = 0; // 遍历数组b的指针
+    int i = 0; // 记录当前存储位置
+    
+    // 任一数组没有到达边界 则进行遍历
+    while (p < aLen && q < bLen) {
+        // 如果数组a对应位置的值小于数组b对应位置的值
+        if (a[p] <= b[q]) {
+            // 存储数组a的值
+            result[i] = a[p];
+            // 移动数组a的遍历指针
+            p++;
+        } else {
+            // 存储数组b的值
+            result[i] = b[q];
+            // 移动数组b的遍历指针
+            q++;
+        }
+        // 指向合并结果的下一个存储位置
+        i++;
+    }
+    
+    // 如果数组a有剩余
+    while (p < aLen) {
+        // 将数组a剩余的部分拼接到合并结果的后面
+        result[i] = a[p++];
+        i++;
+    }
+    
+    // 如果数组b有剩余
+    while (q < bLen) {
+        // 将数组b剩余的部分拼接到合并结果的后面
+        result[i] = b[q++];
+        i++;
+    }
+}
+
+
 
 // ********** 排序算法（C版） **********
 // 1. 选择排序

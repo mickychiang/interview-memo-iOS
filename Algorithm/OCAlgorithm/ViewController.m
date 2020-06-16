@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "OCAlgorithm.h"
 #import "ReverseList.h"
+#import "HashFind.h"
 #import "OCAlgorithm-Swift.h"
 
 @interface ViewController ()
@@ -20,7 +21,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self reverseList];
+//    [self reverseList];
+//    [self mergeList];
+    [self hashSearch];
     
     // Swift版 - 简单算法
 //    [SwiftAlgorithm baseAlgorithm];
@@ -38,5 +41,29 @@
     printList(newHead);
 }
 
+- (void)mergeList {
+    // 有序数组的合并
+    
+    int a[5] = {1,4,6,7,9};
+    int b[8] = {2,3,5,6,8,10,11,12};
+    
+    // 用于存储归并结果
+    int result[13];
+    
+    // 归并操作
+    mergeList(a, 5, b, 8, result);
+    // 打印归并结果
+    printf("merge result is ");
+    for (int i = 0; i < 13; i++) {
+        printf("%d ", result[i]);
+    }
+}
+
+- (void)hashSearch {
+    // 查找第一个只出现一次的字符
+    char cha[] = "abaccdeff";
+    char fc = findFirstChar(cha);
+    printf("this char id %c \n", fc);
+}
 
 @end

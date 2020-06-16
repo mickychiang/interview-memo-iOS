@@ -10,12 +10,16 @@ import Foundation
 
 class SwiftAlgorithm: NSObject {
     @objc static func baseAlgorithm() {
-        print("反转字符串，要求将其按照单词顺序进行反转。举例：\"Hello World\" -> \"World Hello\"")
-        print(reverseWords1(s: "Hello World"))
-        print(reverseWords2(s: "Hello World"))
-        print("反转字符串，要求将其按照字符顺序进行反转。举例：\"Hello World\" -> \"dlroW olleH\"")
-        print(reverseString1(s: "Hello World"))
-        print(reverseString2(s: "Hello World"))
+//        print("反转字符串，要求将其按照单词顺序进行反转。举例：\"Hello World\" -> \"World Hello\"")
+//        print(reverseWords1(s: "Hello World"))
+//        print(reverseWords2(s: "Hello World"))
+//        print("反转字符串，要求将其按照字符顺序进行反转。举例：\"Hello World\" -> \"dlroW olleH\"")
+//        print(reverseString1(s: "Hello World"))
+//        print(reverseString2(s: "Hello World"))
+        
+        print("有序数组的合并")
+        print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
+        
     }
 }
 
@@ -291,7 +295,50 @@ extension SwiftAlgorithm {
     
     // MARK: - 4. 链表反转。 思路：头插法实现 ！！！！！
     
-    
+    // MARK: - 有序数组的合并
+    // 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
+    @objc static func mergeOrderedList(arrayA: [Int], arrayB: [Int]) -> [Int] {
+        
+        var result: [Int] = []
+        // 遍历数组a的指针、遍历数组b的指针、记录当前存储位置
+        var p = 0, q = 0, i = 0
+        
+        // 任一数组没有到达边界 则进行遍历
+        while p < arrayA.count && q < arrayB.count {
+            // 如果数组a对应位置的值小于数组b对应位置的值
+            if arrayA[p] <= arrayB[q] {
+                // 存储数组a的值
+                result.insert(arrayA[p], at: i)
+                // 移动数组a的遍历指针
+                p += 1
+            } else {
+                // 存储数组b的值
+                result.insert(arrayB[q], at: i)
+                // 移动数组b的遍历指针
+                q += 1
+            }
+            // 指向合并结果的下一个存储位置
+            i += 1
+        }
+        
+        // 如果数组a有剩余
+        while p < arrayA.count {
+            // 将数组a剩余的部分拼接到合并结果的后面
+            result.insert(arrayA[p], at: i)
+            p += 1
+            i += 1
+        }
+        
+        // 如果数组b有剩余
+        while q < arrayB.count {
+            // 将数组b剩余的部分拼接到合并结果的后面
+            result.insert(arrayB[q], at: i)
+            q += 1
+            i += 1
+        }
+        
+        return result
+    }
     
     
 }

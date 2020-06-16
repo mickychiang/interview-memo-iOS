@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 void selectSort(int *arr, int length);
 void bublleSort(int *arr, int length);
 
+void mergeList(int a[], int aLen, int b[], int bLen, int result[]);
+
 @end
 
 NS_ASSUME_NONNULL_END

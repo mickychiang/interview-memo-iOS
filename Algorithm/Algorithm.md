@@ -31,8 +31,9 @@
 
 <span id="jump-4">[<h2>四. 实战</h2>](#4)</span>
 [1. 反转字符串](#4-1)  
-[2. 反转单链表](#4-2) 
-
+[2. 反转单链表](#4-2)  
+[3. 有序数组的合并](#4-3)  
+[4. 在一个字符串中找到第一个只出现一次的字符(hash算法)](#4-4)  
 
 
 # 正文
@@ -773,6 +774,118 @@ void printList(struct Node *head) {
     }
 }
 ```
+
+具体调用并实现
+```
+printf("-----单链表反转-----\n");
+struct Node *head = constructList();
+printList(head);
+printf("----------\n");
+struct Node *newHead = reverseList(head);
+printList(newHead);
+```
+
+输出
+```
+-----单链表反转-----
+node is 0 
+node is 1 
+node is 2 
+node is 3 
+node is 4 
+----------
+node is 4 
+node is 3 
+node is 2 
+node is 1 
+node is 0 
+```
+
+[回到目录](#jump-4)
+
+
+<h3 id="4-3">3. 有序数组的合并</h3>
+
+![mergeList_01.png](./images/mergeList_01.png)
+![mergeList_02.png](./images/mergeList_02.png)
+
+```
+// MARK: - 有序数组的合并
+// 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
+@objc static func mergeOrderedList(arrayA: [Int], arrayB: [Int]) -> [Int] {
+        
+    var result: [Int] = []
+    // 遍历数组a的指针、遍历数组b的指针、记录当前存储位置
+    var p = 0, q = 0, i = 0
+        
+    // 任一数组没有到达边界 则进行遍历
+    while p < arrayA.count && q < arrayB.count {
+        // 如果数组a对应位置的值小于数组b对应位置的值
+        if arrayA[p] <= arrayB[q] {
+            // 存储数组a的值
+            result.insert(arrayA[p], at: i)
+            // 移动数组a的遍历指针
+            p += 1
+        } else {
+            // 存储数组b的值
+            result.insert(arrayB[q], at: i)
+            // 移动数组b的遍历指针
+            q += 1
+        }
+        // 指向合并结果的下一个存储位置
+        i += 1
+    }
+        
+    // 如果数组a有剩余
+    while p < arrayA.count {
+        // 将数组a剩余的部分拼接到合并结果的后面
+        result.insert(arrayA[p], at: i)
+        p += 1
+        i += 1
+    }        
+    // 如果数组b有剩余
+    while q < arrayB.count {
+        // 将数组b剩余的部分拼接到合并结果的后面
+        result.insert(arrayB[q], at: i)
+        q += 1
+        i += 1
+    }
+        
+    return result
+}
+```
+
+具体调用并实现
+
+```
+print("有序数组的合并")
+print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
+```
+
+输出
+```
+有序数组的合并
+[1, 2, 3, 4, 5, 6, 6, 7, 8, 9, 10, 11, 12]
+```
+
+[回到目录](#jump-4)
+
+
+<h3 id="4-4">4. 在一个字符串中找到第一个只出现一次的字符(hash算法)</h3>
+
+在一个字符串中找到第一个只出现一次的字符。
+比如：输入 abaccdeff 则输出 b
+
+思路：
+- 字符char是一个长度为8的数据类型，2的8次方=256，因此总共有256种可能。
+- 每个字母根据其ASCII码值作为数组的下标对应数组的一个数字。
+- 数组中存储的是每个字符出现的次数。
+
+例如：给定值是a，对应的ASCII码值是97，数组索引下标为97。
+![hash](./images/hash.png)  
+f(key) = key
+**存储和查找都通过该函数，有效提高查找效率。**
+
 
 [回到目录](#jump-4)
 
