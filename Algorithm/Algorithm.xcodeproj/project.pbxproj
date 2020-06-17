@@ -14,6 +14,8 @@
 		4FA0D11224766C1100C3C60B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11124766C1100C3C60B /* main.c */; };
 		4FA0D11D24767AF800C3C60B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11C24767AF800C3C60B /* MainViewController.m */; };
 		BD5CECEA24990ED200480EED /* HashFind.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5CECE924990ED200480EED /* HashFind.m */; };
+		BD5CECED249A5C4200480EED /* CommonSuperFind.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5CECEC249A5C4200480EED /* CommonSuperFind.m */; };
+		BD5CECF0249A65E400480EED /* MedianFind.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5CECEF249A65E400480EED /* MedianFind.m */; };
 		BDD0A90E24769D2B004FF665 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A90D24769D2B004FF665 /* AppDelegate.m */; };
 		BDD0A91424769D2B004FF665 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A91324769D2B004FF665 /* ViewController.m */; };
 		BDD0A91724769D2B004FF665 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDD0A91524769D2B004FF665 /* Main.storyboard */; };
@@ -51,6 +53,10 @@
 		4FA0D11C24767AF800C3C60B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		BD5CECE824990ED200480EED /* HashFind.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashFind.h; sourceTree = "<group>"; };
 		BD5CECE924990ED200480EED /* HashFind.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HashFind.m; sourceTree = "<group>"; };
+		BD5CECEB249A5C4200480EED /* CommonSuperFind.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonSuperFind.h; sourceTree = "<group>"; };
+		BD5CECEC249A5C4200480EED /* CommonSuperFind.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonSuperFind.m; sourceTree = "<group>"; };
+		BD5CECEE249A65E400480EED /* MedianFind.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MedianFind.h; sourceTree = "<group>"; };
+		BD5CECEF249A65E400480EED /* MedianFind.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MedianFind.m; sourceTree = "<group>"; };
 		BDD0A90A24769D2B004FF665 /* OCAlgorithm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OCAlgorithm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD0A90C24769D2B004FF665 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BDD0A90D24769D2B004FF665 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -137,6 +143,10 @@
 				BDD0A91324769D2B004FF665 /* ViewController.m */,
 				BD5CECE824990ED200480EED /* HashFind.h */,
 				BD5CECE924990ED200480EED /* HashFind.m */,
+				BD5CECEE249A65E400480EED /* MedianFind.h */,
+				BD5CECEF249A65E400480EED /* MedianFind.m */,
+				BD5CECEB249A5C4200480EED /* CommonSuperFind.h */,
+				BD5CECEC249A5C4200480EED /* CommonSuperFind.m */,
 				BDD0A92324769F94004FF665 /* OCAlgorithm.h */,
 				BDD0A92424769F94004FF665 /* OCAlgorithm.m */,
 				BDD0A92A2476AD97004FF665 /* SwiftAlgorithm.swift */,
@@ -268,6 +278,8 @@
 				BDD0A90E24769D2B004FF665 /* AppDelegate.m in Sources */,
 				4F08879B2477C612003C3D8F /* SortAlgorithmPerformance.swift in Sources */,
 				BDD0A9282476AC33004FF665 /* Stack.m in Sources */,
+				BD5CECED249A5C4200480EED /* CommonSuperFind.m in Sources */,
+				BD5CECF0249A65E400480EED /* MedianFind.m in Sources */,
 				BDD0A91F24769D2F004FF665 /* main.m in Sources */,
 				BDD0A92B2476AD97004FF665 /* SwiftAlgorithm.swift in Sources */,
 			);

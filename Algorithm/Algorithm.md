@@ -31,10 +31,11 @@
 
 <span id="jump-4">[<h2>四. 实战</h2>](#4)</span>
 [1. 反转字符串](#4-1)  
-[2. 反转单链表](#4-2)  
+[2. 反转单链表[※※※※※]](#4-2)  
 [3. 有序数组的合并](#4-3)  
 [4. 在一个字符串中找到第一个只出现一次的字符(hash算法)](#4-4)  
-
+[5. 查找两个子视图的共同父视图[※※※※※]](#4-5)   
+[6. 求无序数组当中的中位数](#4-6)   
 
 # 正文
 <h2 id="1">一. 算法基础</h2>
@@ -707,10 +708,12 @@ func reverseString(s: String) -> String {
 
 [回到目录](#jump-4)
 
-<h3 id="4-2">2. 反转单链表</h3>
+<h3 id="4-2">2. 反转单链表[※※※※※]</h3>
 
-![reverseList.png](./images/reverseList.png)
-![reverseList-HeadInsertion.png](./images/reverseList-HeadInsertion.png)
+<!-- ![reverseList.png](./images/reverseList.png)
+![reverseList-HeadInsertion.png](./images/reverseList-HeadInsertion.png)   -->
+![reverseList.png](https://i.loli.net/2020/06/17/YoqdtV8iDOXTHmB.png)  
+![reverseList-HeadInsertion.png](https://i.loli.net/2020/06/17/YZAX9LeVd3aNxbR.png)  
 
 ReverseList.h
 ```
@@ -830,8 +833,10 @@ node is 0
 
 <h3 id="4-3">3. 有序数组的合并</h3>
 
-![mergeList_01.png](./images/mergeList_01.png)
-![mergeList_02.png](./images/mergeList_02.png)
+<!-- ![mergeList_01.png](./images/mergeList_01.png)
+![mergeList_02.png](./images/mergeList_02.png)   -->
+![mergeList_01.png](https://i.loli.net/2020/06/17/hmTdXKL7PJC3jzs.png)  
+![mergeList_02.png](https://i.loli.net/2020/06/17/SZca4jH8PXv75nT.png)  
 
 ```
 // MARK: - 有序数组的合并
@@ -906,7 +911,8 @@ print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
 - 数组中存储的是每个字符出现的次数。
 
 例如：给定值是a，对应的ASCII码值是97，数组索引下标为97。  
-![hash](./images/hash.png)  
+<!-- ![hash](./images/hash.png)     -->
+![hash.png](https://i.loli.net/2020/06/17/wiH2pdBQj6oqJ3c.png)  
 f(key) = key
 **存储和查找都通过该函数，有效提高查找效率。**
 
@@ -961,6 +967,155 @@ this char is b
 
 [回到目录](#jump-4)
 
+
+<h3 id="4-5">5. 查找两个子视图的共同父视图[※※※※※]</h3>
+
+<!-- ![theSameSuperViews.png](./images/theSameSuperViews.png) -->
+![theSameSuperViews.png](https://i.loli.net/2020/06/17/kR6jn9FOmlh1N8Q.png)  
+
+```
+/// 查找两个视图的共同父视图
+- (NSArray<UIView *> *)findCommonSuperView:(UIView *)viewOne other:(UIView *)viewOther {
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    // 查找第一个视图的所有父视图
+    NSArray *arrayOne = [self findSuperViews:viewOne];
+    // 查找第二个视图的所有父视图
+    NSArray *arrayOther = [self findSuperViews:viewOther];
+    
+    int i = 0;
+    // 越界限制条件
+    while (i < MIN((int)arrayOne.count, (int)arrayOther.count)) {
+        // 倒序方式获取各个视图的父视图
+        UIView *superOne = [arrayOne objectAtIndex:arrayOne.count - i -1];
+        UIView *superOther = [arrayOther objectAtIndex:arrayOther.count - i - 1];
+        
+        if (superOne == superOther) {
+            // 如果相等 则为共同父视图
+            [result addObject:superOne];
+            i++;
+        } else {
+            // 如果不相等 则结束遍历
+            break;
+        }
+    }
+    
+    return result;
+}
+
+/// 返回当前视图的所有父视图
+- (NSArray<UIView *> *)findSuperViews:(UIView *)view {
+    // 初始化当前视图的第一父视图
+    UIView *tempSuperView = view.superview;
+    // 保存所有父视图的数组
+    NSMutableArray *result = [NSMutableArray array];
+    while (tempSuperView) {
+        [result addObject:tempSuperView];
+        // 顺着superview指针一直向上查找
+        tempSuperView = tempSuperView.superview;
+    }
+    return result;
+}
+```
+
+[回到目录](#jump-4)
+
+
+<h3 id="4-6">6. 求无序数组当中的中位数</h3>
+
+思路：
+- 排序算法 + 中位数
+- 分治思想(快排思想)
+
+#### 排序算法 + 中位数
+
+<!-- ![排序算法+中位数](./images/排序算法+中位数.png)   -->
+![排序算法_中位数.png](https://i.loli.net/2020/06/17/IfaR4BqQg21bzxW.png)  
+
+#### 分治思想(快排思想)
+选取关键字，高低交替扫描
+
+- 任意挑一个元素，以该元素为支点，划分集合为两部分。  
+- 如果左侧集合长度恰为(n-1)/2，那么支点恰为中位数。  
+- 如果左侧长度<(n-1)/2，那么中位数在右侧；反之，中位数在左侧。  
+- 进入相应的一侧继续寻找中位点。 
+
+<!-- ![分治思想](./images/分治思想.png) -->
+![分治思想.png](https://i.loli.net/2020/06/17/8M3sFIqe7CyHB4j.png)  
+
+```
+// 无序数组的中位数查找
+int findMedian(int a[], int aLen) {
+    int low = 0;
+    int high = aLen - 1;
+    
+    int mid = (aLen - 1) / 2;
+    int div = PartSort(a, low, high);
+    
+    while (div != mid) {
+        if (mid < div) {
+            // 左区间查找
+            div = PartSort(a, low, div - 1);
+        } else {
+            // 右区间查找
+            div = PartSort(a, div + 1, high);
+        }
+    }
+    
+    return a[mid];
+}
+
+int PartSort(int a[], int start, int end) {
+    
+    int low = start;
+    int high = end;
+    
+    // 选取关键字
+    int key = a[end];
+    
+    while (low < high) {
+        // 左边查找比key大的值
+        while (low < high && a[low] <= key) {
+            ++low;
+        }
+        // 右边查找比key小的值
+        while (low < high && a[high] >= key) {
+            --high;
+        }
+        
+        if (low < high) {
+            // 找到之后交换左右的值
+            int temp = a[low];
+            a[low] = a[high];
+            a[high] = temp;
+        }
+    }
+    
+    int temp = a[high];
+    a[high] = a[end];
+    a[end] = temp;
+    
+    return low;
+}
+```
+
+具体调用并实现  
+```
+int list[9] = {12, 3, 10, 8, 6, 7, 11, 13, 9};
+int median = findMedian(list, 9);
+printf("the median is %d \n", median);
+```
+
+输出  
+```
+the median is 9  
+```
+
+
+[回到目录](#jump-4)  
+
+
 # 参考文档
 
 [数据结构 & 算法 in Swift （一）：Swift基础和数据结构](https://juejin.im/post/5a7096fa6fb9a01cb64f163b)  
@@ -976,7 +1131,8 @@ this char is b
 
 [iOS面试题备忘录(一) - 属性关键字](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)    
 [iOS面试题备忘录(二) - 内存管理](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/memoryManagement.md)   
-[iOS面试题备忘录(三) - 分类和类别](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)  
+[iOS面试题备忘录(三) - 分类和扩展](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)  
 [iOS面试题备忘录(四) - 代理和通知](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/DelegateAndNSNotification.md)  
 [iOS面试题备忘录(五) - KVO和KVC](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/KVOAndKVC.md)  
 [iOS面试题备忘录(六) - runtime](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)  
+[算法](https://github.com/mickychiang/iOSInterviewMemo/blob/master/Algorithm/Algorithm.md)   

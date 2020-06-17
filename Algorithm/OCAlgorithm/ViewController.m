@@ -11,6 +11,7 @@
 #import "ReverseList.h"
 #import "HashFind.h"
 #import "OCAlgorithm-Swift.h"
+#import "MedianFind.h"
 
 @interface ViewController ()
 
@@ -22,7 +23,7 @@
     [super viewDidLoad];
     
     // 简单算法 - C版
-//    [self CLanguage];
+    [self CLanguage];
     
     // 简单算法 - OC版
 //    [self OCLanguage];
@@ -36,12 +37,17 @@
 }
 
 - (void)CLanguage {
-    reverseChars("Hello World");
+//    reverseChars("Hello World");
     
     
     //    [self reverseList];
     //    [self mergeList];
     //    [self hashSearch];
+    
+    
+    int list[9] = {12, 3, 10, 8, 6, 7, 11, 13, 9};
+    int median = findMedian(list, 9);
+    printf("the median is %d \n", median);
 }
 
 - (void)OCLanguage {
