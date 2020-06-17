@@ -21,15 +21,37 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    [self reverseList];
-//    [self mergeList];
-    [self hashSearch];
+    // 简单算法 - C版
+//    [self CLanguage];
     
-    // Swift版 - 简单算法
+    // 简单算法 - OC版
+//    [self OCLanguage];
+    
+    // 简单算法 - Swift版
 //    [SwiftAlgorithm baseAlgorithm];
+    
+    
     // Swift版 - 排序算法
 //    [SortAlgorithm sortAlgorithm];
 }
+
+- (void)CLanguage {
+    reverseChars("Hello World");
+    
+    
+    //    [self reverseList];
+    //    [self mergeList];
+    //    [self hashSearch];
+}
+
+- (void)OCLanguage {
+    
+}
+
+
+
+
+
 
 - (void)reverseList {
     // 单链表反转
@@ -61,9 +83,9 @@
 
 - (void)hashSearch {
     // 查找第一个只出现一次的字符
-    char cha[] = "abaccdeff";
+    char cha[] = "a11baccdeff";
     char fc = findFirstChar(cha);
-    printf("this char id %c \n", fc);
+    printf("this char is %c \n", fc);
 }
 
 @end

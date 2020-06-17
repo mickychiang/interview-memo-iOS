@@ -14,8 +14,80 @@
     NSLog(@"test");
 }
 
-// MARK: - 反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH"
-void char_reverse(char* cha) {
+// MARK: - 不用中间变量，交换A和B的值
+// 方法1. 中间变量
+void swap1(int a, int b) {
+    int temp = a;
+    a = b;
+    b = temp;
+    printf("a = %d, b = %d \n", a, b);
+}
+// 方法2. 加法
+void swap2(int a, int b) {
+    a = a + b;
+    b = a - b;
+    a = a - b;
+    printf("a = %d, b = %d \n", a, b);
+}
+// 方法3. 异或（相同为0，不同为1。可以理解为不进位加法）
+void swap3(int a, int b) {
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+    printf("a = %d, b = %d \n", a, b);
+}
+
+// MARK: - 最大公约数
+// 比如：20和4的最大公约数为4；18和27的最大公约数为9
+// 方法1. 直接遍历法
+int maxCommonDivisor1(int a, int b) {
+    int max = 0;
+    for (int i = 1; i <=b; i++) {
+        if (a % i == 0 && b % i == 0) {
+            max = i;
+        }
+    }
+    return max;
+}
+// 方法2. 辗转相除法：其中a为大数，b为小数
+int maxCommonDivisor2(int a, int b) {
+    int r;
+    while (a % b > 0) {
+        r = a % b;
+        a = b;
+        b = r;
+    }
+    return b;
+}
+
+// MARK: - 最小公倍数
+// 比如：20和4的最大公约数为4；18和27的最大公约数为9
+// 最小公倍数 = (a * b)/最大公约数
+// 方法1. 直接遍历法
+int minimumCommonMultiple1(int a, int b) {
+    int max = 0;
+    for (int i = 1; i <=b; i++) {
+        if (a % i == 0 && b % i == 0) {
+            max = i;
+        }
+    }
+    return (a * b) / max;
+}
+// 方法2. 辗转相除法：其中a为大数，b为小数
+int minimumCommonMultiple2(int a, int b) {
+    int r;
+    int aa = a;
+    int bb = b;
+    while (a % b > 0) {
+        r = a % b;
+        a = b;
+        b = r;
+    }
+    return (aa * bb) / b;
+}
+
+// MARK: - 反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH" ?????
+void reverseChars(char* cha) {
     // 指向第一个字符
     char* begin = cha;
     // 指向最后一个字符
@@ -27,7 +99,12 @@ void char_reverse(char* cha) {
         *(begin++) = *end;
         *(end--) = temp;
     }
+    
+    printf("%s \n", cha);
 }
+
+
+
 
 // MARK: - 有序数组合并
 // 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。

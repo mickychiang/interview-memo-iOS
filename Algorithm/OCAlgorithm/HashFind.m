@@ -14,6 +14,7 @@ char findFirstChar(char* cha) {
     char result = '\0';
     
     // 定义一个数组，用来存储各个字母出现的次数
+    // 字符char是一个长度为8的数据类型，2的8次方=256，因此总共有256种可能。
     int array[256];
     // 对数组进行初始化操作
     for (int i = 0; i < 256; i++) {
@@ -42,5 +43,33 @@ char findFirstChar(char* cha) {
     
     return result;
 }
+
+//bug
+//+ (NSString *)findFirstChar2:(NSArray *)chars {
+//    NSString *result = @"";
+//
+//    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:256];
+//    for (int i = 0; i < 256; i++) {
+//        array[i] = @(0);
+//    }
+//
+//    int p = 0;
+//    while (p != '\0') {
+//        id temp = [array objectAtIndex:p];
+//        [array replaceObjectAtIndex:p withObject:@([temp intValue] + 1)];
+//        p = p + 1;
+//    }
+//
+//    p = 0;
+//    while (p != '\0') {
+//        if ([array[p] isEqual:@(1)]) {
+//            result = [NSString stringWithFormat:@"%d", p];
+//            break;
+//        }
+//        p++;
+//    }
+//
+//    return result;
+//}
 
 @end

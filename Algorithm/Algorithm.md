@@ -9,12 +9,12 @@
 
 <span id="jump-1">[<h2>一. 算法基础</h2>](#1)</span>
 
-<span id="jump-2">[<h2>二. 常见简单算法</h2>](#2)</span>
+<span id="jump-2">[<h2>二. 简单算法</h2>](#2)</span>
 [1. 计算从1到100数字的总和](#2-1)  
 [2. 给出一个整型数组和一个目标值，判断数组中是否有两个数之和等于目标值](#2-2)  
 [3. 给出一个整型数组和目标值，且数组中有且仅有两个数之和等于目标值，求这两个数在数组中的index](#2-3)  
 [4. 实现阶乘n!的算法 n！= n * (n-1) * ... * 1](#2-4)  
-[5. 交换A和B的值](#2-5)  
+[5. 不用中间变量，交换A和B的值](#2-5)  
 [6. 最大公约数](#2-6)  
 [7. 最小公倍数](#2-7)  
 [8. 判断质数](#2-8)  
@@ -63,7 +63,7 @@
 
 [回到目录](#jump-1)
 
-<h2 id="2">二. 常见简单算法</h2>
+<h2 id="2">二. 简单算法</h2>
 
 <h3 id="2-1">1. 计算从1到100数字的总和</h3>
 
@@ -145,11 +145,23 @@ static func factorial(_ n: Int) -> Int {
 ```
 [回到目录](#jump-2)
 
-<h3 id="2-5">5. 交换A和B的值</h3>
+<h3 id="2-5">5. 不用中间变量，交换A和B的值</h3>
 
-Swift可以直接换：(a, b) = (b, a)
+#### Swift可以利用元组特性直接交换  
+```
+func swap(a: inout Int, b: inout Int) -> (Int, Int) {
+    (a, b) = (b, a)
+    return (a, b) 
+}
+```
+```
+var x = 1, y = 2
+swap(a: &x, b: &y)
+x　// 2
+y　// 1
+```
 
-方法1. 中间变量
+#### ~~方法1. 中间变量~~
 ```
 func swap1(a: inout Int, b: inout Int) -> (Int, Int) {
     let temp = a
@@ -158,7 +170,8 @@ func swap1(a: inout Int, b: inout Int) -> (Int, Int) {
     return (a, b)
 }
 ```
-方法2. 加法
+
+#### 方法2. 加法
 ```
 func swap2(a: inout Int, b: inout Int) -> (Int, Int) {
     a = a + b
@@ -167,7 +180,8 @@ func swap2(a: inout Int, b: inout Int) -> (Int, Int) {
     return (a, b)
 }
 ```
-方法3. 异或（相同为0，不同为1。可以理解为不进位加法）
+
+#### 方法3. 异或（相同为0，不同为1。可以理解为不进位加法）
 ```
 func swap3(a: inout Int, b: inout Int) -> (Int, Int) {
     a = a ^ b
@@ -176,12 +190,15 @@ func swap3(a: inout Int, b: inout Int) -> (Int, Int) {
     return (a, b)
 }
 ```
+
 [回到目录](#jump-2)
+
 
 <h3 id="2-6">6. 最大公约数</h3>
 
 比如：20和4的最大公约数为4；18和27的最大公约数为9  
-方法1. 直接遍历法
+
+#### 方法1. 直接遍历法
 ```
 func maxCommonDivisor1(a: Int, b: Int) -> Int {
     var max = 0
@@ -193,7 +210,8 @@ func maxCommonDivisor1(a: Int, b: Int) -> Int {
     return max
 }
 ```
-方法2. 辗转相除法：其中a为大数，b为小数
+
+#### 方法2. 辗转相除法：其中规定a为大数，b为小数
 ```
 func maxCommonDivisor2(a: inout Int, b: inout Int) -> Int {
     var r: Int
@@ -205,12 +223,15 @@ func maxCommonDivisor2(a: inout Int, b: inout Int) -> Int {
     return b
 }
 ```
+
 [回到目录](#jump-2)
+
 
 <h3 id="2-7">7. 最小公倍数</h3>
 
-最小公倍数 = (a * b)/最大公约数  
-方法1. 直接遍历法
+公式：最小公倍数 = (a * b)/最大公约数  
+
+#### 方法1. 直接遍历法
 ```
 func minimumCommonMultiple1(a: Int, b: Int) -> Int {
     var max = 0
@@ -222,7 +243,8 @@ func minimumCommonMultiple1(a: Int, b: Int) -> Int {
     return (a * b) / max
 }
 ```
-方法2. 辗转相除法：其中a为大数，b为小数
+
+#### 方法2. 辗转相除法：其中a为大数，b为小数
 ```
 func minimumCommonMultiple2(a: inout Int, b: inout Int) -> Int {
     var r: Int
@@ -659,20 +681,22 @@ static func bucketSort(_ array: inout [Int]) -> [Int] {
 
 <h3 id="4-1">1. 反转字符串</h3>
 
+反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH"  
 ```
-static func reverseString2(s: String) -> String {
+func reverseString(s: String) -> String {
+        
     // 将待反转字符串分割成字符数组
     var chars = Array(s)
-    // 指向第一个字符的索引值
+    // 初始化指向第一个字符的索引值
     var start = 0
-    // 指向最后一个字符的索引值
+    // 初始化指向最后一个字符的索引值
     var end = chars.count - 1
         
     // 判断反转字符串的位置
     while start < end {
         // start、end位置的字符互换
         (chars[start], chars[end]) = (chars[end], chars[start])
-        // 往中间位置靠拢
+        // 前、后索引值 往中间位置靠拢
         start += 1
         end -= 1
     }
@@ -812,7 +836,7 @@ node is 0
 ```
 // MARK: - 有序数组的合并
 // 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
-@objc static func mergeOrderedList(arrayA: [Int], arrayB: [Int]) -> [Int] {
+func mergeOrderedList(arrayA: [Int], arrayB: [Int]) -> [Int] {
         
     var result: [Int] = []
     // 遍历数组a的指针、遍历数组b的指针、记录当前存储位置
@@ -873,7 +897,7 @@ print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
 
 <h3 id="4-4">4. 在一个字符串中找到第一个只出现一次的字符(hash算法)</h3>
 
-在一个字符串中找到第一个只出现一次的字符。
+在一个字符串中找到第一个只出现一次的字符。  
 比如：输入 abaccdeff 则输出 b
 
 思路：
@@ -881,11 +905,59 @@ print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
 - 每个字母根据其ASCII码值作为数组的下标对应数组的一个数字。
 - 数组中存储的是每个字符出现的次数。
 
-例如：给定值是a，对应的ASCII码值是97，数组索引下标为97。
+例如：给定值是a，对应的ASCII码值是97，数组索引下标为97。  
 ![hash](./images/hash.png)  
 f(key) = key
 **存储和查找都通过该函数，有效提高查找效率。**
 
+```
+char findFirstChar(char* cha) {
+    char result = '\0';
+    
+    // 定义一个数组，用来存储各个字母出现的次数
+    // 字符char是一个长度为8的数据类型，2的8次方=256，因此总共有256种可能。
+    int array[256];
+    // 对数组进行初始化操作
+    for (int i = 0; i < 256; i++) {
+        array[i] = 0;
+    }
+    // 定义一个指针，指向当前字符串头部
+    char* p = cha;
+    // 遍历每个字符
+    while (*p != '\0') {
+        // 在字母对应的存储位置 进行出现次数+1操作
+        array[*(p++)]++;
+    }
+    
+    // 将p指针重新指向字符串头部
+    p = cha;
+    // 遍历每个字母的出现次数
+    while (*p != '\0') {
+        // 遇到第一个出现次数为1的字符，打印结果
+        if (array[*p] == 1) {
+            result = *p;
+            break;
+        }
+        // 反之继续向后遍历
+        p++;
+    }
+    
+    return result;
+}
+```
+
+具体调用并实现  
+```
+// 查找第一个只出现一次的字符
+char cha[] = "a11baccdeff";
+char fc = findFirstChar(cha);
+printf("this char is %c \n", fc);
+```
+
+输出  
+```
+this char is b 
+```
 
 [回到目录](#jump-4)
 

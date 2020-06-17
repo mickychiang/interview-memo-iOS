@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 // 查找第一个只出现一次的字符
 char findFirstChar(char* cha);
 
+//+ (NSString *)findFirstChar2:(NSArray *)chars;
+
 @end
 
 NS_ASSUME_NONNULL_END
