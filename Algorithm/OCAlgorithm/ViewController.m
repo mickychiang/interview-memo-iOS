@@ -13,6 +13,8 @@
 #import "OCAlgorithm-Swift.h"
 #import "MedianFind.h"
 
+#import "Stack.h"
+
 @interface ViewController ()
 
 @end
@@ -23,13 +25,13 @@
     [super viewDidLoad];
     
     // 简单算法 - C版
-    [self CLanguage];
+//    [self CLanguage];
     
     // 简单算法 - OC版
 //    [self OCLanguage];
     
     // 简单算法 - Swift版
-//    [SwiftAlgorithm baseAlgorithm];
+    [SwiftAlgorithm baseAlgorithm];
     
     
     // Swift版 - 排序算法
@@ -61,8 +63,29 @@
 }
 
 - (void)OCLanguage {
+    NSLog(@"模拟栈操作");
+    Stack *stack = [[Stack alloc] initWithNumbers:@[@(4), @(9), @(51), @(3), @(6), @(10)]];
+    // 入栈
+    [stack push:@(11)];
+    [stack enumerateObjectsFromtop:^(id  _Nonnull obj) {
+        NSLog(@"obj = %@", obj);
+    }];
+    // 出栈
+    [stack popObj];
+    [stack enumerateObjectsFromtop:^(id  _Nonnull obj) {
+        NSLog(@"obj = %@", obj);
+    }];
     
+    [stack removeAllObjects];
+    [stack enumerateObjectsFromtop:^(id  _Nonnull obj) {
+        NSLog(@"obj = %@", obj);
+    }];
+    
+    
+//    IntegerStack *s = [[IntegerStack alloc] init];
 }
+
+
 
 
 

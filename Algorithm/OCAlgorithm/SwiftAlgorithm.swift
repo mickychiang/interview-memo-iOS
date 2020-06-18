@@ -11,6 +11,12 @@ import Foundation
 class SwiftAlgorithm: NSObject {
     @objc static func baseAlgorithm() {
         
+        print("计算从1到100数字的总和")
+        print(sum1(100))
+        print(sum2(100))
+        print(sum3(100))
+        print("---------------")
+        
         print("不用中间变量，交换A和B的值")
         var x = 7, y = 17
         print("origin: x = \(x), y = \(y)")
@@ -46,13 +52,23 @@ class SwiftAlgorithm: NSObject {
 //        print("有序数组的合并")
 //        print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
         
+        var stack: IntegerStack = IntegerStack()
+        for i in 0..<10 {
+            stack.push(i)
+        }
+        print("stack = \(stack)")
+        stack.pop() // 9
+        print("stack = \(stack)")
+        
+        
+        
     }
 }
 
 // MARK: - 计算从1到100数字的总和
 extension SwiftAlgorithm {
     /// 法1. 1到100循环遍历逐步相加
-    // 时间复杂度：O(n)
+    /// 时间复杂度：O(n)
     static func sum1(_ n: Int) -> Int {
         var sum = 0
         for i in 1...n {
@@ -61,10 +77,25 @@ extension SwiftAlgorithm {
         return sum
     }
     
-    /// 法2. 等差数列求和
-    // 时间复杂度：O(1)
+    /// 法2. 递归求和
+    /// 时间复杂度：O(n)
     static func sum2(_ n: Int) -> Int {
+        guard n > 0 else {
+            return 0
+        }
+        let sum = n
+        return sum + sum2(sum - 1)
+    }
+    // 算法的时间复杂度是多少 - O(n)
+    // 递归会有什么缺点 - 递归次数过多的时候会造成栈溢出，操作系统给应用程序分配的栈空间是有限的，每次函数调用都会分配一段栈空间， 当栈空间不够的时候，程序也有崩了。
+    // 不用递归能否实现，复杂度能否降到O(1) - 等差数列求和 (n + 1) * n / 2
+    
+    /// 法3. 等差数列求和
+    /// 时间复杂度：O(1)
+    static func sum3(_ n: Int) -> Int {
         return (n + 1) * n / 2
+        // 或者使用 >> 运算
+//        return (n + 1) * n >> 1
     }
 }
 

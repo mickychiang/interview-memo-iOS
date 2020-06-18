@@ -6,6 +6,7 @@
 //  Copyright © 2020 JXT. All rights reserved.
 //
 // 模拟栈操作
+
 #import "Stack.h"
 
 @interface Stack ()
@@ -27,14 +28,17 @@
     return self;
 }
 
-#pragma mark - push
-
+/**
+ 入栈
+ @param obj 指定入栈对象
+*/
 - (void)push:(id)obj {
     [self.stackArray addObject:obj];
 }
 
-#pragma mark - get
-
+/**
+ 出栈
+*/
 - (id)popObj {
     if ([self isEmpty]) {
         return nil;
@@ -45,7 +49,10 @@
     }
 }
 
--(id)topObj {
+/**
+ 返回栈顶元素
+*/
+- (id)topObj {
     if ([self isEmpty]) {
         return nil;
     } else {
@@ -53,32 +60,44 @@
     }
 }
 
+/**
+ 栈是否为空
+*/
 - (BOOL)isEmpty {
     return !self.stackArray.count;
 }
 
+/**
+ 栈的长度
+*/
 - (NSInteger)stackLength {
     return self.stackArray.count;
 }
 
-#pragma mark - 遍历
-
-// 从栈底开始遍历
--(void)enumerateObjectsFromBottom:(StackBlock)block {
+/**
+ 从栈底开始遍历
+ @param block 回调遍历的结果
+*/
+- (void)enumerateObjectsFromBottom:(StackBlock)block {
     [self.stackArray enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         block ? block(obj) : nil;
     }];
 }
 
-// 从顶部开始遍历
--(void)enumerateObjectsFromtop:(StackBlock)block {
+/**
+ 从顶部开始遍历
+ @param block 回调遍历的结果
+*/
+- (void)enumerateObjectsFromtop:(StackBlock)block {
     [self.stackArray enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         block ? block(obj) : nil;
     }];
 }
 
-// 所有元素出栈，一边出栈一边返回元素
--(void)enumerateObjectsPopStack:(StackBlock)block {
+/**
+ 所有元素出栈，一边出栈一边返回元素
+*/
+- (void)enumerateObjectsPopStack:(StackBlock)block {
     __weak typeof(self) weakSelf = self;
     NSUInteger count = self.stackArray.count;
     for (NSUInteger i = count; i > 0; i --) {
@@ -89,13 +108,12 @@
     }
 }
 
-#pragma mark - remove
-
--(void)removeAllObjects {
+/**
+ 清空
+*/
+- (void)removeAllObjects {
     [self.stackArray removeAllObjects];
 }
-
-#pragma mark - lazy
 
 - (NSMutableArray *)stackArray {
     if (!_stackArray) {

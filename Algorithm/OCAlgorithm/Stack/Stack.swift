@@ -25,6 +25,7 @@ protocol Stack {
     mutating func pop() -> Element?
 }
 
+// 模拟栈操作
 struct IntegerStack: Stack {
     // typealias：类型别名，指定协议关联类型的具体类型，和associatedtype成对出现的
     typealias Element = Int

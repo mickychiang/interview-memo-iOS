@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CommonSuperFind : NSObject
 
-// 查找两个视图的共同父视图
-- (NSArray<UIView *> *)findCommonSuperView:(UIView *)viewOne other:(UIView *)viewOther;
+/// 查找两个子视图的共同父视图
+- (NSArray<UIView *> *)findCommonSuperViewsForView1:(UIView *)view1 AndView2:(UIView *)view2;
 
 @end
 

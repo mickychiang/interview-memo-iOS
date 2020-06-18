@@ -1,9 +1,9 @@
 # iOS Algorithm
 
 # 前言
-此篇文章是对数据结构和常见算法的整理，根据日常知识的积累会不断的更新与完善。  
+此篇文章是对数据结构和算法的整理，根据日常知识的积累会不断的更新与完善。  
 有理解不对的地方还请指正，互相学习。  
-**重点理解排序算法和优化时间复杂度的问题还有实战题，面试会经常提问**
+**重点理解排序算法和实战题，面试会经常提问**
 
 # 目录
 
@@ -27,6 +27,7 @@
 [5. 快速排序](#3-5)  
 [6. 堆排序](#3-6)  
 [7. 桶排序](#3-7)  
+[8. 折半查找(二分查找)](#3-8)  
 
 
 <span id="jump-4">[<h2>四. 实战</h2>](#4)</span>
@@ -36,6 +37,7 @@
 [4. 在一个字符串中找到第一个只出现一次的字符(hash算法)](#4-4)  
 [5. 查找两个子视图的共同父视图[※※※※※]](#4-5)   
 [6. 求无序数组当中的中位数](#4-6)   
+[7. 模拟栈操作](#4-7)   
 
 # 正文
 <h2 id="1">一. 算法基础</h2>
@@ -71,7 +73,7 @@
 法1. 1到100循环遍历逐步相加  
 时间复杂度：O(n)
 ```
-static func sum1(_ n: Int) -> Int {
+func sum1(_ n: Int) -> Int {
     var sum = 0
     for i in 1...n {
         sum += i
@@ -79,11 +81,29 @@ static func sum1(_ n: Int) -> Int {
     return sum
 }
 ```
-法2. 等差数列求和  
+
+法2. 递归求和  
+时间复杂度：O(n)  
+- 算法的时间复杂度是多少 ?  - O(n)  
+- 递归会有什么缺点 ? - 递归次数过多的时候会造成栈溢出，操作系统给应用程序分配的栈空间是有限的，每次函数调用都会分配一段栈空间， 当栈空间不够的时候，程序也有崩了。  
+- 不用递归能否实现，复杂度能否降到O(1) ? - 等差数列求和 (n + 1) * n / 2  
+```
+func sum2(_ n: Int) -> Int {
+    guard n > 0 else {
+        return 0
+    }
+    let sum = n
+    return sum + sum2(sum - 1)
+}
+```
+
+法3. 等差数列求和  
 时间复杂度：O(1)
 ```  
-static func sum2(_ n: Int) -> Int {
+func sum3(_ n: Int) -> Int {
     return (n + 1) * n / 2
+    // 或者使用 >> 运算
+    //return (n + 1) * n >> 1
 }
 ```
 [回到目录](#jump-2)
@@ -276,11 +296,14 @@ func isPrime(n: Int) -> Int {
 ```
 [回到目录](#jump-2)
 
+
 <h2 id="3">三. 排序算法</h2>
-关于排序的介绍，常见的主要有7种：  
+
+关于排序的介绍，常见的主要有7种：    
 冒泡排序、选择排序、插入排序、归并排序、快速排序、堆排序、桶排序   
 关于这7种排序算法的时间复杂度依次为：  
 冒泡排序 = 选择排序 = 插入排序  >  归并排序 = 快速排序 = 堆排序 > 桶排序
+
 >时间复杂度：在计算机科学中，算法的时间复杂度是一个函数，它定性描述了该算法的运行时间，通常用大O符号表示。
 
 以下排序算法基于Swift语言的实现。
@@ -673,6 +696,38 @@ static func bucketSort(_ array: inout [Int]) -> [Int] {
 ```
 [回到目录](#jump-3)
 
+<h3 id="3-8">8. 折半查找(二分查找)</h3>
+
+搜索过程从数组的中间元素开始，如果中间元素正好是要查找的元素，则搜索过程结束；
+如果某一特定元素大于或者小于中间元素，则在数组大于或小于中间元素的那一半中查找，而且跟开始一样从中间元素开始比较。 
+如果在某一步骤数组为空，则代表找不到。
+这种搜索算法每一次比较都使搜索范围缩小一半。
+ 
+优化查找时间（不用遍历全部数据）  
+1.数组必须是有序的  
+2.必须已知min和max（知道范围）  
+3.动态计算mid的值，取出mid对应的值进行比较  
+4.如果mid对应的值大于要查找的值，那么max要变小为mid-1  
+5.如果mid对应的值小于要查找的值，那么min要变大为mid+1  
+
+```
+int findKey(int *arr, int length, int key) {
+    int min = 0, max = length-1, mid;
+    while (min <= max) {
+        mid = (min + max) / 2;
+        if (key > arr[mid]) {
+            min = mid + 1;
+        } else if (key < arr[mid]) {
+            max = mid - 1;
+        } else {
+            return mid;
+        }
+    }
+    return -1;
+}
+```
+
+[回到目录](#jump-3)
 
 ### 代码完整实例请参照：[Algorithm工程](https://github.com/mickychiang/iOSInterviewMemo/blob/master/Algorithm)
 
@@ -716,91 +771,16 @@ func reverseString(s: String) -> String {
 ![reverseList-HeadInsertion.png](https://i.loli.net/2020/06/17/YZAX9LeVd3aNxbR.png)  
 
 ReverseList.h
-```
-// 定义一个链表
-struct Node {
-    int data; // 结点数据
-    struct Node *next; // 链表的下一个节点
-};
-
-@interface ReverseList : NSObject
-
-// 反转列表
-struct Node* reverseList(struct Node *head);
-
-// 构造一个链表
-struct Node* constructList(void);
-
-// 打印链表中的数据
-void printList(struct Node *head);
-
-@end
-```
+<!-- ![ReverseList.h.png](./images/ReverseList.h.png) -->
+![ReverseList.h.png](https://i.loli.net/2020/06/18/N8OVaxMvKltn7Zh.png)
 
 ReverseList.m
-```
-// 反转链表
-// 参数为 - 原链表的头结点
-// 返回值为 - 新链表的头结点
-struct Node* reverseList(struct Node *head) {
-    // 定义遍历指针，初始化为原链表的头结点
-    struct Node *p = head;
-    // 定义反转后的新链表头部
-    struct Node *newH = NULL;
-    
-    // 遍历链表
-    while (p != NULL) {
-        // 记录下一个结点
-        struct Node *temp = p->next;
-        // 当前结点的next指向新链表的头部
-        p->next = newH;
-        // 更改新链表的头部为当前结点
-        newH = p;
-        // 移动p指针
-        p = temp;
-    }
-    
-    // 返回反转后的链表头结点
-    return newH;
-}
-
-// 构造一个链表
-struct Node* constructList(void) {
-    // 定义头结点
-    struct Node *head = NULL;
-    // 定义当前结点
-    struct Node *cur = NULL;
-    
-    for (int i = 0; i < 5; i++) {
-        // 创建结点
-        struct Node *node = malloc(sizeof(struct Node));
-        node->data = i;
-        node->next = NULL;
-        
-        if (head == NULL) {
-            // 头结点为空，新结点即为头结点
-            head = node;
-        } else {
-            // 当前结点的next为新结点
-            cur->next = node;
-        }
-        
-        // 设置当前结点为新结点
-        cur = node;
-    }
-    
-    return head;
-}
-
-// 打印链表中的数据
-void printList(struct Node *head) {
-    struct Node *temp = head;
-    while (temp != NULL) {
-        printf("node is %d \n", temp->data);
-        temp = temp->next;
-    }
-}
-```
+<!-- ![ReverseList.m_01.png](./images/ReverseList.m_01.png)
+![ReverseList.m_02.png](./images/ReverseList.m_02.png) -->
+<!-- ![ReverseList.m_03.png](./images/ReverseList.m_03.png) -->
+![ReverseList.m_01.png](https://i.loli.net/2020/06/18/duT8wXCLcmQF71W.png)  
+![ReverseList.m_02.png](https://i.loli.net/2020/06/18/Gd3aX1i6s2BwJWo.png)  
+![ReverseList.m_03.png](https://i.loli.net/2020/06/18/RX6WwYyTPumrV8f.png)
 
 具体调用并实现
 ```
@@ -970,54 +950,13 @@ this char is b
 
 <h3 id="4-5">5. 查找两个子视图的共同父视图[※※※※※]</h3>
 
+思路：分别记录两个子视图的所有父视图并保存到数组中，然后倒序寻找，直至找到第一个不一样的父视图。
 <!-- ![theSameSuperViews.png](./images/theSameSuperViews.png) -->
 ![theSameSuperViews.png](https://i.loli.net/2020/06/17/kR6jn9FOmlh1N8Q.png)  
 
-```
-/// 查找两个视图的共同父视图
-- (NSArray<UIView *> *)findCommonSuperView:(UIView *)viewOne other:(UIView *)viewOther {
-    
-    NSMutableArray *result = [NSMutableArray array];
-    
-    // 查找第一个视图的所有父视图
-    NSArray *arrayOne = [self findSuperViews:viewOne];
-    // 查找第二个视图的所有父视图
-    NSArray *arrayOther = [self findSuperViews:viewOther];
-    
-    int i = 0;
-    // 越界限制条件
-    while (i < MIN((int)arrayOne.count, (int)arrayOther.count)) {
-        // 倒序方式获取各个视图的父视图
-        UIView *superOne = [arrayOne objectAtIndex:arrayOne.count - i -1];
-        UIView *superOther = [arrayOther objectAtIndex:arrayOther.count - i - 1];
-        
-        if (superOne == superOther) {
-            // 如果相等 则为共同父视图
-            [result addObject:superOne];
-            i++;
-        } else {
-            // 如果不相等 则结束遍历
-            break;
-        }
-    }
-    
-    return result;
-}
-
-/// 返回当前视图的所有父视图
-- (NSArray<UIView *> *)findSuperViews:(UIView *)view {
-    // 初始化当前视图的第一父视图
-    UIView *tempSuperView = view.superview;
-    // 保存所有父视图的数组
-    NSMutableArray *result = [NSMutableArray array];
-    while (tempSuperView) {
-        [result addObject:tempSuperView];
-        // 顺着superview指针一直向上查找
-        tempSuperView = tempSuperView.superview;
-    }
-    return result;
-}
-```
+代码示例：  
+<!-- ![CommonSuperFind.png](./images/CommonSuperFind.png)   -->
+![CommonSuperFind.png](https://i.loli.net/2020/06/18/Pr6M5bfFqXoyUJG.png)  
 
 [回到目录](#jump-4)
 
@@ -1112,8 +1051,14 @@ printf("the median is %d \n", median);
 the median is 9  
 ```
 
-
 [回到目录](#jump-4)  
+
+
+<h3 id="4-7">7. 模拟栈操作</h3>
+
+![Stack.png](./images/Stack.png)
+
+[回到目录](#jump-4)
 
 
 # 参考文档
