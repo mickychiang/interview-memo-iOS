@@ -14,6 +14,69 @@
     NSLog(@"test");
 }
 
+// MARK: - ******************** OC ********************
+// MARK: - 不用中间变量，交换A和B的值
++ (void)swap1A:(int)a andB:(int)b {
+    a = a + b;
+    b = a - b;
+    a = a - b;
+    NSLog(@"a = %d, b = %d", a, b);
+}
+
++ (void)swap2A:(int)a andB:(int)b {
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+    NSLog(@"a = %d, b = %d", a, b);
+}
+
+// MARK: - 有序数组合并
+// 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
++ (void)mergeOrderedListWithArray1:(NSArray *)array1 array2:(NSArray *)array2 {
+    
+    int p = 0; // 遍历数组a的指针
+    int q = 0; // 遍历数组b的指针
+    int i = 0; // 记录当前存储位置
+
+    NSMutableArray *result = [NSMutableArray array];
+    
+    // 任一数组没有到达边界 则进行遍历
+    while (p < array1.count && q < array2.count) {
+        // 如果数组a对应位置的值小于数组b对应位置的值
+        if (array1[p] <= array2[q]) {
+            // 存储数组a的值
+            result[i] = array1[p];
+            // 移动数组a的遍历指针
+            p++;
+        } else {
+            // 存储数组b的值
+            result[i] = array2[q];
+            // 移动数组b的遍历指针
+            q++;
+        }
+        // 指向合并结果的下一个存储位置
+        i++;
+    }
+
+    // 如果数组a有剩余
+    while (p < array1.count) {
+        // 将数组a剩余的部分拼接到合并结果的后面
+        result[i] = array1[p++];
+        i++;
+    }
+
+    // 如果数组b有剩余
+    while (q < array2.count) {
+        // 将数组b剩余的部分拼接到合并结果的后面
+        result[i] = array2[q++];
+        i++;
+    }
+    
+    NSLog(@"result = %@", result);
+}
+
+
+// MARK: - ******************** C ********************
 // MARK: - 不用中间变量，交换A和B的值
 // 方法1. 中间变量
 void swap1(int a, int b) {
@@ -100,7 +163,7 @@ void reverseChars(char* cha) {
         *(end--) = temp;
     }
     
-    printf("%s \n", cha);
+    printf("%s \n", end);
 }
 
 

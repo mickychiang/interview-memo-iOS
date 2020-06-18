@@ -13,6 +13,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)test;
 
++ (void)swap1A:(int)a andB:(int)b;
++ (void)swap2A:(int)a andB:(int)b;
+
+
 // 不用中间变量，交换A和B的值
 void swap1(int a, int b);
 void swap2(int a, int b);

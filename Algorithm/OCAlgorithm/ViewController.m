@@ -37,6 +37,16 @@
 }
 
 - (void)CLanguage {
+    // 不用中间变量，交换A和B的值
+    NSLog(@"不用中间变量，交换A和B的值");
+    int a = 7, b = 17;
+    NSLog(@"origin: a = %d, b = %d", a, b);
+    [OCAlgorithm swap1A:a andB:b];
+    [OCAlgorithm swap2A:a andB:b];
+    NSLog(@"---------------");
+    
+    
+    
 //    reverseChars("Hello World");
     
     
