@@ -71,19 +71,16 @@ class List {
         return headNode!
     }
     
-    
-    
-    func reverseList(head: ListNode) {
-        var originHead = head
-        var newHead: ListNode?
-        
-        if newHead == nil {
-            newHead = ListNode(originHead.data)
-        } else {
-            let temp = ListNode(originHead.data)
-            temp.next = newHead
-            newHead = temp
+    func reverseList(headNode: ListNode) -> ListNode {
+        var originHeadNode = headNode
+        var newHeadNode: ListNode?
+        while originHeadNode != nil {
+            let temp = originHeadNode
+            originHeadNode = originHeadNode.next!
+            newHeadNode = originHeadNode
+            originHeadNode = temp.next!
         }
+        return newHeadNode!
     }
 }
 
