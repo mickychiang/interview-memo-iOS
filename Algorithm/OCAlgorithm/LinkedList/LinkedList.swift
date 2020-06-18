@@ -14,12 +14,12 @@ import Foundation
 // MARK: - 节点
 class ListNode {
     // 数据域
-    var val: Int
+    var data: Int
     // 指针域
     var next: ListNode?
     
-    init(_ val: Int) {
-        self.val = val
+    init(_ data: Int) {
+        self.data = data
         self.next = nil
     }
 }
@@ -33,12 +33,12 @@ class List {
     var tail: ListNode?
     
     // MARK: - 链表 头插法
-    func appendToHead(_ val: Int) {
+    func appendToHead(_ data: Int) {
         if head == nil {
-            head = ListNode(val)
+            head = ListNode(data)
             tail = head
         } else {
-            let temp = ListNode(val)
+            let temp = ListNode(data)
             // 把当前head地址赋给temp的指针域
             temp.next = head
             head = temp
@@ -46,13 +46,43 @@ class List {
     }
     
     // MARK: - 链表 尾插法
-    func appendToTail(_ val: Int) {
+    func appendToTail(_ data: Int) {
         if tail == nil {
-            tail = ListNode(val)
+            tail = ListNode(data)
             head = tail
         } else {
-            tail?.next = ListNode(val)
+            tail?.next = ListNode(data)
             tail = tail?.next
+        }
+    }
+    
+    func constructList() -> ListNode {
+        var headNode: ListNode?
+        var curNode: ListNode?
+        for i in 0..<5 {
+            let node: ListNode = ListNode(i)
+            if headNode == nil {
+                headNode = node
+            } else {
+                curNode?.next = node
+            }
+            curNode = node
+        }
+        return headNode!
+    }
+    
+    
+    
+    func reverseList(head: ListNode) {
+        var originHead = head
+        var newHead: ListNode?
+        
+        if newHead == nil {
+            newHead = ListNode(originHead.data)
+        } else {
+            let temp = ListNode(originHead.data)
+            temp.next = newHead
+            newHead = temp
         }
     }
 }
