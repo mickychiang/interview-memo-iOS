@@ -72,13 +72,13 @@ class List {
     }
     
     func reverseList(headNode: ListNode) -> ListNode {
-        var originHeadNode = headNode
+        var originHeadNode: ListNode? = headNode
         var newHeadNode: ListNode?
         while originHeadNode != nil {
             let temp = originHeadNode
-            originHeadNode = originHeadNode.next!
+            originHeadNode = originHeadNode?.next
             newHeadNode = originHeadNode
-            originHeadNode = temp.next!
+            originHeadNode = temp?.next
         }
         return newHeadNode!
     }
@@ -106,7 +106,7 @@ func partition(_ head: ListNode?, _ x: Int) -> ListNode? {
     // 判断是否存在node
     while node != nil {
         // 判断数据是否小于x
-        if node!.val < x {
+        if node!.data < x {
             // 小于x 则prev.next指针域指向node
             prev.next = node
             prev = node!
