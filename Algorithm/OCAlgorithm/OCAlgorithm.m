@@ -14,8 +14,143 @@
     NSLog(@"test");
 }
 
-// MARK: - 反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH"
-void char_reverse(char* cha) {
+// MARK: - ******************** OC ********************
+// MARK: - 不用中间变量，交换A和B的值
++ (void)swap1A:(int)a andB:(int)b {
+    a = a + b;
+    b = a - b;
+    a = a - b;
+    NSLog(@"a = %d, b = %d", a, b);
+}
+
++ (void)swap2A:(int)a andB:(int)b {
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+    NSLog(@"a = %d, b = %d", a, b);
+}
+
+// MARK: - 有序数组合并
+// 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
++ (void)mergeOrderedListWithArray1:(NSArray *)array1 array2:(NSArray *)array2 {
+    
+    int p = 0; // 遍历数组a的指针
+    int q = 0; // 遍历数组b的指针
+    int i = 0; // 记录当前存储位置
+
+    NSMutableArray *result = [NSMutableArray array];
+    
+    // 任一数组没有到达边界 则进行遍历
+    while (p < array1.count && q < array2.count) {
+        // 如果数组a对应位置的值小于数组b对应位置的值
+        if (array1[p] <= array2[q]) {
+            // 存储数组a的值
+            result[i] = array1[p];
+            // 移动数组a的遍历指针
+            p++;
+        } else {
+            // 存储数组b的值
+            result[i] = array2[q];
+            // 移动数组b的遍历指针
+            q++;
+        }
+        // 指向合并结果的下一个存储位置
+        i++;
+    }
+
+    // 如果数组a有剩余
+    while (p < array1.count) {
+        // 将数组a剩余的部分拼接到合并结果的后面
+        result[i] = array1[p++];
+        i++;
+    }
+
+    // 如果数组b有剩余
+    while (q < array2.count) {
+        // 将数组b剩余的部分拼接到合并结果的后面
+        result[i] = array2[q++];
+        i++;
+    }
+    
+    NSLog(@"result = %@", result);
+}
+
+
+// MARK: - ******************** C ********************
+// MARK: - 不用中间变量，交换A和B的值
+// 方法1. 中间变量
+void swap1(int a, int b) {
+    int temp = a;
+    a = b;
+    b = temp;
+    printf("a = %d, b = %d \n", a, b);
+}
+// 方法2. 加法
+void swap2(int a, int b) {
+    a = a + b;
+    b = a - b;
+    a = a - b;
+    printf("a = %d, b = %d \n", a, b);
+}
+// 方法3. 异或（相同为0，不同为1。可以理解为不进位加法）
+void swap3(int a, int b) {
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+    printf("a = %d, b = %d \n", a, b);
+}
+
+// MARK: - 最大公约数
+// 比如：20和4的最大公约数为4；18和27的最大公约数为9
+// 方法1. 直接遍历法
+int maxCommonDivisor1(int a, int b) {
+    int max = 0;
+    for (int i = 1; i <=b; i++) {
+        if (a % i == 0 && b % i == 0) {
+            max = i;
+        }
+    }
+    return max;
+}
+// 方法2. 辗转相除法：其中a为大数，b为小数
+int maxCommonDivisor2(int a, int b) {
+    int r;
+    while (a % b > 0) {
+        r = a % b;
+        a = b;
+        b = r;
+    }
+    return b;
+}
+
+// MARK: - 最小公倍数
+// 比如：20和4的最大公约数为4；18和27的最大公约数为9
+// 最小公倍数 = (a * b)/最大公约数
+// 方法1. 直接遍历法
+int minimumCommonMultiple1(int a, int b) {
+    int max = 0;
+    for (int i = 1; i <=b; i++) {
+        if (a % i == 0 && b % i == 0) {
+            max = i;
+        }
+    }
+    return (a * b) / max;
+}
+// 方法2. 辗转相除法：其中a为大数，b为小数
+int minimumCommonMultiple2(int a, int b) {
+    int r;
+    int aa = a;
+    int bb = b;
+    while (a % b > 0) {
+        r = a % b;
+        a = b;
+        b = r;
+    }
+    return (aa * bb) / b;
+}
+
+// MARK: - 反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH" ?????
+void reverseChars(char* cha) {
     // 指向第一个字符
     char* begin = cha;
     // 指向最后一个字符
@@ -27,7 +162,53 @@ void char_reverse(char* cha) {
         *(begin++) = *end;
         *(end--) = temp;
     }
+    
+    printf("%s \n", end);
 }
+
+
+
+
+// MARK: - 有序数组合并
+// 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
+void mergeList(int a[], int aLen, int b[], int bLen, int result[]) {
+    int p = 0; // 遍历数组a的指针
+    int q = 0; // 遍历数组b的指针
+    int i = 0; // 记录当前存储位置
+    
+    // 任一数组没有到达边界 则进行遍历
+    while (p < aLen && q < bLen) {
+        // 如果数组a对应位置的值小于数组b对应位置的值
+        if (a[p] <= b[q]) {
+            // 存储数组a的值
+            result[i] = a[p];
+            // 移动数组a的遍历指针
+            p++;
+        } else {
+            // 存储数组b的值
+            result[i] = b[q];
+            // 移动数组b的遍历指针
+            q++;
+        }
+        // 指向合并结果的下一个存储位置
+        i++;
+    }
+    
+    // 如果数组a有剩余
+    while (p < aLen) {
+        // 将数组a剩余的部分拼接到合并结果的后面
+        result[i] = a[p++];
+        i++;
+    }
+    
+    // 如果数组b有剩余
+    while (q < bLen) {
+        // 将数组b剩余的部分拼接到合并结果的后面
+        result[i] = b[q++];
+        i++;
+    }
+}
+
 
 
 // ********** 排序算法（C版） **********

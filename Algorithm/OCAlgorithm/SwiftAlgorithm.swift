@@ -10,19 +10,65 @@ import Foundation
 
 class SwiftAlgorithm: NSObject {
     @objc static func baseAlgorithm() {
-        print("反转字符串，要求将其按照单词顺序进行反转。举例：\"Hello World\" -> \"World Hello\"")
-        print(reverseWords1(s: "Hello World"))
-        print(reverseWords2(s: "Hello World"))
+        
+        print("计算从1到100数字的总和")
+        print(sum1(100))
+        print(sum2(100))
+        print(sum3(100))
+        print("---------------")
+        
+        print("不用中间变量，交换A和B的值")
+        var x = 7, y = 17
+        print("origin: x = \(x), y = \(y)")
+        print(swap(a: &x, b: &y))
+        print(swap1(a: &x, b: &y))
+        print(swap2(a: &x, b: &y))
+        print(swap3(a: &x, b: &y))
+        print("---------------")
+        print("最大公约数")
+        var xx = 18, yy = 27
+        print("origin: x = \(xx), y = \(yy)")
+        print(maxCommonDivisor1(a: xx, b: yy))
+        print(maxCommonDivisor2(a: &xx, b: &yy))
+        print("---------------")
+        print("最小公倍数")
+        var xxx = 18, yyy = 27
+        print("origin: x = \(xxx), y = \(yyy)")
+        print(minimumCommonMultiple1(a: xxx, b: yyy))
+        print(minimumCommonMultiple2(a: &xxx, b: &yyy))
+        print("---------------")
+        
+        
         print("反转字符串，要求将其按照字符顺序进行反转。举例：\"Hello World\" -> \"dlroW olleH\"")
         print(reverseString1(s: "Hello World"))
         print(reverseString2(s: "Hello World"))
+        print("---------------")
+//        print("反转字符串，要求将其按照单词顺序进行反转。举例：\"Hello World\" -> \"World Hello\"")
+//        print(reverseWords1(s: "Hello World"))
+//        print(reverseWords2(s: "Hello World"))
+//        print("---------------")
+        
+        
+//        print("有序数组的合并")
+//        print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
+        
+        var stack: IntegerStack = IntegerStack()
+        for i in 0..<10 {
+            stack.push(i)
+        }
+        print("stack = \(stack)")
+        stack.pop() // 9
+        print("stack = \(stack)")
+        
+        
+        
     }
 }
 
 // MARK: - 计算从1到100数字的总和
 extension SwiftAlgorithm {
     /// 法1. 1到100循环遍历逐步相加
-    // 时间复杂度：O(n)
+    /// 时间复杂度：O(n)
     static func sum1(_ n: Int) -> Int {
         var sum = 0
         for i in 1...n {
@@ -31,10 +77,25 @@ extension SwiftAlgorithm {
         return sum
     }
     
-    /// 法2. 等差数列求和
-    // 时间复杂度：O(1)
+    /// 法2. 递归求和
+    /// 时间复杂度：O(n)
     static func sum2(_ n: Int) -> Int {
+        guard n > 0 else {
+            return 0
+        }
+        let sum = n
+        return sum + sum2(sum - 1)
+    }
+    // 算法的时间复杂度是多少 - O(n)
+    // 递归会有什么缺点 - 递归次数过多的时候会造成栈溢出，操作系统给应用程序分配的栈空间是有限的，每次函数调用都会分配一段栈空间， 当栈空间不够的时候，程序也有崩了。
+    // 不用递归能否实现，复杂度能否降到O(1) - 等差数列求和 (n + 1) * n / 2
+    
+    /// 法3. 等差数列求和
+    /// 时间复杂度：O(1)
+    static func sum3(_ n: Int) -> Int {
         return (n + 1) * n / 2
+        // 或者使用 >> 运算
+//        return (n + 1) * n >> 1
     }
 }
 
@@ -90,36 +151,61 @@ extension SwiftAlgorithm {
     }
 }
 
-// MARK: - 交换A和B的值
+// MARK: - 判断质数
 extension SwiftAlgorithm {
+    // 比如：2、3、5、7、11、13、19等只能被1和自身整除的数叫质数
+    // 直接判断：一个个除，看余数是否为零，如果不为零，则是质数。
+    static func isPrime(n: Int) -> Int {
+        for i in 2...Int(sqrt(Double(n))) { // sqrt(n) 返回n的平方根 比如sqrt(100.0) = 10
+            if (n % i == 0) {
+                return 0
+            }
+        }
+        return 1
+    }
+}
+
+// MARK: - 不用中间变量，交换A和B的值
+extension SwiftAlgorithm {
+    
+    /// 方法0. Swift可以利用元组特性直接交换
+    static func swap(a: inout Int, b: inout Int) -> (Int, Int) {
+        (a, b) = (b, a)
+        return (a, b)
+    }
+    
     /// 方法1. 中间变量
-    func swap1(a: inout Int, b: inout Int) -> (Int, Int) {
+    static func swap1(a: inout Int, b: inout Int) -> (Int, Int) {
         let temp = a
         a = b
         b = temp
         return (a, b)
     }
+    
     /// 方法2. 加法
-    func swap2(a: inout Int, b: inout Int) -> (Int, Int) {
+    static func swap2(a: inout Int, b: inout Int) -> (Int, Int) {
         a = a + b
         b = a - b
         a = a - b
         return (a, b)
     }
+    
     /// 方法3. 异或（相同为0，不同为1。可以理解为不进位加法）
-    func swap3(a: inout Int, b: inout Int) -> (Int, Int) {
+    static func swap3(a: inout Int, b: inout Int) -> (Int, Int) {
         a = a ^ b
         b = a ^ b
         a = a ^ b
         return (a, b)
     }
+    
 }
 
 // MARK: - 最大公约数
+// 比如：20和4的最大公约数为4；18和27的最大公约数为9
 extension SwiftAlgorithm {
-    // 比如：20和4的最大公约数为4；18和27的最大公约数为9
+    
     /// 方法1. 直接遍历法
-    func maxCommonDivisor1(a: Int, b: Int) -> Int {
+    static func maxCommonDivisor1(a: Int, b: Int) -> Int {
         var max = 0
         for i in 1...b {
             if (a % i == 0 && b % i == 0) {
@@ -128,8 +214,9 @@ extension SwiftAlgorithm {
         }
         return max
     }
+    
     /// 方法2. 辗转相除法：其中a为大数，b为小数
-    func maxCommonDivisor2(a: inout Int, b: inout Int) -> Int {
+    static func maxCommonDivisor2(a: inout Int, b: inout Int) -> Int {
         var r: Int
         while (a % b > 0) {
             r = a % b
@@ -138,14 +225,16 @@ extension SwiftAlgorithm {
         }
         return b
     }
+    
 }
 
 // MARK: - 最小公倍数
+// 比如：20和4的最大公约数为4；18和27的最大公约数为9
+// 最小公倍数 = (a * b)/最大公约数
 extension SwiftAlgorithm {
-    // 比如：20和4的最大公约数为4；18和27的最大公约数为9
-    // 最小公倍数 = (a * b)/最大公约数
+    
     /// 方法1. 直接遍历法
-    func minimumCommonMultiple1(a: Int, b: Int) -> Int {
+    static func minimumCommonMultiple1(a: Int, b: Int) -> Int {
         var max = 0
         for i in 1...b {
             if (a % i == 0 && b % i == 0) {
@@ -154,8 +243,9 @@ extension SwiftAlgorithm {
         }
         return (a * b) / max
     }
+    
     /// 方法2. 辗转相除法：其中a为大数，b为小数
-    func minimumCommonMultiple2(a: inout Int, b: inout Int) -> Int {
+    static func minimumCommonMultiple2(a: inout Int, b: inout Int) -> Int {
         var r: Int
         let aa = a, bb = b
         while (a % b > 0) {
@@ -167,31 +257,40 @@ extension SwiftAlgorithm {
     }
 }
 
-// MARK: - 判断质数
+// MARK: - ****************************** 反转题 ******************************
 extension SwiftAlgorithm {
-    // 比如：2、3、5、7、11、13、19等只能被1和自身整除的数叫质数
-    // 直接判断：一个个除，看余数是否为零，如果不为零，则是质数。
-    func isPrime(n: Int) -> Int {
-        for i in 2...Int(sqrt(Double(n))) { // sqrt(n) 返回n的平方根 比如sqrt(100.0) = 10
-            if (n % i == 0) {
-                return 0
-            }
+    // MARK: - 1⃣️反转字符串
+    // MARK: - 1. [※※※※※] 反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH"
+    
+    /// 方法1. 系统方法
+    static func reverseString1(s: String) -> String {
+        return String(s.reversed())
+    }
+    
+    /// 方法2.
+    static func reverseString2(s: String) -> String {
+        
+        // 将待反转字符串分割成字符数组
+        var chars = Array(s)
+        // 初始化指向第一个字符的索引值
+        var start = 0
+        // 初始化指向最后一个字符的索引值
+        var end = chars.count - 1
+        
+        // 判断反转字符串的位置
+        while start < end {
+            // start、end位置的字符互换
+            (chars[start], chars[end]) = (chars[end], chars[start])
+            // 前、后索引值 往中间位置靠拢
+            start += 1
+            end -= 1
         }
-        return 1
+        
+        return String(chars)
     }
     
     
-    
-}
-
-
-
-
-
-
-// MARK: - ****************************** 反转题 ******************************
-extension SwiftAlgorithm {
-    // MARK: - 1. 反转字符串，要求将其按照单词顺序进行反转。举例："Hello World" -> "World Hello"
+    // MARK: - 2. 反转字符串，要求将其按照单词顺序进行反转。举例："Hello World" -> "World Hello"
     // 方法1. 系统提供的方法 不过时间复杂度过大
     static func reverseWords1(s: String) -> String {
         // 用空格划分字符串
@@ -242,34 +341,9 @@ extension SwiftAlgorithm {
         (chars[p], chars[q]) = (chars[q], chars[p])
     }
     
-    // MARK: - 2. 反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH" ！！！
-    // 方法1. 系统方法
-    static func reverseString1(s: String) -> String {
-        return String(s.reversed())
-    }
-    // 方法2.
-    static func reverseString2(s: String) -> String {
-        // 将待反转字符串分割成字符数组
-        var chars = Array(s)
-        // 指向第一个字符的索引值
-        var start = 0
-        // 指向最后一个字符的索引值
-        var end = chars.count - 1
-        
-        // 判断反转字符串的位置
-        while start < end {
-            // start、end位置的字符互换
-            (chars[start], chars[end]) = (chars[end], chars[start])
-            // 往中间位置靠拢
-            start += 1
-            end -= 1
-        }
-        
-        return String(chars)
-    }
+
     
-    
-    // MARK: - 3. 整数反转
+    // MARK: - 2⃣️反转整数
     // 例题：给定一个16位有符号整数，要求将其反转后输出（eg:输入：1234，输出：4321）
     // 注意边界条件的判断。
     @objc static func reverseInteger(x: Int) -> Int {
@@ -289,13 +363,55 @@ extension SwiftAlgorithm {
     }
  
     
-    // MARK: - 4. 链表反转。 思路：头插法实现 ！！！！！
-    
-    
-    
-    
+    // MARK: - 3⃣️链表反转。 思路：头插法实现 ！！！！！
 }
 
+// MARK: - 有序数组的合并
+// 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
+extension SwiftAlgorithm {
+    @objc static func mergeOrderedList(arrayA: [Int], arrayB: [Int]) -> [Int] {
+        
+        var result: [Int] = []
+        // 遍历数组a的指针、遍历数组b的指针、记录当前存储位置
+        var p = 0, q = 0, i = 0
+        
+        // 任一数组没有到达边界 则进行遍历
+        while p < arrayA.count && q < arrayB.count {
+            // 如果数组a对应位置的值小于数组b对应位置的值
+            if arrayA[p] <= arrayB[q] {
+                // 存储数组a的值
+                result.insert(arrayA[p], at: i)
+                // 移动数组a的遍历指针
+                p += 1
+            } else {
+                // 存储数组b的值
+                result.insert(arrayB[q], at: i)
+                // 移动数组b的遍历指针
+                q += 1
+            }
+            // 指向合并结果的下一个存储位置
+            i += 1
+        }
+        
+        // 如果数组a有剩余
+        while p < arrayA.count {
+            // 将数组a剩余的部分拼接到合并结果的后面
+            result.insert(arrayA[p], at: i)
+            p += 1
+            i += 1
+        }
+        
+        // 如果数组b有剩余
+        while q < arrayB.count {
+            // 将数组b剩余的部分拼接到合并结果的后面
+            result.insert(arrayB[q], at: i)
+            q += 1
+            i += 1
+        }
+        
+        return result
+    }
+}
 /*
  待总结归类：
  1.反转题：字符串反转、单词反转、整数反转、...

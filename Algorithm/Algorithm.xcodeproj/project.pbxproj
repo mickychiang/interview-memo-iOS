@@ -9,10 +9,16 @@
 /* Begin PBXBuildFile section */
 		4F0887982477A456003C3D8F /* SortAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F0887972477A456003C3D8F /* SortAlgorithm.swift */; };
 		4F08879B2477C612003C3D8F /* SortAlgorithmPerformance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F08879A2477C612003C3D8F /* SortAlgorithmPerformance.swift */; };
+		4F3F1C15249B0390007AD66C /* CommonSuperFind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C12249B0390007AD66C /* CommonSuperFind.swift */; };
+		4F3F1C16249B0390007AD66C /* CommonSuperFind.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C13249B0390007AD66C /* CommonSuperFind.m */; };
+		4F3F1C1B249B0966007AD66C /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C18249B0966007AD66C /* Stack.swift */; };
+		4F3F1C1C249B0966007AD66C /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C19249B0966007AD66C /* Stack.m */; };
 		4F8192222497049900FE646D /* ReverseList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8192202497049900FE646D /* ReverseList.m */; };
 		4F8192232497049900FE646D /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8192212497049900FE646D /* LinkedList.swift */; };
 		4FA0D11224766C1100C3C60B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11124766C1100C3C60B /* main.c */; };
 		4FA0D11D24767AF800C3C60B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11C24767AF800C3C60B /* MainViewController.m */; };
+		BD5CECEA24990ED200480EED /* HashFind.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5CECE924990ED200480EED /* HashFind.m */; };
+		BD5CECF0249A65E400480EED /* MedianFind.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5CECEF249A65E400480EED /* MedianFind.m */; };
 		BDD0A90E24769D2B004FF665 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A90D24769D2B004FF665 /* AppDelegate.m */; };
 		BDD0A91424769D2B004FF665 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A91324769D2B004FF665 /* ViewController.m */; };
 		BDD0A91724769D2B004FF665 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDD0A91524769D2B004FF665 /* Main.storyboard */; };
@@ -20,9 +26,7 @@
 		BDD0A91C24769D2F004FF665 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDD0A91A24769D2F004FF665 /* LaunchScreen.storyboard */; };
 		BDD0A91F24769D2F004FF665 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A91E24769D2F004FF665 /* main.m */; };
 		BDD0A92524769F94004FF665 /* OCAlgorithm.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A92424769F94004FF665 /* OCAlgorithm.m */; };
-		BDD0A9282476AC33004FF665 /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A9272476AC33004FF665 /* Stack.m */; };
 		BDD0A92B2476AD97004FF665 /* SwiftAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A92A2476AD97004FF665 /* SwiftAlgorithm.swift */; };
-		BDEBD6C12476CBC800D65084 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEBD6C02476CBC800D65084 /* Stack.swift */; };
 		BDEBD6C32476CED100D65084 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEBD6C22476CED100D65084 /* Queue.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +45,12 @@
 /* Begin PBXFileReference section */
 		4F0887972477A456003C3D8F /* SortAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAlgorithm.swift; sourceTree = "<group>"; };
 		4F08879A2477C612003C3D8F /* SortAlgorithmPerformance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortAlgorithmPerformance.swift; sourceTree = "<group>"; };
+		4F3F1C12249B0390007AD66C /* CommonSuperFind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonSuperFind.swift; sourceTree = "<group>"; };
+		4F3F1C13249B0390007AD66C /* CommonSuperFind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonSuperFind.m; sourceTree = "<group>"; };
+		4F3F1C14249B0390007AD66C /* CommonSuperFind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonSuperFind.h; sourceTree = "<group>"; };
+		4F3F1C18249B0966007AD66C /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
+		4F3F1C19249B0966007AD66C /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
+		4F3F1C1A249B0966007AD66C /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
 		4F81921F2497049900FE646D /* ReverseList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReverseList.h; sourceTree = "<group>"; };
 		4F8192202497049900FE646D /* ReverseList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReverseList.m; sourceTree = "<group>"; };
 		4F8192212497049900FE646D /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
@@ -48,6 +58,10 @@
 		4FA0D11124766C1100C3C60B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4FA0D11B24767AF800C3C60B /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		4FA0D11C24767AF800C3C60B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		BD5CECE824990ED200480EED /* HashFind.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashFind.h; sourceTree = "<group>"; };
+		BD5CECE924990ED200480EED /* HashFind.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HashFind.m; sourceTree = "<group>"; };
+		BD5CECEE249A65E400480EED /* MedianFind.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MedianFind.h; sourceTree = "<group>"; };
+		BD5CECEF249A65E400480EED /* MedianFind.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MedianFind.m; sourceTree = "<group>"; };
 		BDD0A90A24769D2B004FF665 /* OCAlgorithm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OCAlgorithm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD0A90C24769D2B004FF665 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BDD0A90D24769D2B004FF665 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -60,11 +74,8 @@
 		BDD0A91E24769D2F004FF665 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BDD0A92324769F94004FF665 /* OCAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCAlgorithm.h; sourceTree = "<group>"; };
 		BDD0A92424769F94004FF665 /* OCAlgorithm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCAlgorithm.m; sourceTree = "<group>"; };
-		BDD0A9262476AC33004FF665 /* Stack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
-		BDD0A9272476AC33004FF665 /* Stack.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
 		BDD0A9292476AD97004FF665 /* OCAlgorithm-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCAlgorithm-Bridging-Header.h"; sourceTree = "<group>"; };
 		BDD0A92A2476AD97004FF665 /* SwiftAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftAlgorithm.swift; sourceTree = "<group>"; };
-		BDEBD6C02476CBC800D65084 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		BDEBD6C22476CED100D65084 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,6 +97,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F3F1C11249B0390007AD66C /* CommonSuperFind */ = {
+			isa = PBXGroup;
+			children = (
+				4F3F1C12249B0390007AD66C /* CommonSuperFind.swift */,
+				4F3F1C14249B0390007AD66C /* CommonSuperFind.h */,
+				4F3F1C13249B0390007AD66C /* CommonSuperFind.m */,
+			);
+			path = CommonSuperFind;
+			sourceTree = "<group>";
+		};
+		4F3F1C17249B0966007AD66C /* Stack */ = {
+			isa = PBXGroup;
+			children = (
+				4F3F1C1A249B0966007AD66C /* Stack.h */,
+				4F3F1C19249B0966007AD66C /* Stack.m */,
+				4F3F1C18249B0966007AD66C /* Stack.swift */,
+			);
+			path = Stack;
+			sourceTree = "<group>";
+		};
 		4F81921E2497049900FE646D /* LinkedList */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,20 +158,23 @@
 		BDD0A90B24769D2B004FF665 /* OCAlgorithm */ = {
 			isa = PBXGroup;
 			children = (
+				4F3F1C17249B0966007AD66C /* Stack */,
+				4F3F1C11249B0390007AD66C /* CommonSuperFind */,
 				4F81921E2497049900FE646D /* LinkedList */,
 				BDD0A90C24769D2B004FF665 /* AppDelegate.h */,
 				BDD0A90D24769D2B004FF665 /* AppDelegate.m */,
 				BDD0A91224769D2B004FF665 /* ViewController.h */,
 				BDD0A91324769D2B004FF665 /* ViewController.m */,
+				BD5CECE824990ED200480EED /* HashFind.h */,
+				BD5CECE924990ED200480EED /* HashFind.m */,
+				BD5CECEE249A65E400480EED /* MedianFind.h */,
+				BD5CECEF249A65E400480EED /* MedianFind.m */,
 				BDD0A92324769F94004FF665 /* OCAlgorithm.h */,
 				BDD0A92424769F94004FF665 /* OCAlgorithm.m */,
 				BDD0A92A2476AD97004FF665 /* SwiftAlgorithm.swift */,
 				4F0887972477A456003C3D8F /* SortAlgorithm.swift */,
 				4F08879A2477C612003C3D8F /* SortAlgorithmPerformance.swift */,
-				BDEBD6C02476CBC800D65084 /* Stack.swift */,
 				BDEBD6C22476CED100D65084 /* Queue.swift */,
-				BDD0A9262476AC33004FF665 /* Stack.h */,
-				BDD0A9272476AC33004FF665 /* Stack.m */,
 				BDD0A91524769D2B004FF665 /* Main.storyboard */,
 				BDD0A91824769D2F004FF665 /* Assets.xcassets */,
 				BDD0A91A24769D2F004FF665 /* LaunchScreen.storyboard */,
@@ -252,16 +286,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F3F1C15249B0390007AD66C /* CommonSuperFind.swift in Sources */,
+				4F3F1C1B249B0966007AD66C /* Stack.swift in Sources */,
 				4F8192222497049900FE646D /* ReverseList.m in Sources */,
 				BDD0A91424769D2B004FF665 /* ViewController.m in Sources */,
 				BDD0A92524769F94004FF665 /* OCAlgorithm.m in Sources */,
 				4F0887982477A456003C3D8F /* SortAlgorithm.swift in Sources */,
-				BDEBD6C12476CBC800D65084 /* Stack.swift in Sources */,
+				4F3F1C16249B0390007AD66C /* CommonSuperFind.m in Sources */,
+				BD5CECEA24990ED200480EED /* HashFind.m in Sources */,
+				4F3F1C1C249B0966007AD66C /* Stack.m in Sources */,
 				BDEBD6C32476CED100D65084 /* Queue.swift in Sources */,
 				4F8192232497049900FE646D /* LinkedList.swift in Sources */,
 				BDD0A90E24769D2B004FF665 /* AppDelegate.m in Sources */,
 				4F08879B2477C612003C3D8F /* SortAlgorithmPerformance.swift in Sources */,
-				BDD0A9282476AC33004FF665 /* Stack.m in Sources */,
+				BD5CECF0249A65E400480EED /* MedianFind.m in Sources */,
 				BDD0A91F24769D2F004FF665 /* main.m in Sources */,
 				BDD0A92B2476AD97004FF665 /* SwiftAlgorithm.swift in Sources */,
 			);

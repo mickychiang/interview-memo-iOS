@@ -1,20 +1,20 @@
 # iOS Algorithm
 
 # 前言
-此篇文章是对数据结构和常见算法的整理，根据日常知识的积累会不断的更新与完善。  
+此篇文章是对数据结构和算法的整理，根据日常知识的积累会不断的更新与完善。  
 有理解不对的地方还请指正，互相学习。  
-**重点理解排序算法和优化时间复杂度的问题还有实战题，面试会经常提问**
+**重点理解排序算法和实战题，面试会经常提问**
 
 # 目录
 
 <span id="jump-1">[<h2>一. 算法基础</h2>](#1)</span>
 
-<span id="jump-2">[<h2>二. 常见简单算法</h2>](#2)</span>
+<span id="jump-2">[<h2>二. 简单算法</h2>](#2)</span>
 [1. 计算从1到100数字的总和](#2-1)  
 [2. 给出一个整型数组和一个目标值，判断数组中是否有两个数之和等于目标值](#2-2)  
 [3. 给出一个整型数组和目标值，且数组中有且仅有两个数之和等于目标值，求这两个数在数组中的index](#2-3)  
 [4. 实现阶乘n!的算法 n！= n * (n-1) * ... * 1](#2-4)  
-[5. 交换A和B的值](#2-5)  
+[5. 不用中间变量，交换A和B的值](#2-5)  
 [6. 最大公约数](#2-6)  
 [7. 最小公倍数](#2-7)  
 [8. 判断质数](#2-8)  
@@ -27,13 +27,17 @@
 [5. 快速排序](#3-5)  
 [6. 堆排序](#3-6)  
 [7. 桶排序](#3-7)  
+[8. 折半查找(二分查找)](#3-8)  
 
 
 <span id="jump-4">[<h2>四. 实战</h2>](#4)</span>
 [1. 反转字符串](#4-1)  
-[2. 反转单链表](#4-2) 
-
-
+[2. 反转单链表[※※※※※]](#4-2)  
+[3. 有序数组的合并](#4-3)  
+[4. 在一个字符串中找到第一个只出现一次的字符(hash算法)](#4-4)  
+[5. 查找两个子视图的共同父视图[※※※※※]](#4-5)   
+[6. 求无序数组当中的中位数](#4-6)   
+[7. 模拟栈操作](#4-7)   
 
 # 正文
 <h2 id="1">一. 算法基础</h2>
@@ -62,14 +66,14 @@
 
 [回到目录](#jump-1)
 
-<h2 id="2">二. 常见简单算法</h2>
+<h2 id="2">二. 简单算法</h2>
 
 <h3 id="2-1">1. 计算从1到100数字的总和</h3>
 
 法1. 1到100循环遍历逐步相加  
 时间复杂度：O(n)
 ```
-static func sum1(_ n: Int) -> Int {
+func sum1(_ n: Int) -> Int {
     var sum = 0
     for i in 1...n {
         sum += i
@@ -77,11 +81,29 @@ static func sum1(_ n: Int) -> Int {
     return sum
 }
 ```
-法2. 等差数列求和  
+
+法2. 递归求和  
+时间复杂度：O(n)  
+- 算法的时间复杂度是多少 ?  - O(n)  
+- 递归会有什么缺点 ? - 递归次数过多的时候会造成栈溢出，操作系统给应用程序分配的栈空间是有限的，每次函数调用都会分配一段栈空间， 当栈空间不够的时候，程序也有崩了。  
+- 不用递归能否实现，复杂度能否降到O(1) ? - 等差数列求和 (n + 1) * n / 2  
+```
+func sum2(_ n: Int) -> Int {
+    guard n > 0 else {
+        return 0
+    }
+    let sum = n
+    return sum + sum2(sum - 1)
+}
+```
+
+法3. 等差数列求和  
 时间复杂度：O(1)
 ```  
-static func sum2(_ n: Int) -> Int {
+func sum3(_ n: Int) -> Int {
     return (n + 1) * n / 2
+    // 或者使用 >> 运算
+    //return (n + 1) * n >> 1
 }
 ```
 [回到目录](#jump-2)
@@ -144,11 +166,23 @@ static func factorial(_ n: Int) -> Int {
 ```
 [回到目录](#jump-2)
 
-<h3 id="2-5">5. 交换A和B的值</h3>
+<h3 id="2-5">5. 不用中间变量，交换A和B的值</h3>
 
-Swift可以直接换：(a, b) = (b, a)
+#### Swift可以利用元组特性直接交换  
+```
+func swap(a: inout Int, b: inout Int) -> (Int, Int) {
+    (a, b) = (b, a)
+    return (a, b) 
+}
+```
+```
+var x = 1, y = 2
+swap(a: &x, b: &y)
+x　// 2
+y　// 1
+```
 
-方法1. 中间变量
+#### ~~方法1. 中间变量~~
 ```
 func swap1(a: inout Int, b: inout Int) -> (Int, Int) {
     let temp = a
@@ -157,7 +191,8 @@ func swap1(a: inout Int, b: inout Int) -> (Int, Int) {
     return (a, b)
 }
 ```
-方法2. 加法
+
+#### 方法2. 加法
 ```
 func swap2(a: inout Int, b: inout Int) -> (Int, Int) {
     a = a + b
@@ -166,7 +201,8 @@ func swap2(a: inout Int, b: inout Int) -> (Int, Int) {
     return (a, b)
 }
 ```
-方法3. 异或（相同为0，不同为1。可以理解为不进位加法）
+
+#### 方法3. 异或（相同为0，不同为1。可以理解为不进位加法）
 ```
 func swap3(a: inout Int, b: inout Int) -> (Int, Int) {
     a = a ^ b
@@ -175,12 +211,15 @@ func swap3(a: inout Int, b: inout Int) -> (Int, Int) {
     return (a, b)
 }
 ```
+
 [回到目录](#jump-2)
+
 
 <h3 id="2-6">6. 最大公约数</h3>
 
 比如：20和4的最大公约数为4；18和27的最大公约数为9  
-方法1. 直接遍历法
+
+#### 方法1. 直接遍历法
 ```
 func maxCommonDivisor1(a: Int, b: Int) -> Int {
     var max = 0
@@ -192,7 +231,8 @@ func maxCommonDivisor1(a: Int, b: Int) -> Int {
     return max
 }
 ```
-方法2. 辗转相除法：其中a为大数，b为小数
+
+#### 方法2. 辗转相除法：其中规定a为大数，b为小数
 ```
 func maxCommonDivisor2(a: inout Int, b: inout Int) -> Int {
     var r: Int
@@ -204,12 +244,15 @@ func maxCommonDivisor2(a: inout Int, b: inout Int) -> Int {
     return b
 }
 ```
+
 [回到目录](#jump-2)
+
 
 <h3 id="2-7">7. 最小公倍数</h3>
 
-最小公倍数 = (a * b)/最大公约数  
-方法1. 直接遍历法
+公式：最小公倍数 = (a * b)/最大公约数  
+
+#### 方法1. 直接遍历法
 ```
 func minimumCommonMultiple1(a: Int, b: Int) -> Int {
     var max = 0
@@ -221,7 +264,8 @@ func minimumCommonMultiple1(a: Int, b: Int) -> Int {
     return (a * b) / max
 }
 ```
-方法2. 辗转相除法：其中a为大数，b为小数
+
+#### 方法2. 辗转相除法：其中a为大数，b为小数
 ```
 func minimumCommonMultiple2(a: inout Int, b: inout Int) -> Int {
     var r: Int
@@ -252,11 +296,14 @@ func isPrime(n: Int) -> Int {
 ```
 [回到目录](#jump-2)
 
+
 <h2 id="3">三. 排序算法</h2>
-关于排序的介绍，常见的主要有7种：  
+
+关于排序的介绍，常见的主要有7种：    
 冒泡排序、选择排序、插入排序、归并排序、快速排序、堆排序、桶排序   
 关于这7种排序算法的时间复杂度依次为：  
 冒泡排序 = 选择排序 = 插入排序  >  归并排序 = 快速排序 = 堆排序 > 桶排序
+
 >时间复杂度：在计算机科学中，算法的时间复杂度是一个函数，它定性描述了该算法的运行时间，通常用大O符号表示。
 
 以下排序算法基于Swift语言的实现。
@@ -649,6 +696,38 @@ static func bucketSort(_ array: inout [Int]) -> [Int] {
 ```
 [回到目录](#jump-3)
 
+<h3 id="3-8">8. 折半查找(二分查找)</h3>
+
+搜索过程从数组的中间元素开始，如果中间元素正好是要查找的元素，则搜索过程结束；
+如果某一特定元素大于或者小于中间元素，则在数组大于或小于中间元素的那一半中查找，而且跟开始一样从中间元素开始比较。 
+如果在某一步骤数组为空，则代表找不到。
+这种搜索算法每一次比较都使搜索范围缩小一半。
+ 
+优化查找时间（不用遍历全部数据）  
+1.数组必须是有序的  
+2.必须已知min和max（知道范围）  
+3.动态计算mid的值，取出mid对应的值进行比较  
+4.如果mid对应的值大于要查找的值，那么max要变小为mid-1  
+5.如果mid对应的值小于要查找的值，那么min要变大为mid+1  
+
+```
+int findKey(int *arr, int length, int key) {
+    int min = 0, max = length-1, mid;
+    while (min <= max) {
+        mid = (min + max) / 2;
+        if (key > arr[mid]) {
+            min = mid + 1;
+        } else if (key < arr[mid]) {
+            max = mid - 1;
+        } else {
+            return mid;
+        }
+    }
+    return -1;
+}
+```
+
+[回到目录](#jump-3)
 
 ### 代码完整实例请参照：[Algorithm工程](https://github.com/mickychiang/iOSInterviewMemo/blob/master/Algorithm)
 
@@ -658,20 +737,22 @@ static func bucketSort(_ array: inout [Int]) -> [Int] {
 
 <h3 id="4-1">1. 反转字符串</h3>
 
+反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH"  
 ```
-static func reverseString2(s: String) -> String {
+func reverseString(s: String) -> String {
+        
     // 将待反转字符串分割成字符数组
     var chars = Array(s)
-    // 指向第一个字符的索引值
+    // 初始化指向第一个字符的索引值
     var start = 0
-    // 指向最后一个字符的索引值
+    // 初始化指向最后一个字符的索引值
     var end = chars.count - 1
         
     // 判断反转字符串的位置
     while start < end {
         // start、end位置的字符互换
         (chars[start], chars[end]) = (chars[end], chars[start])
-        // 往中间位置靠拢
+        // 前、后索引值 往中间位置靠拢
         start += 1
         end -= 1
     }
@@ -682,99 +763,303 @@ static func reverseString2(s: String) -> String {
 
 [回到目录](#jump-4)
 
-<h3 id="4-2">2. 反转单链表</h3>
+<h3 id="4-2">2. 反转单链表[※※※※※]</h3>
 
-![reverseList.png](./images/reverseList.png)
-![reverseList-HeadInsertion.png](./images/reverseList-HeadInsertion.png)
+<!-- ![reverseList.png](./images/reverseList.png)
+![reverseList-HeadInsertion.png](./images/reverseList-HeadInsertion.png)   -->
+![reverseList.png](https://i.loli.net/2020/06/17/YoqdtV8iDOXTHmB.png)  
+![reverseList-HeadInsertion.png](https://i.loli.net/2020/06/17/YZAX9LeVd3aNxbR.png)  
 
 ReverseList.h
-```
-// 定义一个链表
-struct Node {
-    int data; // 结点数据
-    struct Node *next; // 链表的下一个节点
-};
-
-@interface ReverseList : NSObject
-
-// 反转列表
-struct Node* reverseList(struct Node *head);
-
-// 构造一个链表
-struct Node* constructList(void);
-
-// 打印链表中的数据
-void printList(struct Node *head);
-
-@end
-```
+<!-- ![ReverseList.h.png](./images/ReverseList.h.png) -->
+![ReverseList.h.png](https://i.loli.net/2020/06/18/N8OVaxMvKltn7Zh.png)
 
 ReverseList.m
+<!-- ![ReverseList.m_01.png](./images/ReverseList.m_01.png)
+![ReverseList.m_02.png](./images/ReverseList.m_02.png) -->
+<!-- ![ReverseList.m_03.png](./images/ReverseList.m_03.png) -->
+![ReverseList.m_01.png](https://i.loli.net/2020/06/18/duT8wXCLcmQF71W.png)  
+![ReverseList.m_02.png](https://i.loli.net/2020/06/18/Gd3aX1i6s2BwJWo.png)  
+![ReverseList.m_03.png](https://i.loli.net/2020/06/18/RX6WwYyTPumrV8f.png)
+
+具体调用并实现
 ```
-// 反转链表
-// 参数为 - 原链表的头结点
-// 返回值为 - 新链表的头结点
-struct Node* reverseList(struct Node *head) {
-    // 定义遍历指针，初始化为原链表的头结点
-    struct Node *p = head;
-    // 定义反转后的新链表头部
-    struct Node *newH = NULL;
-    
-    // 遍历链表
-    while (p != NULL) {
-        // 记录下一个结点
-        struct Node *temp = p->next;
-        // 当前结点的next指向新链表的头部
-        p->next = newH;
-        // 更改新链表的头部为当前结点
-        newH = p;
-        // 移动p指针
-        p = temp;
-    }
-    
-    // 返回反转后的链表头结点
-    return newH;
-}
+printf("-----单链表反转-----\n");
+struct Node *head = constructList();
+printList(head);
+printf("----------\n");
+struct Node *newHead = reverseList(head);
+printList(newHead);
+```
 
-// 构造一个链表
-struct Node* constructList(void) {
-    // 定义头结点
-    struct Node *head = NULL;
-    // 定义当前结点
-    struct Node *cur = NULL;
-    
-    for (int i = 0; i < 5; i++) {
-        // 创建结点
-        struct Node *node = malloc(sizeof(struct Node));
-        node->data = i;
-        node->next = NULL;
-        
-        if (head == NULL) {
-            // 头结点为空，新结点即为头结点
-            head = node;
-        } else {
-            // 当前结点的next为新结点
-            cur->next = node;
-        }
-        
-        // 设置当前结点为新结点
-        cur = node;
-    }
-    
-    return head;
-}
-
-// 打印链表中的数据
-void printList(struct Node *head) {
-    struct Node *temp = head;
-    while (temp != NULL) {
-        printf("node is %d \n", temp->data);
-        temp = temp->next;
-    }
-}
+输出
+```
+-----单链表反转-----
+node is 0 
+node is 1 
+node is 2 
+node is 3 
+node is 4 
+----------
+node is 4 
+node is 3 
+node is 2 
+node is 1 
+node is 0 
 ```
 
 [回到目录](#jump-4)
+
+
+<h3 id="4-3">3. 有序数组的合并</h3>
+
+<!-- ![mergeList_01.png](./images/mergeList_01.png)
+![mergeList_02.png](./images/mergeList_02.png)   -->
+![mergeList_01.png](https://i.loli.net/2020/06/17/hmTdXKL7PJC3jzs.png)  
+![mergeList_02.png](https://i.loli.net/2020/06/17/SZca4jH8PXv75nT.png)  
+
+```
+// MARK: - 有序数组的合并
+// 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
+func mergeOrderedList(arrayA: [Int], arrayB: [Int]) -> [Int] {
+        
+    var result: [Int] = []
+    // 遍历数组a的指针、遍历数组b的指针、记录当前存储位置
+    var p = 0, q = 0, i = 0
+        
+    // 任一数组没有到达边界 则进行遍历
+    while p < arrayA.count && q < arrayB.count {
+        // 如果数组a对应位置的值小于数组b对应位置的值
+        if arrayA[p] <= arrayB[q] {
+            // 存储数组a的值
+            result.insert(arrayA[p], at: i)
+            // 移动数组a的遍历指针
+            p += 1
+        } else {
+            // 存储数组b的值
+            result.insert(arrayB[q], at: i)
+            // 移动数组b的遍历指针
+            q += 1
+        }
+        // 指向合并结果的下一个存储位置
+        i += 1
+    }
+        
+    // 如果数组a有剩余
+    while p < arrayA.count {
+        // 将数组a剩余的部分拼接到合并结果的后面
+        result.insert(arrayA[p], at: i)
+        p += 1
+        i += 1
+    }        
+    // 如果数组b有剩余
+    while q < arrayB.count {
+        // 将数组b剩余的部分拼接到合并结果的后面
+        result.insert(arrayB[q], at: i)
+        q += 1
+        i += 1
+    }
+        
+    return result
+}
+```
+
+具体调用并实现
+
+```
+print("有序数组的合并")
+print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
+```
+
+输出
+```
+有序数组的合并
+[1, 2, 3, 4, 5, 6, 6, 7, 8, 9, 10, 11, 12]
+```
+
+[回到目录](#jump-4)
+
+
+<h3 id="4-4">4. 在一个字符串中找到第一个只出现一次的字符(hash算法)</h3>
+
+在一个字符串中找到第一个只出现一次的字符。  
+比如：输入 abaccdeff 则输出 b
+
+思路：
+- 字符char是一个长度为8的数据类型，2的8次方=256，因此总共有256种可能。
+- 每个字母根据其ASCII码值作为数组的下标对应数组的一个数字。
+- 数组中存储的是每个字符出现的次数。
+
+例如：给定值是a，对应的ASCII码值是97，数组索引下标为97。  
+<!-- ![hash](./images/hash.png)     -->
+![hash.png](https://i.loli.net/2020/06/17/wiH2pdBQj6oqJ3c.png)  
+f(key) = key
+**存储和查找都通过该函数，有效提高查找效率。**
+
+```
+char findFirstChar(char* cha) {
+    char result = '\0';
+    
+    // 定义一个数组，用来存储各个字母出现的次数
+    // 字符char是一个长度为8的数据类型，2的8次方=256，因此总共有256种可能。
+    int array[256];
+    // 对数组进行初始化操作
+    for (int i = 0; i < 256; i++) {
+        array[i] = 0;
+    }
+    // 定义一个指针，指向当前字符串头部
+    char* p = cha;
+    // 遍历每个字符
+    while (*p != '\0') {
+        // 在字母对应的存储位置 进行出现次数+1操作
+        array[*(p++)]++;
+    }
+    
+    // 将p指针重新指向字符串头部
+    p = cha;
+    // 遍历每个字母的出现次数
+    while (*p != '\0') {
+        // 遇到第一个出现次数为1的字符，打印结果
+        if (array[*p] == 1) {
+            result = *p;
+            break;
+        }
+        // 反之继续向后遍历
+        p++;
+    }
+    
+    return result;
+}
+```
+
+具体调用并实现  
+```
+// 查找第一个只出现一次的字符
+char cha[] = "a11baccdeff";
+char fc = findFirstChar(cha);
+printf("this char is %c \n", fc);
+```
+
+输出  
+```
+this char is b 
+```
+
+[回到目录](#jump-4)
+
+
+<h3 id="4-5">5. 查找两个子视图的共同父视图[※※※※※]</h3>
+
+思路：分别记录两个子视图的所有父视图并保存到数组中，然后倒序寻找，直至找到第一个不一样的父视图。
+<!-- ![theSameSuperViews.png](./images/theSameSuperViews.png) -->
+![theSameSuperViews.png](https://i.loli.net/2020/06/17/kR6jn9FOmlh1N8Q.png)  
+
+代码示例：  
+<!-- ![CommonSuperFind.png](./images/CommonSuperFind.png)   -->
+![CommonSuperFind.png](https://i.loli.net/2020/06/18/Pr6M5bfFqXoyUJG.png)  
+
+[回到目录](#jump-4)
+
+
+<h3 id="4-6">6. 求无序数组当中的中位数</h3>
+
+思路：
+- 排序算法 + 中位数
+- 分治思想(快排思想)
+
+#### 排序算法 + 中位数
+
+<!-- ![排序算法+中位数](./images/排序算法+中位数.png)   -->
+![排序算法_中位数.png](https://i.loli.net/2020/06/17/IfaR4BqQg21bzxW.png)  
+
+#### 分治思想(快排思想)
+选取关键字，高低交替扫描
+
+- 任意挑一个元素，以该元素为支点，划分集合为两部分。  
+- 如果左侧集合长度恰为(n-1)/2，那么支点恰为中位数。  
+- 如果左侧长度<(n-1)/2，那么中位数在右侧；反之，中位数在左侧。  
+- 进入相应的一侧继续寻找中位点。 
+
+<!-- ![分治思想](./images/分治思想.png) -->
+![分治思想.png](https://i.loli.net/2020/06/17/8M3sFIqe7CyHB4j.png)  
+
+```
+// 无序数组的中位数查找
+int findMedian(int a[], int aLen) {
+    int low = 0;
+    int high = aLen - 1;
+    
+    int mid = (aLen - 1) / 2;
+    int div = PartSort(a, low, high);
+    
+    while (div != mid) {
+        if (mid < div) {
+            // 左区间查找
+            div = PartSort(a, low, div - 1);
+        } else {
+            // 右区间查找
+            div = PartSort(a, div + 1, high);
+        }
+    }
+    
+    return a[mid];
+}
+
+int PartSort(int a[], int start, int end) {
+    
+    int low = start;
+    int high = end;
+    
+    // 选取关键字
+    int key = a[end];
+    
+    while (low < high) {
+        // 左边查找比key大的值
+        while (low < high && a[low] <= key) {
+            ++low;
+        }
+        // 右边查找比key小的值
+        while (low < high && a[high] >= key) {
+            --high;
+        }
+        
+        if (low < high) {
+            // 找到之后交换左右的值
+            int temp = a[low];
+            a[low] = a[high];
+            a[high] = temp;
+        }
+    }
+    
+    int temp = a[high];
+    a[high] = a[end];
+    a[end] = temp;
+    
+    return low;
+}
+```
+
+具体调用并实现  
+```
+int list[9] = {12, 3, 10, 8, 6, 7, 11, 13, 9};
+int median = findMedian(list, 9);
+printf("the median is %d \n", median);
+```
+
+输出  
+```
+the median is 9  
+```
+
+[回到目录](#jump-4)  
+
+
+<h3 id="4-7">7. 模拟栈操作</h3>
+
+![Stack.png](./images/Stack.png)
+
+[回到目录](#jump-4)
+
 
 # 参考文档
 
@@ -791,7 +1076,8 @@ void printList(struct Node *head) {
 
 [iOS面试题备忘录(一) - 属性关键字](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)    
 [iOS面试题备忘录(二) - 内存管理](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/memoryManagement.md)   
-[iOS面试题备忘录(三) - 分类和类别](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)  
+[iOS面试题备忘录(三) - 分类和扩展](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)  
 [iOS面试题备忘录(四) - 代理和通知](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/DelegateAndNSNotification.md)  
 [iOS面试题备忘录(五) - KVO和KVC](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/KVOAndKVC.md)  
 [iOS面试题备忘录(六) - runtime](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)  
+[算法](https://github.com/mickychiang/iOSInterviewMemo/blob/master/Algorithm/Algorithm.md)   
