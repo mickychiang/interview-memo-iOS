@@ -25,10 +25,48 @@ class ListNode {
 }
 
 // MARK: - 链表
-// 实现头插法和尾插法
-// 头插法：当前节点插到第一个节点之前
-// 尾插法：当前节点插入到链表最后一个节点之后
 class List {
+    /// 创建一个链表
+    static func constructList() -> ListNode {
+        var headNode: ListNode?
+        var curNode: ListNode?
+        for i in 0..<5 {
+            let node: ListNode = ListNode(i)
+            if headNode == nil {
+                headNode = node
+            } else {
+                curNode?.next = node
+            }
+            curNode = node
+        }
+        return headNode!
+    }
+    
+    /// 反转链表
+    static func reverseList(headNode: ListNode) -> ListNode {
+        var p: ListNode? = headNode
+        var newHeadNode: ListNode?
+        while p != nil { // 头插法
+            let nextNode = p?.next // 指针指向下一个node
+            p?.next = newHeadNode
+            newHeadNode = p
+            p = nextNode // 指针向后移动
+        }
+        return newHeadNode!
+    }
+    
+    /// 输出链表
+    static func printList(headNode: ListNode) {
+        var p: ListNode? = headNode
+        while p != nil {
+            print("node is \(String(describing: p?.data))")
+            p = p?.next
+        }
+    }
+    
+    // 实现头插法和尾插法
+    // 头插法：当前节点插到第一个节点之前
+    // 尾插法：当前节点插入到链表最后一个节点之后
     var head: ListNode?
     var tail: ListNode?
     
@@ -54,33 +92,6 @@ class List {
             tail?.next = ListNode(data)
             tail = tail?.next
         }
-    }
-    
-    func constructList() -> ListNode {
-        var headNode: ListNode?
-        var curNode: ListNode?
-        for i in 0..<5 {
-            let node: ListNode = ListNode(i)
-            if headNode == nil {
-                headNode = node
-            } else {
-                curNode?.next = node
-            }
-            curNode = node
-        }
-        return headNode!
-    }
-    
-    func reverseList(headNode: ListNode) -> ListNode {
-        var originHeadNode: ListNode? = headNode
-        var newHeadNode: ListNode?
-        while originHeadNode != nil {
-            let tempNextCode = originHeadNode?.next
-            originHeadNode?.next = newHeadNode
-            newHeadNode = originHeadNode
-            originHeadNode = tempNextCode
-        }
-        return newHeadNode!
     }
 }
 

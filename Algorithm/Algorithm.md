@@ -34,7 +34,7 @@
 [1. 反转字符串](#4-1)  
 [2. 反转单链表[※※※※※]](#4-2)  
 [3. 有序数组的合并](#4-3)  
-[4. 在一个字符串中找到第一个只出现一次的字符(hash算法)](#4-4)  
+[4. hash算法：在一个字符串中找到第一个只出现一次的字符](#4-4)  
 [5. 查找两个子视图的共同父视图[※※※※※]](#4-5)   
 [6. 求无序数组当中的中位数](#4-6)   
 [7. 模拟栈操作](#4-7)   
@@ -880,10 +880,9 @@ print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
 [回到目录](#jump-4)
 
 
-<h3 id="4-4">4. 在一个字符串中找到第一个只出现一次的字符(hash算法)</h3>
-
-在一个字符串中找到第一个只出现一次的字符。  
-比如：输入 abaccdeff 则输出 b
+<h3 id="4-4">4. hash算法：在一个字符串中找到第一个只出现一次的字符</h3>
+ 
+比如：输入 **"gabaccdeff"** 则输出 **"g"**  
 
 思路：
 - 字符char是一个长度为8的数据类型，2的8次方=256，因此总共有256种可能。
@@ -896,53 +895,38 @@ print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
 f(key) = key
 **存储和查找都通过该函数，有效提高查找效率。**
 
-```
-char findFirstChar(char* cha) {
-    char result = '\0';
-    
-    // 定义一个数组，用来存储各个字母出现的次数
-    // 字符char是一个长度为8的数据类型，2的8次方=256，因此总共有256种可能。
-    int array[256];
-    // 对数组进行初始化操作
-    for (int i = 0; i < 256; i++) {
-        array[i] = 0;
-    }
-    // 定义一个指针，指向当前字符串头部
-    char* p = cha;
-    // 遍历每个字符
-    while (*p != '\0') {
-        // 在字母对应的存储位置 进行出现次数+1操作
-        array[*(p++)]++;
-    }
-    
-    // 将p指针重新指向字符串头部
-    p = cha;
-    // 遍历每个字母的出现次数
-    while (*p != '\0') {
-        // 遇到第一个出现次数为1的字符，打印结果
-        if (array[*p] == 1) {
-            result = *p;
-            break;
-        }
-        // 反之继续向后遍历
-        p++;
-    }
-    
-    return result;
-}
-```
+<!-- ![findFirstChar_01.png](./images/findFirstChar_01.png) -->
+![findFirstChar_01.png](https://i.loli.net/2020/06/19/6NZOmSfeg7Wbu2B.png)  
 
-具体调用并实现  
-```
-// 查找第一个只出现一次的字符
-char cha[] = "a11baccdeff";
-char fc = findFirstChar(cha);
-printf("this char is %c \n", fc);
+具体调用并实现 
+``` 
+print("hash算法：在一个字符串中找到第一个只出现一次的字符")
+print("this char is \(findFirstChar(str: "gabaccdeff"))")
+print("---------------")
 ```
 
 输出  
 ```
-this char is b 
+hash算法：在一个字符串中找到第一个只出现一次的字符
+this char is g
+---------------
+```
+
+**扩展：**  
+在一个字符串中找到**按字母顺序**第一个只出现一次的字符  
+比如：输入->gabaccdeff，则输出->b  
+<!-- ![findFirstChar_02.png](./images/findFirstChar_02.png)   -->  
+![findFirstChar_02.png](https://i.loli.net/2020/06/19/EU42yevZXH7zpD8.png)  
+
+```
+print("hash算法：在一个字符串中找到**按字母顺序**第一个只出现一次的字符")
+print("this char is \(findFirstChar2(str: "gabaccdeff"))")
+print("---------------")
+```
+```
+hash算法：在一个字符串中找到**按字母顺序**第一个只出现一次的字符
+this char is b
+---------------
 ```
 
 [回到目录](#jump-4)

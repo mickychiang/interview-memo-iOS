@@ -11,56 +11,71 @@ import Foundation
 class SwiftAlgorithm: NSObject {
     @objc static func baseAlgorithm() {
         
-        print("计算从1到100数字的总和")
-        print(sum1(100))
-        print(sum2(100))
-        print(sum3(100))
-        print("---------------")
-        
-        print("不用中间变量，交换A和B的值")
-        var x = 7, y = 17
-        print("origin: x = \(x), y = \(y)")
-        print(swap(a: &x, b: &y))
-        print(swap1(a: &x, b: &y))
-        print(swap2(a: &x, b: &y))
-        print(swap3(a: &x, b: &y))
-        print("---------------")
-        print("最大公约数")
-        var xx = 18, yy = 27
-        print("origin: x = \(xx), y = \(yy)")
-        print(maxCommonDivisor1(a: xx, b: yy))
-        print(maxCommonDivisor2(a: &xx, b: &yy))
-        print("---------------")
-        print("最小公倍数")
-        var xxx = 18, yyy = 27
-        print("origin: x = \(xxx), y = \(yyy)")
-        print(minimumCommonMultiple1(a: xxx, b: yyy))
-        print(minimumCommonMultiple2(a: &xxx, b: &yyy))
-        print("---------------")
-        
-        
-        print("反转字符串，要求将其按照字符顺序进行反转。举例：\"Hello World\" -> \"dlroW olleH\"")
-        print(reverseString1(s: "Hello World"))
-        print(reverseString2(s: "Hello World"))
-        print("---------------")
+//        print("计算从1到100数字的总和")
+//        print(sum1(100))
+//        print(sum2(100))
+//        print(sum3(100))
+//        print("---------------")
+//
+//        print("不用中间变量，交换A和B的值")
+//        var x = 7, y = 17
+//        print("origin: x = \(x), y = \(y)")
+//        print(swap(a: &x, b: &y))
+//        print(swap1(a: &x, b: &y))
+//        print(swap2(a: &x, b: &y))
+//        print(swap3(a: &x, b: &y))
+//        print("---------------")
+//        print("最大公约数")
+//        var xx = 18, yy = 27
+//        print("origin: x = \(xx), y = \(yy)")
+//        print(maxCommonDivisor1(a: xx, b: yy))
+//        print(maxCommonDivisor2(a: &xx, b: &yy))
+//        print("---------------")
+//        print("最小公倍数")
+//        var xxx = 18, yyy = 27
+//        print("origin: x = \(xxx), y = \(yyy)")
+//        print(minimumCommonMultiple1(a: xxx, b: yyy))
+//        print(minimumCommonMultiple2(a: &xxx, b: &yyy))
+//        print("---------------")
+//
+        //        var stack: IntegerStack = IntegerStack()
+        //        for i in 0..<10 {
+        //            stack.push(i)
+        //        }
+        //        print("stack = \(stack)")
+        //        stack.pop() // 9
+        //        print("stack = \(stack)")
+//
+//        print("反转字符串，要求将其按照字符顺序进行反转。举例：\"Hello World\" -> \"dlroW olleH\"")
+//        print(reverseString1(s: "Hello World"))
+//        print(reverseString2(s: "Hello World"))
+//        print("---------------")
 //        print("反转字符串，要求将其按照单词顺序进行反转。举例：\"Hello World\" -> \"World Hello\"")
 //        print(reverseWords1(s: "Hello World"))
 //        print(reverseWords2(s: "Hello World"))
 //        print("---------------")
         
         
+        
+//        print("原链表")
+//        let head = List.constructList()
+//        List.printList(headNode: head)
+//        print("反转链表")
+//        let newHead = List.reverseList(headNode: head)
+//        List.printList(headNode: newHead)
+//        print("---------------")
+        
 //        print("有序数组的合并")
-//        print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
-        
-        var stack: IntegerStack = IntegerStack()
-        for i in 0..<10 {
-            stack.push(i)
-        }
-        print("stack = \(stack)")
-        stack.pop() // 9
-        print("stack = \(stack)")
+//        print(mergeOrderedList(array1: [1,4,6,7,9], array2: [2,3,5,6,8,10,11,12]))
+//        print("---------------")
         
         
+        print("hash算法：在一个字符串中找到第一个只出现一次的字符")
+        print("this char is \(findFirstChar(str: "gabaccdeff"))")
+        print("---------------")
+        print("hash算法：在一个字符串中找到**按字母顺序**第一个只出现一次的字符")
+        print("this char is \(findFirstChar2(str: "gabaccdeff"))")
+        print("---------------")
         
     }
 }
@@ -369,49 +384,111 @@ extension SwiftAlgorithm {
 // MARK: - 有序数组的合并
 // 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
 extension SwiftAlgorithm {
-    @objc static func mergeOrderedList(arrayA: [Int], arrayB: [Int]) -> [Int] {
-        
+    
+    static func mergeOrderedList(array1: [Int], array2: [Int]) -> [Int] {
         var result: [Int] = []
-        // 遍历数组a的指针、遍历数组b的指针、记录当前存储位置
-        var p = 0, q = 0, i = 0
-        
+        // 遍历数组a的指针、遍历数组b的指针、
+        var p = 0
+        var q = 0
         // 任一数组没有到达边界 则进行遍历
-        while p < arrayA.count && q < arrayB.count {
+        while p < array1.count && q < array2.count {
             // 如果数组a对应位置的值小于数组b对应位置的值
-            if arrayA[p] <= arrayB[q] {
+            if array1[p] < array2[q] {
                 // 存储数组a的值
-                result.insert(arrayA[p], at: i)
+                result.append(array1[p])
                 // 移动数组a的遍历指针
                 p += 1
             } else {
                 // 存储数组b的值
-                result.insert(arrayB[q], at: i)
+                result.append(array2[q])
                 // 移动数组b的遍历指针
                 q += 1
             }
-            // 指向合并结果的下一个存储位置
-            i += 1
         }
-        
         // 如果数组a有剩余
-        while p < arrayA.count {
+        while p < array1.count {
             // 将数组a剩余的部分拼接到合并结果的后面
-            result.insert(arrayA[p], at: i)
+            result.append(array1[p])
             p += 1
-            i += 1
         }
-        
         // 如果数组b有剩余
-        while q < arrayB.count {
+        while q < array2.count {
             // 将数组b剩余的部分拼接到合并结果的后面
-            result.insert(arrayB[q], at: i)
+            result.append(array2[q])
             q += 1
-            i += 1
         }
-        
         return result
     }
+    
 }
+
+// MARK: - hash算法：在一个字符串中找到第一个只出现一次的字符
+// 比如：输入->gabaccdeff，则输出->g
+// 思路：
+// - 字符char是一个长度为8的数据类型，2的8次方=256，因此总共有256种可能。
+// - 每个字母根据其ASCII码值作为数组的下标对应数组的一个数字。
+// - 数组中存储的是每个字符出现的次数。
+extension SwiftAlgorithm {
+    
+    static func findFirstChar(str: String) -> String {
+        
+        var array: [Int] = []
+        for _ in 0..<256 {
+            array.append(0)
+        }
+        
+        var number: UInt32 = 0
+        for code in str.unicodeScalars {
+            number = code.value // char -> ASCII code
+            array[Int(number)] += 1
+        }
+        
+        var char = ""
+        for code in str.unicodeScalars {
+            number = code.value
+            if array[Int(number)]  == 1 {
+                char = String(UnicodeScalar(number)!)
+                break
+            }
+        }
+        return char
+    }
+    
+}
+
+// MARK: - hash算法：在一个字符串中找到**按字母顺序**第一个只出现一次的字符
+// 比如：输入->gabaccdeff，则输出->b
+extension SwiftAlgorithm {
+    
+    static func findFirstChar2(str: String) -> String {
+        
+        var array: [Int] = []
+        for _ in 0..<256 {
+            array.append(0)
+        }
+        
+        var number: UInt32 = 0
+        for code in str.unicodeScalars {
+            number = code.value
+//            print("ASCII is \(number)")
+            array[Int(number)] += 1
+        }
+//        print("array: \(array)")
+        
+        var char = ""
+        for i in 0..<array.count {
+            if array[i] == 1 {
+                char = String(UnicodeScalar(i)!)
+                break
+            }
+        }
+        
+        return char
+    }
+    
+}
+
+
 /*
  待总结归类：
  1.反转题：字符串反转、单词反转、整数反转、...
