@@ -75,10 +75,10 @@ class List {
         var originHeadNode: ListNode? = headNode
         var newHeadNode: ListNode?
         while originHeadNode != nil {
-            let temp = originHeadNode
-            originHeadNode = originHeadNode?.next
+            let tempNextCode = originHeadNode?.next
+            originHeadNode?.next = newHeadNode
             newHeadNode = originHeadNode
-            originHeadNode = temp?.next
+            originHeadNode = tempNextCode
         }
         return newHeadNode!
     }
