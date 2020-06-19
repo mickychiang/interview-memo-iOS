@@ -12,33 +12,72 @@
 import Foundation
 
 // MARK: - 节点
-class ListNode {
+class Node {
     // 数据域
-    var val: Int
+    var data: Int
     // 指针域
-    var next: ListNode?
+    var next: Node?
     
-    init(_ val: Int) {
-        self.val = val
+    init(_ data: Int) {
+        self.data = data
         self.next = nil
     }
 }
 
 // MARK: - 链表
-// 实现头插法和尾插法
-// 头插法：当前节点插到第一个节点之前
-// 尾插法：当前节点插入到链表最后一个节点之后
 class List {
-    var head: ListNode?
-    var tail: ListNode?
+    
+    /// 创建一个链表
+    static func constructList() -> Node {
+        var headNode: Node?
+        var curNode: Node?
+        for i in 0..<5 {
+            let node: Node = Node(i)
+            if headNode == nil {
+                headNode = node
+            } else {
+                curNode?.next = node
+            }
+            curNode = node
+        }
+        return headNode!
+    }
+    
+    /// 反转链表
+    static func reverseList(headNode: Node) -> Node {
+        var p: Node? = headNode
+        var newHeadNode: Node?
+        while p != nil { // 头插法
+            let nextNode = p?.next // 指针指向下一个node
+            p?.next = newHeadNode
+            newHeadNode = p
+            p = nextNode // 指针向后移动
+        }
+        return newHeadNode!
+    }
+    
+    /// 输出链表
+    static func printList(headNode: Node) {
+        var p: Node? = headNode
+        while p != nil {
+            print("node is \(String(describing: p?.data))")
+            p = p?.next
+        }
+    }
+    
+    // 实现头插法和尾插法
+    // 头插法：当前节点插到第一个节点之前
+    // 尾插法：当前节点插入到链表最后一个节点之后
+    var head: Node?
+    var tail: Node?
     
     // MARK: - 链表 头插法
-    func appendToHead(_ val: Int) {
+    func appendToHead(_ data: Int) {
         if head == nil {
-            head = ListNode(val)
+            head = Node(data)
             tail = head
         } else {
-            let temp = ListNode(val)
+            let temp = Node(data)
             // 把当前head地址赋给temp的指针域
             temp.next = head
             head = temp
@@ -46,12 +85,12 @@ class List {
     }
     
     // MARK: - 链表 尾插法
-    func appendToTail(_ val: Int) {
+    func appendToTail(_ data: Int) {
         if tail == nil {
-            tail = ListNode(val)
+            tail = Node(data)
             head = tail
         } else {
-            tail?.next = ListNode(val)
+            tail?.next = Node(data)
             tail = tail?.next
         }
     }
@@ -71,15 +110,15 @@ class List {
  注意：需要将右链表的尾节点置nil，防止构成环。
  关于检测链表中是否有环，可以通过 快行指针 来检测，若快指针和慢指针变成相等的了，就代表该链表有环，具体的就不在这里介绍了，比较简单。
  */
-func partition(_ head: ListNode?, _ x: Int) -> ListNode? {
-    let prevDummy = ListNode(0), postDummy = ListNode(0)
+func partition(_ head: Node?, _ x: Int) -> Node? {
+    let prevDummy = Node(0), postDummy = Node(0)
     var prev = prevDummy, post = postDummy
     
     var node = head
     // 判断是否存在node
     while node != nil {
         // 判断数据是否小于x
-        if node!.val < x {
+        if node!.data < x {
             // 小于x 则prev.next指针域指向node
             prev.next = node
             prev = node!

@@ -13,11 +13,13 @@
 		4F3F1C16249B0390007AD66C /* CommonSuperFind.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C13249B0390007AD66C /* CommonSuperFind.m */; };
 		4F3F1C1B249B0966007AD66C /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C18249B0966007AD66C /* Stack.swift */; };
 		4F3F1C1C249B0966007AD66C /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C19249B0966007AD66C /* Stack.m */; };
+		4F3F1C1E249B55F6007AD66C /* AlgorithmTestDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C1D249B55F6007AD66C /* AlgorithmTestDemo.swift */; };
+		4F3F1C22249C65B7007AD66C /* HashFind.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C21249C65B7007AD66C /* HashFind.m */; };
+		4F3F1C24249C65E3007AD66C /* HashFind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C23249C65E3007AD66C /* HashFind.swift */; };
 		4F8192222497049900FE646D /* ReverseList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8192202497049900FE646D /* ReverseList.m */; };
 		4F8192232497049900FE646D /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8192212497049900FE646D /* LinkedList.swift */; };
 		4FA0D11224766C1100C3C60B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11124766C1100C3C60B /* main.c */; };
 		4FA0D11D24767AF800C3C60B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA0D11C24767AF800C3C60B /* MainViewController.m */; };
-		BD5CECEA24990ED200480EED /* HashFind.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5CECE924990ED200480EED /* HashFind.m */; };
 		BD5CECF0249A65E400480EED /* MedianFind.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5CECEF249A65E400480EED /* MedianFind.m */; };
 		BDD0A90E24769D2B004FF665 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A90D24769D2B004FF665 /* AppDelegate.m */; };
 		BDD0A91424769D2B004FF665 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDD0A91324769D2B004FF665 /* ViewController.m */; };
@@ -51,6 +53,10 @@
 		4F3F1C18249B0966007AD66C /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		4F3F1C19249B0966007AD66C /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
 		4F3F1C1A249B0966007AD66C /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
+		4F3F1C1D249B55F6007AD66C /* AlgorithmTestDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmTestDemo.swift; sourceTree = "<group>"; };
+		4F3F1C20249C65B7007AD66C /* HashFind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashFind.h; sourceTree = "<group>"; };
+		4F3F1C21249C65B7007AD66C /* HashFind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HashFind.m; sourceTree = "<group>"; };
+		4F3F1C23249C65E3007AD66C /* HashFind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashFind.swift; sourceTree = "<group>"; };
 		4F81921F2497049900FE646D /* ReverseList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReverseList.h; sourceTree = "<group>"; };
 		4F8192202497049900FE646D /* ReverseList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReverseList.m; sourceTree = "<group>"; };
 		4F8192212497049900FE646D /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
@@ -58,8 +64,6 @@
 		4FA0D11124766C1100C3C60B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		4FA0D11B24767AF800C3C60B /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		4FA0D11C24767AF800C3C60B /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		BD5CECE824990ED200480EED /* HashFind.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashFind.h; sourceTree = "<group>"; };
-		BD5CECE924990ED200480EED /* HashFind.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HashFind.m; sourceTree = "<group>"; };
 		BD5CECEE249A65E400480EED /* MedianFind.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MedianFind.h; sourceTree = "<group>"; };
 		BD5CECEF249A65E400480EED /* MedianFind.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MedianFind.m; sourceTree = "<group>"; };
 		BDD0A90A24769D2B004FF665 /* OCAlgorithm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OCAlgorithm.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +121,16 @@
 			path = Stack;
 			sourceTree = "<group>";
 		};
+		4F3F1C1F249C65B7007AD66C /* HashFind */ = {
+			isa = PBXGroup;
+			children = (
+				4F3F1C23249C65E3007AD66C /* HashFind.swift */,
+				4F3F1C20249C65B7007AD66C /* HashFind.h */,
+				4F3F1C21249C65B7007AD66C /* HashFind.m */,
+			);
+			path = HashFind;
+			sourceTree = "<group>";
+		};
 		4F81921E2497049900FE646D /* LinkedList */ = {
 			isa = PBXGroup;
 			children = (
@@ -158,6 +172,8 @@
 		BDD0A90B24769D2B004FF665 /* OCAlgorithm */ = {
 			isa = PBXGroup;
 			children = (
+				4F3F1C1D249B55F6007AD66C /* AlgorithmTestDemo.swift */,
+				4F3F1C1F249C65B7007AD66C /* HashFind */,
 				4F3F1C17249B0966007AD66C /* Stack */,
 				4F3F1C11249B0390007AD66C /* CommonSuperFind */,
 				4F81921E2497049900FE646D /* LinkedList */,
@@ -165,8 +181,6 @@
 				BDD0A90D24769D2B004FF665 /* AppDelegate.m */,
 				BDD0A91224769D2B004FF665 /* ViewController.h */,
 				BDD0A91324769D2B004FF665 /* ViewController.m */,
-				BD5CECE824990ED200480EED /* HashFind.h */,
-				BD5CECE924990ED200480EED /* HashFind.m */,
 				BD5CECEE249A65E400480EED /* MedianFind.h */,
 				BD5CECEF249A65E400480EED /* MedianFind.m */,
 				BDD0A92324769F94004FF665 /* OCAlgorithm.h */,
@@ -286,14 +300,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F3F1C24249C65E3007AD66C /* HashFind.swift in Sources */,
+				4F3F1C22249C65B7007AD66C /* HashFind.m in Sources */,
 				4F3F1C15249B0390007AD66C /* CommonSuperFind.swift in Sources */,
 				4F3F1C1B249B0966007AD66C /* Stack.swift in Sources */,
 				4F8192222497049900FE646D /* ReverseList.m in Sources */,
 				BDD0A91424769D2B004FF665 /* ViewController.m in Sources */,
 				BDD0A92524769F94004FF665 /* OCAlgorithm.m in Sources */,
+				4F3F1C1E249B55F6007AD66C /* AlgorithmTestDemo.swift in Sources */,
 				4F0887982477A456003C3D8F /* SortAlgorithm.swift in Sources */,
 				4F3F1C16249B0390007AD66C /* CommonSuperFind.m in Sources */,
-				BD5CECEA24990ED200480EED /* HashFind.m in Sources */,
 				4F3F1C1C249B0966007AD66C /* Stack.m in Sources */,
 				BDEBD6C32476CED100D65084 /* Queue.swift in Sources */,
 				4F8192232497049900FE646D /* LinkedList.swift in Sources */,
