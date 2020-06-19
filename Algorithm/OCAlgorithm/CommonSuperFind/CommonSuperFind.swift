@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class CommonSuperFind: NSObject {
+extension SwiftAlgorithm {
     
     func findCommonSuperViews(view1: UIView, view2: UIView) -> [UIView] {
         var superViews: [UIView] = []

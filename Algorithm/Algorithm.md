@@ -29,7 +29,6 @@
 [7. 桶排序](#3-7)  
 [8. 折半查找(二分查找)](#3-8)  
 
-
 <span id="jump-4">[<h2>四. 实战</h2>](#4)</span>
 [1. 反转字符串](#4-1)  
 [2. 反转单链表[※※※※※]](#4-2)  
@@ -735,33 +734,59 @@ int findKey(int *arr, int length, int key) {
 
 <h2 id="4">四. 实战</h2>
 
+实战题基于Swift语言的实现，OC版本/C版本的请移步至[工程中]()
+
 <h3 id="4-1">1. 反转字符串</h3>
 
-反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH"  
+#### 1.1 反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH"  
+
+具体代码的实现  
+
+<!-- ![ReverseString.png](./images/ReverseString.png)   -->
+![ReverseString.png](https://i.loli.net/2020/06/19/6mlKbiNhrXvBSgV.png)
+
+具体调用的实现  
 ```
-func reverseString(s: String) -> String {
-        
-    // 将待反转字符串分割成字符数组
-    var chars = Array(s)
-    // 初始化指向第一个字符的索引值
-    var start = 0
-    // 初始化指向最后一个字符的索引值
-    var end = chars.count - 1
-        
-    // 判断反转字符串的位置
-    while start < end {
-        // start、end位置的字符互换
-        (chars[start], chars[end]) = (chars[end], chars[start])
-        // 前、后索引值 往中间位置靠拢
-        start += 1
-        end -= 1
-    }
-        
-    return String(chars)
-}
+print("反转字符串，要求将其按照字符顺序进行反转。举例：\"Hello World\" -> \"dlroW olleH\"")
+print(reverseString2(s: "Hello World"))
+print("---------------")
+```
+
+输出  
+```
+反转字符串，要求将其按照字符顺序进行反转。举例："Hello World" -> "dlroW olleH"
+dlroW olleH
+---------------
+```
+  
+#### 1.2 反转字符串，要求将其按照单词顺序进行反转。举例："Hello World" -> "World Hello"  
+
+思路：
+1. 以输入字符串为"Hello World"为例，首先将该字符串分割成一个个的小字符数组，然后反转成"dlroW olleH"。
+2. 接着我们通过判断字符数组中的空格位和最后一位字符，对单一的单词进行分段反转，更新start位置。
+3. 最后输出我们需要的结果"World Hello"。
+
+具体代码的实现  
+
+<!-- ![ReverseWords.png](./images/ReverseWords.png) -->
+![ReverseWords.png](https://i.loli.net/2020/06/19/1XAQGwSNmjcKHzL.png)
+
+具体调用的实现  
+```
+print("反转字符串，要求将其按照单词顺序进行反转。举例：\"Hello World\" -> \"World Hello\"")
+print(reverseWords2(s: "Hello World"))
+print("---------------")
+```
+
+输出  
+```
+反转字符串，要求将其按照单词顺序进行反转。举例："Hello World" -> "World Hello"
+World Hello
+---------------
 ```
 
 [回到目录](#jump-4)
+
 
 <h3 id="4-2">2. 反转单链表[※※※※※]</h3>
 
@@ -770,42 +795,39 @@ func reverseString(s: String) -> String {
 ![reverseList.png](https://i.loli.net/2020/06/17/YoqdtV8iDOXTHmB.png)  
 ![reverseList-HeadInsertion.png](https://i.loli.net/2020/06/17/YZAX9LeVd3aNxbR.png)  
 
-ReverseList.h
-<!-- ![ReverseList.h.png](./images/ReverseList.h.png) -->
-![ReverseList.h.png](https://i.loli.net/2020/06/18/N8OVaxMvKltn7Zh.png)
+具体代码的实现   
 
-ReverseList.m
-<!-- ![ReverseList.m_01.png](./images/ReverseList.m_01.png)
-![ReverseList.m_02.png](./images/ReverseList.m_02.png) -->
-<!-- ![ReverseList.m_03.png](./images/ReverseList.m_03.png) -->
-![ReverseList.m_01.png](https://i.loli.net/2020/06/18/duT8wXCLcmQF71W.png)  
-![ReverseList.m_02.png](https://i.loli.net/2020/06/18/Gd3aX1i6s2BwJWo.png)  
-![ReverseList.m_03.png](https://i.loli.net/2020/06/18/RX6WwYyTPumrV8f.png)
+<!-- ![ReverseList_01.png](./images/ReverseList_01.png)  
+![ReverseList_02.png](./images/ReverseList_02.png) -->
+![ReverseList_01.png](https://i.loli.net/2020/06/19/3PCFq8hoWKypJdf.png)
+![ReverseList_02.png](https://i.loli.net/2020/06/19/ER3S5D9iaMosUw8.png)
 
-具体调用并实现
+具体调用的实现  
 ```
-printf("-----单链表反转-----\n");
-struct Node *head = constructList();
-printList(head);
-printf("----------\n");
-struct Node *newHead = reverseList(head);
-printList(newHead);
+print("原链表")
+let head = List.constructList()
+List.printList(headNode: head)
+print("反转链表")
+let newHead = List.reverseList(headNode: head)
+List.printList(headNode: newHead)
+print("---------------")
 ```
 
-输出
+输出  
 ```
------单链表反转-----
-node is 0 
-node is 1 
-node is 2 
-node is 3 
-node is 4 
-----------
-node is 4 
-node is 3 
-node is 2 
-node is 1 
-node is 0 
+原链表
+node is Optional(0)
+node is Optional(1)
+node is Optional(2)
+node is Optional(3)
+node is Optional(4)
+反转链表
+node is Optional(4)
+node is Optional(3)
+node is Optional(2)
+node is Optional(1)
+node is Optional(0)
+---------------
 ```
 
 [回到目录](#jump-4)
@@ -818,63 +840,23 @@ node is 0
 ![mergeList_01.png](https://i.loli.net/2020/06/17/hmTdXKL7PJC3jzs.png)  
 ![mergeList_02.png](https://i.loli.net/2020/06/17/SZca4jH8PXv75nT.png)  
 
-```
-// MARK: - 有序数组的合并
-// 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
-func mergeOrderedList(arrayA: [Int], arrayB: [Int]) -> [Int] {
-        
-    var result: [Int] = []
-    // 遍历数组a的指针、遍历数组b的指针、记录当前存储位置
-    var p = 0, q = 0, i = 0
-        
-    // 任一数组没有到达边界 则进行遍历
-    while p < arrayA.count && q < arrayB.count {
-        // 如果数组a对应位置的值小于数组b对应位置的值
-        if arrayA[p] <= arrayB[q] {
-            // 存储数组a的值
-            result.insert(arrayA[p], at: i)
-            // 移动数组a的遍历指针
-            p += 1
-        } else {
-            // 存储数组b的值
-            result.insert(arrayB[q], at: i)
-            // 移动数组b的遍历指针
-            q += 1
-        }
-        // 指向合并结果的下一个存储位置
-        i += 1
-    }
-        
-    // 如果数组a有剩余
-    while p < arrayA.count {
-        // 将数组a剩余的部分拼接到合并结果的后面
-        result.insert(arrayA[p], at: i)
-        p += 1
-        i += 1
-    }        
-    // 如果数组b有剩余
-    while q < arrayB.count {
-        // 将数组b剩余的部分拼接到合并结果的后面
-        result.insert(arrayB[q], at: i)
-        q += 1
-        i += 1
-    }
-        
-    return result
-}
-```
+具体代码的实现
 
-具体调用并实现
+<!-- ![mergeOrderedList](./images/mergeOrderedList.png) -->
+![mergeOrderedList.png](https://i.loli.net/2020/06/19/rSZwROexvLQP9VY.png)  
 
+具体调用的实现  
 ```
 print("有序数组的合并")
-print(mergeOrderedList(arrayA: [1,4,6,7,9], arrayB: [2,3,5,6,8,10,11,12]))
+print(mergeOrderedList(array1: [1,4,6,7,9], array2: [2,3,5,6,8,10,11,12]))
+print("---------------")
 ```
 
-输出
+输出  
 ```
 有序数组的合并
 [1, 2, 3, 4, 5, 6, 6, 7, 8, 9, 10, 11, 12]
+---------------
 ```
 
 [回到目录](#jump-4)
@@ -940,7 +922,9 @@ this char is b
 
 代码示例：  
 <!-- ![CommonSuperFind.png](./images/CommonSuperFind.png)   -->
-![CommonSuperFind.png](https://i.loli.net/2020/06/18/Pr6M5bfFqXoyUJG.png)  
+<!-- ![CommonSuperFind.png](https://i.loli.net/2020/06/18/Pr6M5bfFqXoyUJG.png)  -->
+<!-- ![CommonSuperFind_02.png](./images/CommonSuperFind_02.png)  -->
+![CommonSuperFind_02.png](https://i.loli.net/2020/06/19/hLlPaIyVY29n7sz.png)
 
 [回到目录](#jump-4)
 
@@ -1040,7 +1024,8 @@ the median is 9
 
 <h3 id="4-7">7. 模拟栈操作</h3>
 
-![Stack.png](./images/Stack.png)
+<!-- ![Stack.png](./images/Stack.png) -->
+![Stack.png](https://i.loli.net/2020/06/19/vILNgBUezDXcq9s.png)
 
 [回到目录](#jump-4)
 
