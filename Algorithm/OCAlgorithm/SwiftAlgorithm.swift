@@ -17,6 +17,40 @@ class SwiftAlgorithm: NSObject {
 //        print(sum3(100))
 //        print("---------------")
 //
+        
+//        print("是否是质数")
+//        print("15 isPrime : \(isPrime1(15))")
+//        print("17 isPrime : \(isPrime2(17))")
+//        print("---------------")
+//
+//        print("是否是丑数")
+//        var n1 = 1
+//        var n2 = 7
+//        var n3 = 15
+//        print("\(n1) isUgly : \(isUgly(&n1))")
+//        print("\(n2) isUgly : \(isUgly(&n2))")
+//        print("\(n3) isUgly : \(isUgly(&n3))")
+//        print("---------------")
+//
+//        print("是否是2的幂")
+//        var n4 = 16
+//        print("\(n1) isPowerOfTwo : \(isPowerOfTwo(&n1))")
+//        print("\(n4) isPowerOfTwo : \(isPowerOfTwo(&n4))")
+//        print("---------------")
+//
+//        print("是否是3的幂")
+//        var n5 = 8
+//        var n6 = 27
+//        print("\(n5) isPowerOfThree : \(isPowerOfThree(&n5))")
+//        print("\(n6) isPowerOfThree : \(isPowerOfThree(&n6))")
+//        print("---------------")
+//
+//        print("10以内的质数的个数")
+//        print(countPrimes(10))
+//        print("---------------")
+        
+        
+        
 //        print("不用中间变量，交换A和B的值")
 //        var x = 7, y = 17
 //        print("origin: x = \(x), y = \(y)")
@@ -48,37 +82,78 @@ class SwiftAlgorithm: NSObject {
 //
         
         
-        print("反转字符串，要求将其按照字符顺序进行反转。举例：\"Hello World\" -> \"dlroW olleH\"")
-        print(reverseString1(s: "Hello World"))
-        print(reverseString2(s: "Hello World"))
+        print("数组中是否包含重复的元素")
+        print(containsDuplicate(nums: [1,3,6,4,1]))
         print("---------------")
-        print("反转字符串，要求将其按照单词顺序进行反转。举例：\"Hello World\" -> \"World Hello\"")
-        print(reverseWords1(s: "Hello World"))
-        print(reverseWords2(s: "Hello World"))
+        print("数组中出现次数超过数组长度一半的元素")
+        print(majorityElement(nums: [1,3,4,4,1,1,1]))
+        print("---------------")
+        print("数组中只出现过一次的元素")
+        print(singleNumber(nums: [4,3,2,4,5,3]))
+        print("---------------")
+        print("寻找数组中缺失的数字")
+        print(missingNumber(nums: [9,6,4,2,3,5,7,0,1]))
+        print("---------------")
+        print("移除数组中等于某个值的元素")
+        var nums = [0,1,2,2,3,0,4,2]
+        removeElement(nums: &nums, targetNum: 2)
+        print("---------------")
+        print("给出一个整型数组和一个目标值，判断数组中是否有两个数之和等于目标值")
+        print(twoSumEqualTarget(nums: [2,7,11,15], 9))
+        print("---------------")
+        print("给出一个整型数组和目标值，且数组中有且仅有两个数之和等于目标值，求这两个数在数组中的index")
+        print(getIndexAboutTwoSumEqualTarget(nums: [2,7,11,15], 9))
+        print("---------------")
+        print("数组中第k大的元素")
+        print(findKthLargest(nums: [3,2,3,1,2,4,5,5,6], k: 4))
+        print("---------------")
+        print("出现频率最高的第k个元素")
         print("---------------")
         
-        print("原链表")
-        let head = List.constructList()
-        List.printList(headNode: head)
-        print("反转链表")
-        let newHead = List.reverseList(headNode: head)
-        List.printList(headNode: newHead)
-        print("---------------")
+//        print("反转字符串，要求将其按照字符顺序进行反转。举例：\"Hello World\" -> \"dlroW olleH\"")
+//        print(reverseString1(s: "Hello World"))
+//        print(reverseString2(s: "Hello World"))
+//        print("---------------")
+//        print("反转字符串，要求将其按照单词顺序进行反转。举例：\"Hello World\" -> \"World Hello\"")
+//        print(reverseWords1(s: "Hello World"))
+//        print(reverseWords2(s: "Hello World"))
+//        print("---------------")
         
-        print("有序数组的合并")
-        print(mergeOrderedList(array1: [1,4,6,7,9], array2: [2,3,5,6,8,10,11,12]))
-        print("---------------")
+//        let list = LinkedList()
+//        print(list)
+////        list.reversed()
+////        print(list)
+////        list.makeACircle()
+//        print(list.hasCycle())
+//        let listHead = Node(5)
+//        listHead.next = Node(3)
+//        listHead.next?.next = Node(2)
+//        print(list.findIntersection(with: listHead)?.data ?? "没有交点")
+//        print("---------------")
         
-        print("hash算法：在一个字符串中找到第一个只出现一次的字符")
-        print("this char is \(findFirstChar(str: "gabaccdeff"))")
-        print("---------------")
-        print("hash算法：在一个字符串中找到**按字母顺序**第一个只出现一次的字符")
-        print("this char is \(findFirstChar2(str: "gabaccdeff"))")
-        print("---------------")
+//        print("原链表")
+//        let head = List.constructList()
+//        List.printList(headNode: head)
+//        print("反转链表")
+//        let newHead = List.reverseList(headNode: head)
+//        List.printList(headNode: newHead)
+//        print("---------------")
+        
+//        print("有序数组的合并")
+//        print(mergeOrderedList(array1: [1,4,6,7,9], array2: [2,3,5,6,8,10,11,12]))
+//        print("---------------")
+//
+//        print("hash算法：在一个字符串中找到第一个只出现一次的字符")
+//        print("this char is \(findFirstChar(str: "gabaccdeff"))")
+//        print("---------------")
+//        print("hash算法：在一个字符串中找到**按字母顺序**第一个只出现一次的字符")
+//        print("this char is \(findFirstChar2(str: "gabaccdeff"))")
+//        print("---------------")
         
     }
 }
 
+// MARK: - ****************************** 1⃣️简单算法 ******************************
 // MARK: - 计算从1到100数字的总和
 extension SwiftAlgorithm {
     /// 法1. 1到100循环遍历逐步相加
@@ -113,50 +188,6 @@ extension SwiftAlgorithm {
     }
 }
 
-// MARK: - 给出一个整型数组和一个目标值，判断数组中是否有两个数之和等于目标值
-extension SwiftAlgorithm {
-    // 时间复杂度：O(n)
-    static func twoSumEqualTarget(nums: [Int], _ target: Int) -> Bool {
-        // 初始化集合
-        var set = Set<Int>()
-        // 遍历整型数组
-        for num in nums {
-            // 判断集合中是否包含[目标值-当前值]的结果
-            if set.contains(target - num) {
-                // 包含 返回true
-                return true
-            }
-            // 不包含 将当前值存进集合 用作下次判断
-            set.insert(num)
-        }
-        // 都不包含 返回false
-        return false
-    }
-}
-
-// MARK: - 给出一个整型数组和目标值，且数组中有且仅有两个数之和等于目标值，求这两个数在数组中的index
-extension SwiftAlgorithm {
-    // 巧妙的用到了字典的特性，用key表示数组的值，通过判断字典中是否含有目标值的key来取出索引。
-    // 时间复杂度：O(n)
-    static func twoSumEqualTarget(nums: [Int], _ target: Int) -> [Int] {
-        // 初始化字典
-        var dict = [Int: Int]()
-        // 通过索引i和对应的num进行判断
-        for (i, num) in nums.enumerated() {
-            // 从dict字典中取出之前保存的索引，判断是否存在索引
-            if let lastIndex = dict[target - num] {
-                // 返回之前存的索引和当前索引
-                return [lastIndex, i]
-            } else {
-                // 保存当前索引，用于后续判断
-                dict[num] = i
-            }
-        }
-        // 致命错误来终止程序
-        fatalError("No valid output!")
-    }
-}
-
 // MARK: - 实现阶乘n!的算法：3！= 3 * 2 * 1 ； 4！= 4 * 3 * 2 * 1
 extension SwiftAlgorithm {
     // 递归
@@ -165,17 +196,99 @@ extension SwiftAlgorithm {
     }
 }
 
-// MARK: - 判断质数
+// MARK: - 是否是质数
+// 质数：只能被1和自身整除的数
+// 比如：2、3、5、7、11、13、19等
+// 思路：直接判断，一个个除，看余数是否为零，如果不为零，则是质数。
 extension SwiftAlgorithm {
-    // 比如：2、3、5、7、11、13、19等只能被1和自身整除的数叫质数
-    // 直接判断：一个个除，看余数是否为零，如果不为零，则是质数。
-    static func isPrime(n: Int) -> Int {
-        for i in 2...Int(sqrt(Double(n))) { // sqrt(n) 返回n的平方根 比如sqrt(100.0) = 10
-            if (n % i == 0) {
-                return 0
+    // 法1.
+    static func isPrime1(_ n: Int) -> Bool {
+        for i in 2...n - 1 {
+            if n % i == 0 {
+                return false
             }
         }
-        return 1
+        return true
+    }
+    // 法2.
+    static func isPrime2(_ n: Int) -> Bool {
+        for i in 2...Int(sqrt(Double(n))) { // sqrt(n) 返回n的平方根 比如sqrt(100.0) = 10
+            if (n % i == 0) {
+                return false
+            }
+        }
+        return true
+    }
+}
+
+// MARK: - 是否是丑数
+// 丑数：一个数的因子只包含2，3，5的数
+// 数字1也看作是丑数，所以从1开始的10个丑数分别为1，2，3，4，5，6，8，9，10，12。
+extension SwiftAlgorithm {
+    
+    static func isUgly(_ n: inout Int) -> Bool {
+        if n == 0 {
+            return false
+        }
+        if n == 1 {
+            return true
+        }
+        // 能否被2整除
+        while n % 2 == 0 {
+            n /= 2
+        }
+        // 能否被3整除
+        while n % 3 == 0 {
+            n /= 3
+        }
+        // 能否被5整除
+        while n % 5 == 0 {
+            n /= 5
+        }
+        if n == 1 {
+            return true
+        }
+        return false
+    }
+}
+
+// MARK: - 是否是2的幂
+extension SwiftAlgorithm {
+    static func isPowerOfTwo(_ n: inout Int) -> Bool {
+        if n > 1 {
+            while n%2 == 0 {
+                n = n/2
+            }
+        }
+        return n == 1
+    }
+}
+
+// MARK: - 是否是3的幂
+extension SwiftAlgorithm {
+    static func isPowerOfThree(_ n: inout Int) -> Bool {
+        if n > 1 {
+            while n%3 == 0 {
+                n = n/3
+            }
+        }
+        return n == 1
+    }
+}
+
+// MARK: - 质数的个数
+extension SwiftAlgorithm {
+    static func countPrimes(_ n: Int) -> Int {
+        var count = 0
+        if n > 2 {
+            count += 1
+        }
+        for i in 3..<n {
+            if isPrime1(i) {
+                count += 1
+            }
+        }
+        return count
     }
 }
 
@@ -270,6 +383,199 @@ extension SwiftAlgorithm {
         return (aa * bb) / b
     }
 }
+
+// MARK: - ****************************** 2⃣️数组算法 ******************************
+// MARK: - 数组中是否包含重复的元素
+extension SwiftAlgorithm {
+    static func containsDuplicate(nums: [Int]) -> Bool {
+        var set = Set<Int>()
+        for num in nums {
+            if set.contains(num) {
+                return true
+            }
+            set.insert(num)
+        }
+        return false
+    }
+}
+
+// MARK: - 数组中出现次数超过数组长度一半的元素
+extension SwiftAlgorithm {
+    static func majorityElement(nums: [Int]) -> [Int] {
+        var dict = [Int: Int]()
+        for num in nums {
+            if let count = dict[num] {
+                var temp = count
+                temp += 1
+                dict[num] = temp
+            } else {
+                dict[num] = 1
+            }
+        }
+        
+        var targetNums: [Int] = []
+        for (num, count) in dict {
+            if count > nums.count / 2 {
+                targetNums.append(num)
+            }
+        }
+        
+        return targetNums
+    }
+}
+
+// MARK: - 数组中只出现过一次的元素
+extension SwiftAlgorithm {
+    static func singleNumber(nums: [Int]) -> [Int] {
+        var dict = [Int: Int]()
+        for num in nums {
+            if let count = dict[num] {
+                var temp = count
+                temp += 1
+                dict[num] = temp
+            } else {
+                dict[num] = 1
+            }
+        }
+        
+        var singleNum: [Int] = []
+        for (num, count) in dict {
+            if count == 1 {
+                singleNum.append(num)
+            }
+        }
+        
+        return singleNum
+    }
+}
+
+// MARK: - 寻找数组中缺失的数字
+extension SwiftAlgorithm {
+    // Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
+    static func missingNumber(nums: [Int]) -> Int {
+        var result = (nums.count + 1) * nums.count / 2
+        for num in nums {
+            result -= num
+        }
+//        var missingNum: [Int] = []
+        return result
+    }
+}
+
+// MARK: - 移除数组中等于某个值的元素
+extension SwiftAlgorithm {
+    static func removeElement(nums: inout [Int], targetNum: Int) {
+        for num in nums {
+            if num == targetNum {
+                nums.remove(at: num)
+            }
+        }
+    }
+}
+
+// MARK: - 给出一个整型数组和一个目标值，判断数组中是否有两个数之和等于目标值
+extension SwiftAlgorithm {
+    // 时间复杂度：O(n)
+    static func twoSumEqualTarget(nums: [Int], _ target: Int) -> Bool {
+        // 初始化集合
+        var set = Set<Int>()
+        // 遍历整型数组
+        for num in nums {
+            // 判断集合中是否包含[目标值-当前值]的结果
+            if set.contains(target - num) {
+                // 包含 返回true
+                return true
+            }
+            // 不包含 将当前值存进集合 用作下次判断
+            set.insert(num)
+        }
+        // 都不包含 返回false
+        return false
+    }
+}
+
+// MARK: - 给出一个整型数组和目标值，且数组中有且仅有两个数之和等于目标值，求这两个数在数组中的index
+extension SwiftAlgorithm {
+    // 巧妙的用到了字典的特性，用key表示数组的值，通过判断字典中是否含有目标值的key来取出索引。
+    // 时间复杂度：O(n)
+    static func getIndexAboutTwoSumEqualTarget(nums: [Int], _ target: Int) -> [Int] {
+        // 初始化字典
+        var dict = [Int: Int]()
+        // 通过索引i和对应的num进行判断
+        for (i, num) in nums.enumerated() {
+            // 从dict字典中取出之前保存的索引，判断是否存在索引
+            if let lastIndex = dict[target - num] {
+                // 返回之前存的索引和当前索引
+                return [lastIndex, i]
+            } else {
+                // 保存当前索引，用于后续判断
+                dict[num] = i
+            }
+        }
+        // 致命错误来终止程序
+        fatalError("No valid output!")
+    }
+}
+
+// MARK: - 数组中第k大的元素
+extension SwiftAlgorithm {
+    static func findKthLargest(nums: [Int], k: Int) -> Int {
+        var sortNums = nums
+        sortNums = SortAlgorithm.bubbleSortAdvancedSuper(&sortNums)
+        print(sortNums)
+        let count = sortNums.count
+        return sortNums[count - k]
+    }
+}
+
+// MARK: - 出现频率最高的第k个元素
+extension SwiftAlgorithm {
+    static func topKFrequent() {
+        
+    }
+}
+
+// MARK: - 有序数组的合并
+// 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
+extension SwiftAlgorithm {
+    
+    static func mergeOrderedList(array1: [Int], array2: [Int]) -> [Int] {
+        var result: [Int] = []
+        // 遍历数组a的指针、遍历数组b的指针、
+        var p = 0
+        var q = 0
+        // 任一数组没有到达边界 则进行遍历
+        while p < array1.count && q < array2.count {
+            // 如果数组a对应位置的值小于数组b对应位置的值
+            if array1[p] < array2[q] {
+                // 存储数组a的值
+                result.append(array1[p])
+                // 移动数组a的遍历指针
+                p += 1
+            } else {
+                // 存储数组b的值
+                result.append(array2[q])
+                // 移动数组b的遍历指针
+                q += 1
+            }
+        }
+        // 如果数组a有剩余
+        while p < array1.count {
+            // 将数组a剩余的部分拼接到合并结果的后面
+            result.append(array1[p])
+            p += 1
+        }
+        // 如果数组b有剩余
+        while q < array2.count {
+            // 将数组b剩余的部分拼接到合并结果的后面
+            result.append(array2[q])
+            q += 1
+        }
+        return result
+    }
+    
+}
+
 
 // MARK: - ****************************** 反转题 ******************************
 extension SwiftAlgorithm {
@@ -379,48 +685,6 @@ extension SwiftAlgorithm {
     
     // MARK: - 3⃣️链表反转。 思路：头插法实现 ！！！！！
 }
-
-// MARK: - 有序数组的合并
-// 将有序数组a和b的值合并到一个数组result当中，且仍然保持有序。
-extension SwiftAlgorithm {
-    
-    static func mergeOrderedList(array1: [Int], array2: [Int]) -> [Int] {
-        var result: [Int] = []
-        // 遍历数组a的指针、遍历数组b的指针、
-        var p = 0
-        var q = 0
-        // 任一数组没有到达边界 则进行遍历
-        while p < array1.count && q < array2.count {
-            // 如果数组a对应位置的值小于数组b对应位置的值
-            if array1[p] < array2[q] {
-                // 存储数组a的值
-                result.append(array1[p])
-                // 移动数组a的遍历指针
-                p += 1
-            } else {
-                // 存储数组b的值
-                result.append(array2[q])
-                // 移动数组b的遍历指针
-                q += 1
-            }
-        }
-        // 如果数组a有剩余
-        while p < array1.count {
-            // 将数组a剩余的部分拼接到合并结果的后面
-            result.append(array1[p])
-            p += 1
-        }
-        // 如果数组b有剩余
-        while q < array2.count {
-            // 将数组b剩余的部分拼接到合并结果的后面
-            result.append(array2[q])
-            q += 1
-        }
-        return result
-    }
-    
-}
-
 
 /*
  待总结归类：

@@ -25,8 +25,111 @@ class Node {
 }
 
 // MARK: - 链表
-class List {
+class LinkedList {
+    var headNode: Node?
     
+    init() {
+        var curNode: Node?
+        for i in 0..<5 {
+            let node: Node = Node(i)
+            if headNode == nil {
+                headNode = node
+            } else {
+                curNode?.next = node
+            }
+            curNode = node
+        }
+    }
+    
+    func remove(node: inout Node?) {
+        if let n = node {
+            if let next = n.next {
+                n.data = next.data
+                n.next = next.next
+            } else {
+                node = nil
+            }
+        }
+    }
+}
+
+// MARK: - 输出
+extension LinkedList: CustomStringConvertible {
+    var description: String {
+        var text = "LinkedList: ["
+        var pointer = headNode
+        while let node = pointer {
+            text += String(node.data) + (node.next == nil ? "" : " -> ")
+            pointer = node.next
+        }
+        text += "]"
+        return text
+    }
+}
+
+// MARK: 1. 反转链表
+extension LinkedList {
+    func reversed() {
+        /// nodeA.next 指向上一级 nodeB
+        func reverse(curNode: Node?, preNode: Node?) -> Node? {
+            if let node = curNode {
+                let nextNode = node.next
+                if nextNode == nil {
+                    headNode = node
+                }
+                node.next = preNode
+                return reverse(curNode: nextNode, preNode: node)
+            } else {
+                return preNode
+            }
+        }
+        _ = reverse(curNode: headNode, preNode: nil)
+    }
+}
+
+// MARK: - 2. 链表是否有环
+extension LinkedList {
+    func hasCycle() -> Bool {
+        var fastPointer = headNode
+        var slowPointer = headNode
+        while let fast = fastPointer, let slow = slowPointer {
+            fastPointer = fast.next?.next
+            slowPointer = slow.next
+            if fastPointer === slowPointer {
+                return true
+            }
+        }
+        return false
+    }
+    func makeACircle() {
+        headNode?.next?.next?.next?.next = headNode?.next?.next
+    }
+}
+
+// MARK: - 3. 两个链表是否有交点
+extension LinkedList {
+    func findIntersection(with anotherListHead: Node?) -> Node? {
+        
+        guard headNode != nil, anotherListHead != nil else {
+            return nil
+        }
+        
+        var pointerA = headNode
+        var pointerB = anotherListHead
+
+        while pointerA?.data != pointerB?.data {
+            pointerA = pointerA == nil ? anotherListHead : pointerA?.next
+            pointerB = pointerB == nil ? headNode : pointerB?.next
+        }
+        return pointerA
+    }
+}
+
+
+
+
+// MARK: - ************************************ 最初代码 ************************************
+class List {
     /// 创建一个链表
     static func constructList() -> Node {
         var headNode: Node?
@@ -45,56 +148,49 @@ class List {
     
     /// 反转链表
     static func reverseList(headNode: Node) -> Node {
-        var p: Node? = headNode
+        var pointer: Node? = headNode
         var newHeadNode: Node?
-        while p != nil { // 头插法
-            let nextNode = p?.next // 指针指向下一个node
-            p?.next = newHeadNode
-            newHeadNode = p
-            p = nextNode // 指针向后移动
+        while let node = pointer { // 头插法
+            let nextNode = node.next // 指针指向下一个node
+            node.next = newHeadNode
+            newHeadNode = node
+            pointer = nextNode // 指针向后移动
         }
         return newHeadNode!
     }
     
     /// 输出链表
     static func printList(headNode: Node) {
-        var p: Node? = headNode
-        while p != nil {
-            print("node is \(String(describing: p?.data))")
-            p = p?.next
+        var pointer: Node? = headNode
+        var text = "LinkedList: ["
+        while let node = pointer {
+            text += String(node.data) + (node.next == nil ? "" : " -> ")
+            pointer = node.next
         }
+        text += "]"
+        print(text)
     }
     
-    // 实现头插法和尾插法
-    // 头插法：当前节点插到第一个节点之前
-    // 尾插法：当前节点插入到链表最后一个节点之后
-    var head: Node?
-    var tail: Node?
-    
-    // MARK: - 链表 头插法
-    func appendToHead(_ data: Int) {
-        if head == nil {
-            head = Node(data)
-            tail = head
-        } else {
-            let temp = Node(data)
-            // 把当前head地址赋给temp的指针域
-            temp.next = head
-            head = temp
+    /// 链表是否有环
+    static func hasCycle(headNode: Node?) -> Bool {
+        var fastPointer = headNode
+        var slowPointer = headNode
+        while let fast = fastPointer, let slow = slowPointer {
+            fastPointer = fast.next?.next
+            slowPointer = slow.next
+            if fastPointer === slowPointer {
+                return true
+            }
         }
-    }
-    
-    // MARK: - 链表 尾插法
-    func appendToTail(_ data: Int) {
-        if tail == nil {
-            tail = Node(data)
-            head = tail
-        } else {
-            tail?.next = Node(data)
-            tail = tail?.next
-        }
+        return false
     }
 }
+
+
+
+
+
+
 
 // MARK: - 1 -> 3 -> 5 -> 2 -> 4 -> 2，当给定x=3时，要求返回 1 -> 2 -> 2 -> 3 -> 5 -> 4。
 /*
@@ -225,3 +321,36 @@ func _helper(node: TreeNode?, _ min: Int?, _ max: Int?) -> Bool {
  4. 层级遍历规则：以层为顺序，将某一层上的节点全部遍历完成后，才向下一层进行遍历，依次类推，至到最后一层。
  */
 // 实现 略 暂时没研究 之后写上
+
+
+
+
+//    // 实现头插法和尾插法
+//    // 头插法：当前节点插到第一个节点之前
+//    // 尾插法：当前节点插入到链表最后一个节点之后
+//    var head: Node?
+//    var tail: Node?
+//
+//    // MARK: - 链表 头插法
+//    func appendToHead(_ data: Int) {
+//        if head == nil {
+//            head = Node(data)
+//            tail = head
+//        } else {
+//            let temp = Node(data)
+//            // 把当前head地址赋给temp的指针域
+//            temp.next = head
+//            head = temp
+//        }
+//    }
+//
+//    // MARK: - 链表 尾插法
+//    func appendToTail(_ data: Int) {
+//        if tail == nil {
+//            tail = Node(data)
+//            head = tail
+//        } else {
+//            tail?.next = Node(data)
+//            tail = tail?.next
+//        }
+//    }

@@ -734,7 +734,7 @@ int findKey(int *arr, int length, int key) {
 
 <h2 id="4">四. 实战</h2>
 
-实战题基于Swift语言的实现，OC版本/C版本的请移步至[工程中]()
+实战题基于Swift5.0语言的实现，OC版本/C版本的请移步至[工程中]()
 
 <h3 id="4-1">1. 反转字符串</h3>
 
