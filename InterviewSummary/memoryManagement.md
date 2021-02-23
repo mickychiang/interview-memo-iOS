@@ -74,10 +74,11 @@
 - 内核区
 - 中间区(**一个 iOS app 对应的进程地址空间**)
     - **栈(stack)**：定义的方法或函数在stack工作的。stack地址由高到低，即stack是向下扩展或增长。  
-    栈区一般存放**局部变量、临时变量**，由**编译器自动分配和释放**，每个线程运行时都对应一个栈。
+    **栈区**一般存放**局部变量、临时变量**，由**编译器自动分配和释放**，每个线程运行时都对应一个栈。
     - **堆(heap)**：通过alloc创建的对象或者经过copy的block都会被转移到heap中。heap地址由低到高，即heap是向上扩展或增长。  
-    堆区用于**动态内存的申请**，由**程序员分配和释放**。  
-    一般来说，栈区由于被系统自动管理，速度更快，但是使用起来并不如堆区灵活。
+    **堆区**用于**动态内存的申请**，由**程序员分配和释放**。  
+    一般来说，栈区由于被系统自动管理，速度更快，但是使用起来并不如堆区灵活。  
+    栈操作方式类似于数据结构中的栈。堆与数据结构中的堆是两码事，分配方式类似于链表。
     - **全局区/静态区(未初始化数据)**：未初始化的**全局变量或静态变量**等。
     - **全局区/静态区(已初始化数据)**：已初始化的**全局变量或静态变量**等。
     - **常量区**：常量，程序结束后由系统释放。
@@ -95,13 +96,12 @@
 - 全局变量保存在内存的全局区中，占用**静态**的存储单元；
 - 局部变量保存在内存的栈区中，只有在**所在函数被调用**时才**动态**地为变量分配存储单元。
 
-全局变量和静态变量都保存在内存的全局/静态区中。
-
 [回到目录](#jump-1)
 
 <h3 id="1-3">3. 与全局变量相比，静态变量存储位置一样，声明位置如果也一样（函数外部），静态变量这时跟全局变量有什么区别？</h3>
 
-静态变量限制访问范围  
+全局变量和静态变量都保存在内存的全局/静态区中。  
+区别：**静态变量限制访问范围**  
 静态变量仅当前声明该变量文件里面的代码可以访问。  
 而全局变量可以同一工程跨文件访问，可能会引起严重的混淆问题。
 
@@ -157,15 +157,17 @@ static float lastNum = 10.0;
 <h3 id="2-1">1. iOS操作系统是怎样对内存进行管理的？</h3>
 
 **iOS操作系统针对不同场景会提供不同的内存管理方案。**    
-- **TaggedPointer**：针对一些小对象(不是基本数据类型)，如NSNumber、NSData类型等。  
+- **TaggedPointer**：**针对一些小对象(不是基本数据类型)，如NSNumber、NSData类型等。**  
 
-- **NONPOINTER_ISA**： 针对64位架构下的iOS应用程序。  
-**NONPOINTER_ISA是非指针型isa，是指在64位架构下，isa指针占64个bit位。**  
+- **NONPOINTER_ISA(非指针型isa)**： **针对64位架构下的iOS应用程序。**  
+NONPOINTER_ISA是非指针型isa，是指在64位架构下，isa指针占64个bit位。  
 实际上有32位或40位已够用，苹果为了提高内存的利用率，防止剩余的bit位浪费，在isa剩余的bit位存储了有关内存管理方面的相关数据内容。  
-NONPOINTER_ISA是在64位架构下使用的一种内存管理方案，这种方案主要是高效利用64位架构下isa指针的剩余内存空间。
+**NONPOINTER_ISA是在64位架构下使用的一种内存管理方案，这种方案主要是高效利用64位架构下isa指针的剩余内存空间。**
 
-- **散列表**：针对32位架构下的应用程序或者64位架构下isa指针存放不下的场景中使用。  
-散列表是一个复杂的数据结构，包括了引用计数表、弱引用表(引用计数表和弱引用表存储的是对应对象的指针)。
+- **散列表**：**针对32位架构下的应用程序或者64位架构下isa指针存放不下的场景中使用。**  
+**散列表内存管理方案是通过SideTables()结构来实现的。**  
+SideTables()里面有多个SideTable数据结构，SideTable结构包括了自旋锁、引用计数表和弱引用表(引用计数表和弱引用表存储的是对应对象的指针)。  
+SideTables()是一个哈希表，可以通过一个对象指针来找到它对应的引用计数表或者弱引用表在哪一个SideTable中。
 
 注意：  
 NONPOINTER_ISA(非指针型isa)在[iOS面试题备忘录(六) - runtime](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)被提及过。
@@ -175,7 +177,6 @@ NONPOINTER_ISA(非指针型isa)在[iOS面试题备忘录(六) - runtime](https:/
 
 <h3 id="2-2">2. 散列表的内存管理方案为什么是由多个SideTable共同组成的SideTables()结构而不是只有一个SideTable？</h3>
 
-<!-- ![onlyOneSideTable](./images/memoryManagement/onlyOneSideTable.png) -->
 ![onlyOneSideTable.png](https://i.loli.net/2020/06/10/WyeuQEBChZVF8kv.png)  
 
 假如只有一张SideTable，相当于在内存中分配的所有对象的引用计数或弱引用存储都放在一张大表中。  
@@ -281,7 +282,6 @@ SideTables本质是一张hash表。
 散列表内存管理方案是通过SideTables()结构来实现的。
 
 ##### SideTables()结构
-<!-- ![SideTables()结构](./images/memoryManagement/SideTables().png) -->
 ![SideTables__.png](https://i.loli.net/2020/06/10/l8gAVKhMHcawS9n.png)
 
 - SideTables()里面有多个SideTable数据结构，这些数据结构在不同的架构上，个数不同。  
@@ -291,7 +291,6 @@ SideTables本质是一张hash表。
 
 ##### SideTable结构
 SideTable结构包括了自旋锁、引用计数表和弱引用表。
-<!-- ![SideTable结构](./images/memoryManagement/SideTable.png) -->
 ![SideTable.png](https://i.loli.net/2020/06/10/foZs4CGpT7gQYK6.png)
 
 内存对象所对应的引用计数表分拆成多个部分，给分拆成的每个表都加一个锁。  
