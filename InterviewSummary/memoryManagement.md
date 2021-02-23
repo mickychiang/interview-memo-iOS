@@ -649,34 +649,27 @@ objc_autoreleasePoolPop(ctx);
 
 [回到目录](#jump-8)
 
-
 <h3 id="8-4">4. 平日开发中是否遇到过循环引用？你是怎么解决的？</h3>
  
-- Block的循环引用问题 ----Block章节！！！
+- Block的循环引用问题 ----`Block章节！！！`
 
-- NSTimer的循环引用问题
-<!-- ![循环引用_NSTimer](./images/memoryManagement/循环引用_NSTimer.png) -->
+- NSTimer的循环引用问题  
+解决NSTimer的循环引用
+![循环引用_NSTimer_02](https://ae01.alicdn.com/kf/Hda789ea1c0064b40b40b81b6badf88a5z.jpg)
 ![循环引用_NSTimer](https://ae01.alicdn.com/kf/H43f82b10abcc4145966df4675d7c351eu.jpg)
+为了解决NSTimer的循环引用。  
+1.创建一个中间对象，让中间对象持有两个弱引用变量，分别是NSTimer和对象。    
+2.NSTimer直接分派的回调是在中间对象中实现的，在中间对象中实现的NSTimer回调方法当中对它持有的对象进行了值判断。    
+3.如果值存在，则直接把NSTimer的回调给这个对象；    
+4.如果值不存在，即当前对象已被释放，我们设置NSTimer为无效状态，就可以解除当前线程Runloop对NSTimer的强引用以及NSTimer对中间对象的强引用。   
 **代码实现**  
-中间对象
-<!-- ![NSTimer-中间对象](./images/memoryManagement/NSTimer-中间对象.png) -->
+  - 中间对象
 ![NSTimer-中间对象](https://ae01.alicdn.com/kf/H79ac83fef1fc470dbb37f19a204f4fee9.jpg)
-NSTimer的分类
-<!-- ![NSTimer-分类h文件](./images/memoryManagement/NSTimer-分类h文件.png)
-![NSTimer-分类m文件](./images/memoryManagement/NSTimer-分类m文件.png) -->
+  - NSTimer的分类
 ![NSTimer-分类h文件](https://ae01.alicdn.com/kf/Hf71ede3708084d0a82b11b3d153f9ecb6.jpg)
 ![NSTimer-分类m文件](https://ae01.alicdn.com/kf/H44cc91a496b64edd8fe16bb4e20206e8S.jpg)
-解决NSTimer的循环引用
-<!-- ![循环引用_NSTimer_02](./images/memoryManagement/循环引用_NSTimer_02.png) -->
-![循环引用_NSTimer_02](https://ae01.alicdn.com/kf/Hda789ea1c0064b40b40b81b6badf88a5z.jpg)
-为了解决NSTimer的循环引用。  
-创建一个中间对象，让中间对象持有两个弱引用变量，分别是NSTimer和对象。    
-NSTimer直接分派的回调是在中间对象中实现的，在中间对象中实现的NSTimer回调方法当中对它持有的对象进行了值判断。    
-如果值存在，则直接把NSTimer的回调给这个对象；    
-如果值不存在，即当前对象已被释放，我们设置NSTimer为无效状态，就可以解除当前线程Runloop对NSTimer的强引用以及NSTimer对中间对象的强引用。 
 
 [回到目录](#jump-8)
-
 
 <h3 id="8-5">5. 知识点补充</h3>
 
@@ -687,21 +680,18 @@ NSTimer直接分派的回调是在中间对象中实现的，在中间对象中�
 
 #### 自循环引用
 对象强持有它的成员变量obj，如果给成员变量obj赋值给源对象的话，就会造成一个自循环引用。  
-<!-- ![SelfCircularReference](./images/memoryManagement/SelfCircularReference.png)  -->
 ![SelfCircularReference](https://ae01.alicdn.com/kf/H30f6bde24c6d4f50b56e998b434e70e9a.jpg) 
 
 #### 相互循环引用
 对象A有一个id类型的obj，对象B有一个id类型的obj。    
 如果此时对象A中的obj指向对象B，同时对象B中的obj指向对象A。
 就会造成相互循环引用。  
-<!-- ![CrossCircularReference](./images/memoryManagement/CrossCircularReference.png) -->
 ![CrossCircularReference](https://ae01.alicdn.com/kf/Hfe847fb6d754428293108900b2d268a4k.jpg)
 
 #### 多循环引用
 某一个类中有N个对象分别为对象1、对象2、...、对象n。  
 每个对象中都有一个id类型的obj。  
 假如每个对象的obj都指向下一个对象的话，就会产生一个大环，造成多循环引用。  
-<!-- ![MulticycleReference](./images/memoryManagement/MulticycleReference.png) -->
 ![MulticycleReference](https://ae01.alicdn.com/kf/He526b2cf34a34e76896efc167dd41bc7G.jpg)
 
 #### 考点 
