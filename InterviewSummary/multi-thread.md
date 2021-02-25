@@ -153,3 +153,170 @@ dispatch_async(concurrent_queue, ^{//任务});
 4. 由于GCD底层的线程没有runLoop，performSelector:withObject:afterDelay:方法会失效。
 5. 如果需要有效执行，那么必须是他方法调用所属的当前线程有runLoop。
 
+
+## 二. dispatch_barrier_async
+
+>dispatch_barrier_async(concurrent_queue, ^{//写操作});
+
+### 1. 怎样利用GCD实现多读单写？
+
+- 读者、读者并发
+- 读者、写者互斥
+- 写者、写者互斥
+
+![dispatch_barrier_async_mode.png](https://i.loli.net/2021/02/25/wXTUVbMxP5fOGFz.png)
+
+![dispatch_barrier_async.png](https://i.loli.net/2021/02/25/g1QPdqFy3AaBoZD.png)
+
+
+```
+//
+//  UserCenter.m
+//  GCD
+//  dispatch_barrier_async
+
+#import "UserCenter.h"
+
+@interface UserCenter()
+{
+    // 定义一个并发队列
+    dispatch_queue_t concurrent_queue;
+    
+    // 用户数据中心, 可能多个线程需要数据访问
+    NSMutableDictionary *userCenterDic;
+}
+
+@end
+
+// 多读单写模型
+@implementation UserCenter
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        // 通过宏定义 DISPATCH_QUEUE_CONCURRENT 创建一个并发队列
+        concurrent_queue = dispatch_queue_create("read_write_queue", DISPATCH_QUEUE_CONCURRENT);
+        // 创建数据容器
+        userCenterDic = [NSMutableDictionary dictionary];
+    }
+    
+    return self;
+}
+
+- (id)objectForKey:(NSString *)key
+{
+    __block id obj;
+    // 同步读取指定数据
+    dispatch_sync(concurrent_queue, ^{
+        obj = [userCenterDic objectForKey:key];
+    });
+    
+    return obj;
+}
+
+- (void)setObject:(id)obj forKey:(NSString *)key
+{
+    // 异步栅栏调用设置数据
+    dispatch_barrier_async(concurrent_queue, ^{
+        [userCenterDic setObject:obj forKey:key];
+    });
+}
+
+@end
+
+```
+
+## 三. dispatch_group
+
+>dispatch_group_async
+
+>dispatch_group_notify
+
+### 1. 使用GCD实现以下需求：A、B、C三个任务并发，完成后执行D?
+
+实际开发的使用场景
+1.并发请求多个图片，当所有图片都下载完成之后，把他们拼接成一张图片来使用
+2.蓝牙打印(公司项目需求)
+
+![dispatch_group.png](https://i.loli.net/2021/02/25/8KeuTiRCcG3rbSD.png)
+
+```
+//
+//  GroupObject.m
+//  GCD
+//  dispatch_group
+//
+
+#import "GroupObject.h"
+
+@interface GroupObject()
+{
+    dispatch_queue_t concurrent_queue;
+    NSMutableArray <NSURL *> *arrayURLs;
+}
+
+@end
+
+@implementation GroupObject
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        // 创建并发队列
+        concurrent_queue = dispatch_queue_create("concurrent_queue", DISPATCH_QUEUE_CONCURRENT);
+        arrayURLs = [NSMutableArray array];
+    }
+
+    return self;
+}
+
+- (void)handle
+{
+    // 创建一个group
+    dispatch_group_t group = dispatch_group_create();
+    
+    // for循环遍历各个元素执行操作
+    for (NSURL *url in arrayURLs) {
+        
+        // 异步组分派到并发队列当中
+        dispatch_group_async(group, concurrent_queue, ^{
+            
+            //根据url去下载图片
+            
+            NSLog(@"url is %@", url);
+        });
+    }
+    
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        // 当添加到组中的所有任务执行完成之后会调用该Block
+        NSLog(@"所有图片已全部下载完成");
+    });
+}
+
+
+
+
+@end
+
+```
+
+
+# NSOperation
+
+### 1. 利用NSOperation实现多线程方案有哪些优势或特点呢？
+
+NSOperation需要和NSOperationQueue配合使用来实现多线程方案
+
+优势
+- 添加任务依赖
+- 任务执行状态控制
+- 最大并发量
+
+### 2. 我们可以控制NSOperation的哪些任务状态？
+- isReady：当前任务是否处于就绪状态。
+- isExecuting：当前任务是否处于正在执行中状态。
+- isFinished：当前任务是否处于已执行完成状态。
+- isCancelled：当前任务是否处于已取消状态。
+
