@@ -8,32 +8,32 @@
 
 ### 1. 进程 process[ˈprɑːses]
 
-- 进程是操作系统分配资源的基本单元。  
+- **进程是操作系统分配资源的基本单元**    
 进程是一个具有一定独立功能的程序关于某次数据集合的一次运行活动，它是操作系统分配资源的基本单元。  
 
-- 进程是指在系统中正在运行的一个应用程序。  
+- **进程是指在系统中正在运行的一个应用程序**  
 进程是指在系统中正在运行的一个应用程序，即是一段程序的执行过程，我们可以理解为手机上的一个App。  
 
-- 进程拥有独立运行所需的全部资源。  
+- **进程拥有独立运行所需的全部资源**  
 每个进程之间是独立的，每个进程均运行在其专用且受保护的内存空间内，拥有独立运行所需的全部资源。  
 
 ### 2. 线程 thread[θred]
 
-- 线程是程序执行流的最小单元。  
+- **线程是任务调度的基本单元**  
 线程是程序执行流的最小单元，线程是进程中的一个实体。  
 
-- 一个进程至少有一个线程。  
-一个进程要想执行任务，必须至少有一个线程。应用程序启动的时候，系统会默认开启一条线程，也就是主线程。
+- **一个进程至少有一个线程**  
+一个进程要想执行任务，必须至少有一个线程。**应用程序启动的时候，系统会默认开启一条线程，也就是主线程。**
 
 ### 3. 进程和线程的关系
 
+- 线程是任务调度的基本单元，进程是操作系统分配资源的基本单元。
+
 - 线程是进程的执行单元，进程的所有任务都在线程中执行。
 
-- 线程是CPU分配资源和调度的最小单位。
+- 一个程序可以对应多个进程(多进程)，一个进程中可有多个线程或至少要有一个线程。
 
-- 一个程序可以对应多个进程(多进程)，一个进程中可有多个线程，但至少要有一个线程。
-
-- 同一个进程内的线程共享进程资源。
+- 同一个进程内的所有线程共享进程资源。
 
 ## 二. 多进程和多线程
 
@@ -53,16 +53,16 @@
 
 ### 2. 多线程 multi-thread[ˈmʌlti θred]  
 
-- 同一时间，CPU只能处理一个线程，即只有一个线程在执行。多线程并发执行，其实是CPU快速地在多 条线程之间调度(切换)。如果CPU调度线程的时间足够快，就造成了多线程并发执行的假象。
+- 同一时间内，单核CPU只能处理一个线程，即只有一个线程在执行。多线程并发执行，其实是CPU快速地在多条线程之间调度(切换)。如果CPU调度线程的时间足够快，就造成了多线程同时执行的假象。
 
 - 如果线程非常非常多，CPU会在N多个线程之间调度，会消耗大量的CPU资源，每条线程被调度执行的频次会降低(线程的执行效率降低)。
 
-- 多线程的优点：  
-能适当提高程序的执行效率；  
-能适当提高资源利用率(CPU、内存利用率)。
+#### **多线程的优点**：  
+- 能适当的提高程序的执行效率；  
+- 能适当的提高资源利用率(CPU、内存利用率)。
 
-- 多线程的缺点：  
-开启线程需要占用一定的内存空间(默认情况下，主线程占用1M，子线程占用512KB)，如果开启大量的 线程，会占用大量的内存空间，降低程序的性能。    
+#### **多线程的缺点**：  
+开启线程需要占用一定的内存空间(默认情况下，主线程占用1M，子线程占用512KB)，如果开启大量的线程，会占用大量的内存空间，降低程序的性能。    
 线程越多，CPU在调度线程上的开销就越大。    
 程序设计更加复杂，比如线程之间的通信、多线程的数据共享。
 
@@ -70,33 +70,61 @@
 
 ### 1. 任务 task
 
-任务：就是执行操作的意思，也就是在线程中执行的那段代码。在GCD中是放在block中的。    
-执行任务有两种方式：同步执行(sync)和异步执行(async)。  
+任务：就是执行操作的意思，也就是在线程中执行的那段代码。在GCD中是放在block中的。
 
-- 同步 sync[sɪŋk]   
-同步添加任务到指定的队列中，在添加的任务执行结束之前，会一直等待，直到队列里面的任务完成之后再继续执行，即会阻塞线程。  
-只能在当前线程中执行任务(是当前线程，不一定是主线程)，不具备开启新线程的能力。
+**执行任务有两种方式：同步执行(sync)和异步执行(async)。**  
 
-- 异步 async  
-线程会立即返回，无需等待就会继续执行下面的任务，不阻塞当前线程。  
-可以在新的线程中执行任务，具备开启新线程的能力(并不一定开启新线程)。  
+- **同步 sync[sɪŋk]**   
+同步添加任务到指定的队列中。  
+在添加的任务执行结束之前，会一直等待，直到队列里面的任务完成之后再继续执行，即**会阻塞线程**。  
+只能在当前线程中执行任务(是当前线程，不一定是主线程)，**不具备开启新线程的能力**。
+
+- **异步 async**  
+异步添加任务到指定的队列中。  
+线程会立即返回，无需等待就会继续执行下面的任务，**不阻塞当前线程**。  
+可以在新的线程中执行任务，**具备开启新线程的能力**(并不一定开启新线程)。  
 如果不是添加到主队列上，异步会在子线程中执行任务。
 
 ### 2. 队列 dispatch queue[dɪˈspætʃ kjuː] 
 
+**这里的队列代表：GCD中的调度队列**  
+
 队列：指执行任务的等待队列，即用来存放任务的队列。  
 队列是一种特殊的线性表，采用FIFO(先进先出)的原则。即新任务总是被插入到队列的末尾，读取任务的时候总是从队列的头部开始读取。每读取一个任务，则从队列中释放一个任务。  
 
-在GCD中有两种队列：串行队列和并发队列。两者都符合FIFO(先进先出)的原则。  
-两者的主要区别是：执行顺序不同，以及开启线程数不同。
+在GCD中，有两种调度队列：`串行队列`和`并发队列`。
 
-- 串行队列(Serial[ˈsɪəriəl] Dispatch Queue)  
-同一时间内，队列中只能执行一个任务，只有当前的任务执行完成之后，才能执行下一个任务。(只开启一个线程，一个任务执行完毕后，再执行下一个任务)。  
-主队列是主线程上的一个串行队列，是系统自动为我们创建的。
+两者都符合**FIFO**(**先进先出**)的原则。
 
-- 并发队列(Concurrent[kənˈkʌrənt] Dispatch Queue)  
-同时允许多个任务并发执行。(可以开启多个线程，并且同时执行任务)。  
-并发队列的并发功能只有在异步(dispatch_async)函数下才有效。
+两者的主要**区别**是：**执行顺序不同**，以及**开启线程数不同**。
+
+- **串行队列 Serial[ˈsɪəriəl] Dispatch Queue**  
+同一时间内，队列中只能执行一个任务。  
+只有当前的任务执行完成之后，才能执行下一个任务。(只开启一个线程，一个任务执行完毕后，再执行下一个任务)。  
+**主队列是主线程上的一个串行队列，是系统自动为我们创建的。**
+
+- **并发队列 Concurrent[kənˈkʌrənt] Dispatch Queue**  
+同一时间内，允许多个任务并发执行。(可以开启多个线程，并且同时执行任务)。  
+并发队列的并发功能只有在异步(dispatch_async)函数下才有效。  
+**全局队列是系统提供的并发队列。**
+
+### 3. 串行、并行和并发三者的区别
+
+- 串行：表示在某个时刻只有一个任务在执行
+- 并行：表示在某个时刻有多个任务在执行
+- 并发：表示在某个时间间隔有多个任务在执行
+
+![multi-thread2.png](https://pic2.zhimg.com/v2-e474a26c5a4485d3c378e95f8c9979e9_r.jpg)
+
+举例：CPU执行任务 
+- 单核CPU非并发执行任务：单核CPU一次处理一个完整任务。
+- 单核CPU并发执行任务：单核CPU交替处理多个任务，每次只处理某个任务的一部分。
+- 多核CPU非并发执行任务：多核CPU一次处理一个任务，将任务拆分成多个子任务，多个核心同时单独的执行这些子任务。
+- 多核CPU并发执行任务：多核CPU一次处理多个任务，将任务拆分，多个核心同时单独的执行这些子任务。
+
+问题：既然串行和并行是反义词，为什么都说并发队列，而不说并行队列？
+
+计算机硬件和系统可能并非能真正的并行执行任务。比如单核CPU，也可以实现并发，但是不具有并行能力。
 
 # 四. iOS中的多线程
 
@@ -106,9 +134,17 @@
 
 ## 1. NSThread
 
-NSThread：轻量级别的多线程技术。
+NSThread：轻量级别的多线程技术。  
+管理多线程困难，推荐使用NSOperation和GCD。
 
-### 使用NSThread开辟子线程
+```
+[NSThread currentThread]; // 获取当前线程 
+[NSThread mainThread]; // 获取主线程
+```
+
+### 1.1 开辟子线程
+
+#### 使用NSThread开辟子线程
 
 NSThread是我们自己手动开辟的子线程。
 
@@ -120,14 +156,18 @@ NSThread是我们自己手动开辟的子线程。
 ```
 // 1. 通过初始化方式开辟子线程
 NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(testThread:) object:@"我是参数"];
+
 // 使用初始化方法创建的子线程需要启动start
 [thread start];
+
 // 可以为开辟的子线程起名字
 thread.name = @"NSThread线程";
+
 // 调整thread的权限：线程权限的范围值为0~1，默认值是0.5。
 // 范围值越大权限越高，所以先执行的概率就会越高。
 // 由于是概率，所以并不能很准确的实现我们想要的执行顺序。
 thread.threadPriority = 1;
+
 // 取消当前已经启动的线程
 [thread cancel];
 
@@ -135,23 +175,27 @@ thread.threadPriority = 1;
 [NSThread detachNewThreadSelector:@selector(testThread:) toTarget:self withObject:@"构造器方式"];
 ```
 
-### 使用performSelector开辟子线程
+#### 使用performSelector开辟子线程
 
 只要是NSObject的子类或者对象都可以通过调用`performSelector方法`进入子线程和主线程，其实这些方法所开辟的子线程也是NSThread的另一种体现方式。  
 
 在编译阶段并不会去检查方法是否有效存在，如果不存在只会给出警告。
 
 ```
-[self performSelector:@selector(aaa) withObject:nil afterDelay:1];
+// 使用performSelector开辟子线程
+[self performSelector:@selector(testThread:) withObject:nil afterDelay:1];
+
 // 回到主线程
 // waitUntilDone：是否将该回调方法执行完再执行后面的代码。
 // 如果为YES：就必须等回调方法执行完成之后才能执行后面的代码，说白了就是阻塞当前的线程；
 // 如果是NO：就是不等回调方法结束，不会阻塞当前线程。
-[self performSelectorOnMainThread:@selector(aaa) withObject:nil waitUntilDone:YES];
+[self performSelectorOnMainThread:@selector(testThread:) withObject:nil waitUntilDone:YES];
+
 // 开辟子线程
-[self performSelectorInBackground:@selector(aaa) withObject:nil];
+[self performSelectorInBackground:@selector(testThread:) withObject:nil];
+
 // 在指定线程执行
-[self performSelector:@selector(aaa) onThread:[NSThread currentThread] withObject:nil waitUntilDone:YES]
+[self performSelector:@selector(testThread:) onThread:[NSThread currentThread] withObject:nil waitUntilDone:YES]
 ```
 
 **注意**：  
@@ -162,27 +206,41 @@ thread.threadPriority = 1;
 2. `performSelector:withObject:`只是一个单纯的消息发送，和时间没有一点关系。所以不需要添加到子线程的RunLoop中也能执行。
 
 ```
-[self performSelector:@selector(aaa) withObject:nil afterDelay:1];
+[self performSelector:@selector(testThread:) withObject:nil afterDelay:1];
 [[NSRunLoop currentRunLoop] run];
 ```
 
+### 1.2 应用场景
+
+NSThread和runLoop结合实现常驻线程。
+
 ## 2. NSOperation和NSOperationQueue
 
-### 操作 NSOperation
+### 2.1 操作 NSOperation
 operation：执行操作的意思，即在线程中执行的那段代码。
 
 在GCD中是放在block中的。而在NSOperation中，使用NSOperation的子类NSInvocationOperation、NSBlockOperation或者自定义子类来封装操作。
 
-### 操作队列 NSOperationQueue
+#### 特点
+- 可以控制暂停、恢复、停止：suspended、cancel、cancelAllOperations  
+- 可以控制任务的优先级：threadPriority、queuePriority
+- 可以设置任务依赖：addDependency、removeDependency 
+- 可以设置最大并发操作数，来控制串行或并发：maxConcurrentOperationCount
+- NSOperation有两个封装的便利子类，他们都使用了并发队列：NSBlockOperation、NSInvocationOperation
+
+### 2.2 操作队列 NSOperationQueue
 operation queue：这里的队列指操作队列，即用来存放操作的队列。
 
 不同于GCD中的调度队列FIFO(先进先出)的原则。NSOperationQueue对于添加到队列中的操作，首先进入准备就绪的状态(就绪状态取决于操作之间的依赖关系)，然后进入就绪状态的操作的开始执行顺序(非结束执行顺序)由操作之间相对的优先级决定(优先级是操作对象自身的属性)。
- 
-操作队列通过设置最大并发操作数(maxConcurrentOperationCount)来控制并发、串行。 
 
-NSOperationQueue为我们提供了两种不同类型的队列：主队列和自定义队列。主队列运行在主线程之上，而自定义队列在后台执行。
+#### 种类
+- 主队列：[NSOperationQueue mainQueue]  
+运行在主线程上，是串行队列。
 
-### 2.1 NSOperationQueue与GCD关系
+- 自定义队列：[NSOperationQueue new]  
+在后台执行，是并发队列。
+
+### 2.3 NSOperationQueue与GCD关系
 
 GCD是面向底层的C语言的API；NSOpertaionQueue用GCD构建封装的，是GCD的高级抽象。
 
@@ -215,7 +273,7 @@ GCD共有三种队列类型
 - 全局队列(global queue)：**全局队列是并发队列**，由整个进程共享。存在着高、中、低三种优先级的全局队列。调用`dispath_get_global_queue`并传入优先级来访问队列。
 - 自定义队列：通过函数`dispatch_queue_create`创建的队列。
 
-### 3.2 同步/异步 和 串行/并发
+### 3.2 同步/异步和串行/并发
 
 GCD调动的4种组合
 
@@ -274,6 +332,33 @@ for (NSInteger i = 10; i < 20; i++) {
 而由于栅栏函数的存在，导致顺序必然是先执行任务0-9，再执行栅栏函数，再去执行任务10-19。
 
 ### 3.4 dispatch_group_async和dispatch_group_notify
+
+实际开发的使用场景  
+1.并发请求多个图片，当所有图片都下载完成之后，把他们拼接成一张图片来使用。  
+2.在多个网络请求完成后去刷新UI页面。
+
+### 3.5 延时函数dispatch_after
+
+dispatch_after 能让我们添加进队列的任务延时执行，该函数并不是在指定时间后执行处理，而只是在指定 时间追加处理到 dispatch_queue 由于其内部使用的是 dispatch_time_t 管理时间，而不是 NSTimer。 所以如果在子线程中调用，相比 performSelector:afterDelay,不用关心 runloop 是否开启
+
+```
+// 第一个参数是time，第二个参数是dispatch_queue，第三个参数是要执行的block dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+      NSLog(@"dispatch_after");
+  });
+```
+
+### 3.6 使用dispatch_once实现单例
+
+```
++ (instancetype)shareInstance {
+    static dispatch_once_t onceToken;
+    static id instance = nil;
+    dispatch_once(&onceToken, ^{
+        instance = [[self alloc] init];
+    });
+    return instance;
+}
+```
 
 # 面试题 
 
@@ -341,7 +426,7 @@ dispatch_async(serialQueue, ^{ // 异步串行
 回答：  
 外面的函数无论是同步还是异步都会造成死锁。    
 这是因为里面的任务和外面的任务都在同一个serialQueue队列内，又是同步，这就和上边主队列同步的例子一样造成了死锁。  
-解决方法也和上边一样，将里面的同步改成异步dispatch_async，或者将serialQueue换成其他串行或并行队列，都可以解决。  
+解决方法也和上边一样，将里面的同步改成异步dispatch_async，或者将serialQueue换成其他串行或并发队列，都可以解决。  
 
 解决：  
 这样是不会死锁的，并且serialQueue和serialQueue2是在同一个线程中的。
@@ -401,7 +486,7 @@ dispatch_async(serialQueue, ^{
 ```
 
 - **全局队列是并发队列。**
-- **只要以同步方式提交任务，无论提交到串行队列还是并行队列，最终都是在当前线程中执行。**
+- **只要以同步方式提交任务，无论提交到串行队列还是并发队列，最终都是在当前线程中执行。**
 
 ### 5. 异步串行
 
@@ -449,7 +534,7 @@ NSLog(@"5");
 
 注意：  
 这里的任务"4"在主线程中执行，而任务"2"在子线程中执行。  
-如果任务"4"是添加到另一个串行队列或者并行队列，则任务"2"和任务"4"无序执行。(可以添加多个任务看效果)
+如果任务"4"是添加到另一个串行队列或者并发队列，则任务"2"和任务"4"无序执行。(可以添加多个任务看效果)
 
 ### 7. 以下代码输出什么结果？
 ```
@@ -787,29 +872,6 @@ start  2  7  1  3  6  end  4  5
 @end
 ```
 
-### 延时函数dispatch_after的使用
-dispatch_after 能让我们添加进队列的任务延时执行，该函数并不是在指定时间后执行处理，而只是在指定 时间追加处理到 dispatch_queue
-由于其内部使用的是 dispatch_time_t 管理时间，而不是 NSTimer。 所以如果在子线程中调用，相比 performSelector:afterDelay,不用关心 runloop 是否开启
-```
-// 第一个参数是time，第二个参数是dispatch_queue，第三个参数是要执行的block
-dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-    NSLog(@"dispatch_after");
-});
-```
-
-### 使用 dispatch_once 实现单例
-
-```
-+ (instancetype)shareInstance {
-    static dispatch_once_t onceToken;
-    static id instance = nil;
-    dispatch_once(&onceToken, ^{
-        instance = [[self alloc] init];
-    });
-    return instance;
-}
-```
-
 ## 四. NSOperation
 
 ### 1. 利用NSOperation实现多线程方案有哪些优势和特点呢？
@@ -1109,14 +1171,14 @@ dispatch_async(queue, ^{
 
 
 
-<!-- 1. 怎样用GCD实现多读单写？
+1. 怎样用GCD实现多读单写？
 2. iOS系统为我们提供的几种多线程技术各自的特点是怎样的？
 - GCD：实现简单的线程同步，比如实现子线程的分派、实现多读单写等场景。
 - NSOperation和NSOperationQueue：常见于第三方框架，如AFNetworking、SDWebImage，其特点是可以方便我们对任务状态的控制：添加依赖、移除依赖。
 - NSThread：用来实现常驻线程。
 3. NSOperation对象在finished之后是怎样从队列queue中移除掉的？  
 NSOperation对象在finished之后，会在内部通过KVO方式通知内部的NSOperationQueue移除。
-4. 你都用过哪些琐？结合实际谈谈你是怎样使用的？ -->
+4. 你都用过哪些琐？结合实际谈谈你是怎样使用的？
 
 
 
