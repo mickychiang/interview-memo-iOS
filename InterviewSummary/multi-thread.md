@@ -66,7 +66,7 @@
 线程越多，CPU在调度线程上的开销就越大。    
 程序设计更加复杂，比如线程之间的通信、多线程的数据共享。
 
-## 三. 任务和队列
+## 三. GCD 任务和队列
 
 ### 1. 任务 task
 
@@ -74,16 +74,15 @@
 
 **执行任务有两种方式：同步执行(sync)和异步执行(async)。**  
 
-- **同步 sync[sɪŋk]**   
-同步添加任务到指定的队列中。  
-在添加的任务执行结束之前，会一直等待，直到队列里面的任务完成之后再继续执行，即**会阻塞线程**。  
-只能在当前线程中执行任务(是当前线程，不一定是主线程)，**不具备开启新线程的能力**。
+同步和异步主要体现在能不能开启新的线程，以及会不会阻塞当前线程。  
 
-- **异步 async**  
-异步添加任务到指定的队列中。  
-线程会立即返回，无需等待就会继续执行下面的任务，**不阻塞当前线程**。  
-可以在新的线程中执行任务，**具备开启新线程的能力**(并不一定开启新线程)。  
-如果不是添加到主队列上，异步会在子线程中执行任务。
+- **同步 sync[sɪŋk]**  
+在当前线程中执行任务，不具备开启新线程的能力。  
+同步任务会阻塞当前线程。
+
+- **异步 async**    
+在新的线程中执行任务，具备开启新线程的能力。并不一定会开启新线程，比如在主队列中通过异步执行任务并不会开启新线程。  
+异步任务不会阻塞当前线程。
 
 ### 2. 队列 dispatch queue[dɪˈspætʃ kjuː] 
 
@@ -382,8 +381,7 @@ dispatch_after 能让我们添加进队列的任务延时执行，该函数并�
 **以上代码会因`队列`引起的`循环等待`而产生`死锁`**。  
 
 根据代码可知：  
-- -viewDidLoad方法和Block任务都在主队列中。(viewDidLoad方法本身在主线程的队列中；由于Block任务在主线程中运用了主队列同步，因此Block任务也放到了主线程的队列中。)
-- -viewDidLoad方法和Block任务都需要分派到**主线程中执行**。(主队列是主线程上的一个串行队列，是系统自动为我们创建的。)
+- -viewDidLoad方法是在主线程中执行；同步函数添加的Block任务是在当前线程中执行，当前线程就是主线程，所以Block也在主线程中执行。
 - 根据顺序，首先会在主线程中执行-viewDidLoad方法。在执行-viewDidLoad方法过程中需要调用Block任务，当Block任务同步调用完成之后，-viewDidLoad方法才能继续向下走。因此，-viewDidLoad方法的调用能否结束需要依赖于后续提交的Block任务。
 - 而Block任务若想执行，需要依赖于**主队列先进先出**的特性，即Block任务需要等待-viewDidLoad方法处理完成后才能处理Block任务的提交。
 - 由此发生了**相互等待**的情况，即产生**死锁**。
@@ -537,13 +535,105 @@ NSLog(@"5");
 如果任务"4"是添加到另一个串行队列或者并发队列，则任务"2"和任务"4"无序执行。(可以添加多个任务看效果)
 
 ### 7. 以下代码输出什么结果？
+前提：interview方法在主线程中调用
+```
+- (void)interview {
+    NSLog(@"1");
+    
+    dispatch_queue_t serial_queue = dispatch_queue_create("serial_queue", DISPATCH_QUEUE_SERIAL);
+
+    dispatch_async(serial_queue, ^{
+        NSLog(@"2");
+        
+        dispatch_sync(serial_queue, ^{
+            NSLog(@"3");
+        });
+    
+        NSLog(@"4");
+    });
+    
+    NSLog(@"5");
+}
+```
+回答：  
+```
+输出1、5、2后卡死
+由于队列引起的循环等待而产生死锁。
+```
+
+解释：  
+- 首先打印"1"
+- 然后自己创建了一个串行队列，并通过异步函数向这个队列中添加一个任务块(block1)；异步函数会开启一个子线程并将block1放入子线程中去执行，开启子线程是要耗时的，而且异步任务不需要等待就可以继续执行它后面的代码，所以打印"5"在block1前面执行。  
+- 再来看block1任务块，先打印"2"，然后通过同步函数添加的block2任务块需要立马执行，而block1所在的队列是串行队列，block1任务块还没执行完，所以要先等block1执行，而block1又要等block2执行完了才能继续往下执行，所以就造成了相互等待而死锁。
+
+### 8. 以下代码输出什么结果？
+前提：interview方法在主线程中调用
+```
+- (void)interview {
+
+    NSLog(@"1");
+
+    dispatch_queue_t serial_queue = dispatch_queue_create("serial_queue", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t serial_queue2 = dispatch_queue_create("serial_queue2", DISPATCH_QUEUE_SERIAL);
+    
+    dispatch_async(queue, ^{
+        NSLog(@"2");
+        
+        dispatch_sync(queue2, ^{
+            NSLog(@"3");
+        });
+        
+        NSLog(@"4");
+    });
+    
+    NSLog(@"5");
+}
+```
+输出
+```
+15234
+```
+解释： 
+- block1任务块和block2任务块分别放在不同的队列中。  
+- 先打印"1"再打印"5"和前面是一样的。  
+- 然后异步函数会开启子线程去执行block1任务块，block1中先打印"2"，然后通过同步函数向另一个队列中添加block2任务块，由于两个block属于不同的队列，block2可以立马被安排执行而不会死锁，所以接着是打印"3"，最后打印"4"。
+
+### 9. 以下代码输出什么结果？
+前提：interview方法在主线程中调用
+```
+- (void)interview {
+    NSLog(@"1");
+    
+    dispatch_queue_t concurrent_queue = dispatch_queue_create("concurrent_queue", DISPATCH_QUEUE_CONCURRENT);
+    
+    dispatch_async(concurrent_queue, ^{
+        NSLog(@"2");
+        
+        dispatch_sync(concurrent_queue, ^{
+            NSLog(@"3");
+        });
+        
+        NSLog(@"4");
+    });
+    
+    NSLog(@"5");
+}
+```
+回答：输出
+```
+15234
+```
+- 先打印任务1再打印任务5和前面是一样的。
+- 然后异步函数会开启子线程去执行block1任务块，block1中先打印任务2，然后通过同步函数向并发队列中添加block2任务块，并发队列不需要等前一个任务完成就可以安排下一个任务执行，所以block2可以立马执行打印任务3，最后再打印任务4。
+
+### 10. 以下代码输出什么结果？
 ```
 - (void)viewDidLoad {
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSLog(@"1");
-        [self performSelector: @selector(printLog)
-                   withObject: nil 
-                   afterDelay: 0];
+        [self performSelector:@selector(printLog)
+                   withObject:nil 
+                   afterDelay:0];
         NSLog(@"3");
     });
 }
@@ -558,23 +648,46 @@ NSLog(@"5");
 13
 ```
 
-1. `performSelector:withObject:afterDelay:`的本质是往`RunLoop`中添加定时器(即使延时时间是0秒)。
-2. Block通过异步方式分派到全局并发队列中，由于`dispatch_async`异步函数是开启一个新的子线程去执行任务，而子线程默认是没有启动RunLoop的，所以`performSelector:withObject:afterDelay:`方法会失效，不会执行`printLog`方法。 
-3. 如果需要`performSelector:withObject:afterDelay:`有效执行，那么这个方法所属的当前线程必须有RunLoop。
+1. `performSelector:withObject:afterDelay:`的本质是在`RunLoop`中添加定时器(即使延时时间是0秒)。
+2. 在全局(并发)队列中通过异步函数执行Block任务会开启一个新的子线程，而子线程默认是没有启动RunLoop的，所以`performSelector:withObject:afterDelay:`方法会失效，不会执行`printLog`方法。 
+3. 如果需要`performSelector:withObject:afterDelay:`有效执行，那么这个方法所属的**当前线程必须有RunLoop**。
 
-#### 解决方案1： 
-**手动启动RunLoop，即在Block里面添加一行代码`[[NSRunLoop currentRunLoop] run]; `。**
+#### ***** 解决方案1： 
+**手动开启RunLoop，即在Block里面添加一行代码`[[NSRunLoop currentRunLoop] run]; `。**
+```
+- (void)viewDidLoad {
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSLog(@"1");
+        [self performSelector:@selector(printLog)
+                   withObject:nil 
+                   afterDelay:0];
+        [[NSRunLoop currentRunLoop] run];
+        NSLog(@"3");
+    });
+}
 
-#### 解决方案2：
+- (void)printLog {
+    NSLog(@"2");
+}
+```
+输出日志
+```
+123
+```
+
+#### ***** 解决方案2：
 **将dispatch_get_global_queue(0, 0)改为dispatch_get_main_queue()**  
-主队列所在的主线程默认开启RunLoop，所以可以执行printLog，输出123。
+主队列所在的主线程默认开启RunLoop，所以可以执行printLog。输出日志132。
+解释：  
+在主(串行)队列中通过异步函数执行Block任务并不会开启新线程，异步任务是在当前线程即主线程中执行，而主线程的RunLoop默认是启动的，所以printLog会调用。  
+虽然延迟时间时0秒，但是添加到RunLoop中的计时器不是立马触发的，而是要先唤醒RunLoop，这是需要消耗一定时间的，所以会先打印3再打印2。
 ```
 - (void)viewDidLoad {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"1");
-        [self performSelector: @selector(printLog)
-                   withObject: nil 
-                   afterDelay: 0];
+        [self performSelector:@selector(printLog)
+                   withObject:nil 
+                   afterDelay:0];
         NSLog(@"3");
     });
 }
@@ -583,16 +696,24 @@ NSLog(@"5");
     NSLog(@"2");
 }
 ```
-#### 解决方案3：
+输出日志
+```
+132
+```
+
+#### ***** 解决方案3：
 **将dispatch_async改成dispatch_sync**  
-**同步**是在当前线程执行，那么如果当前线程是主线程，可以执行printLog，输出123。
+**同步**是在当前线程执行，那么如果当前线程是主线程，可以执行printLog，输出132。
+解释：  
+同步函数添加的任务是在当前线程中执行，当前线程就是主线程，而主线程的RunLoop是启动的，所以printLog会调用。  
+虽然延迟时间时0秒，但是添加到RunLoop中的计时器不是立马触发的，而是要先唤醒RunLoop，这是需要消耗一定时间的，所以会先打印3再打印2。
 ```
 - (void)viewDidLoad {
     dispatch_sync(dispatch_get_global_queue(0, 0), ^{
         NSLog(@"1");
-        [self performSelector: @selector(printLog)
-               withObject: nil 
-               afterDelay: 0];
+        [self performSelector:@selector(printLog)
+                   withObject:nil 
+                   afterDelay:0];
         NSLog(@"3");
     });
 }
@@ -601,6 +722,33 @@ NSLog(@"5");
     NSLog(@"2");
 }
 ```
+输出日志
+```
+132
+```
+
+### 11. 以下代码输出什么结果？
+```
+- (void)viewDidLoad {
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSLog(@"1");
+        [self performSelector:@selector(printLog)
+                   withObject:nil];
+        NSLog(@"3");
+    });
+}
+
+- (void)printLog {
+    NSLog(@"2");
+}
+```
+回答：输出日志
+```
+123
+``` 
+1. `performSelector:withObject:`函数是不涉及到计时器的，所以不会添加到RunLoop中，所以是按照1、2、3的顺序执行。
+2. performSelector系列方法中只要是方法名中包含**afterDelay**、**waitUntilDone**的都是和计时器有关的，都要注意前面出现的这些问题。
+
 
 ## 二. GCD - dispatch_barrier_async
 
@@ -926,7 +1074,55 @@ NSOperation类提供了几种任务状态的判断，可以重写对应的方法
 
 ![NSThread.png](https://i.loli.net/2021/02/26/aXireNf5x1gpEHU.png)
 
-## 1. 如何通过NSThread和runLoop来实现常驻线程？
+### 1. 以下代码会输出什么结果？
+```
+- (void)viewDidLoad {
+    NSThread *thread = [[NSThread alloc] initWithBlock:^{
+        NSLog(@"1---%@",[NSThread currentThread]);
+    }];
+    [thread start];
+    
+    [self performSelector:@selector(printLog) onThread:thread withObject:nil waitUntilDone:YES];
+}
+
+- (void)printLog {
+    NSLog(@"2");
+}
+```
+回答：运行闪退
+```
+1
+*** Terminating app due to uncaught exception 'NSDestinationInvalidException', reason: '*** -[Interview performSelector:onThread:withObject:waitUntilDone:modes:]: target thread exited while waiting for the perform'
+```
+解释：  
+从运行结果可以看出闪退的原因是target thread exited(目标线程退出)。  
+因为printLog方法是在线程thread上执行的，但是线程thread在执行完`NSLog(@"1");`这句代码后就结束了，所以等到执行printLog方法时线程thread已经不存在了(严格来说是线程对象是还存在的，只是已经失活了，不能再执行任务了)。  
+
+如果想要代码能正常运行，我们可以利用RunLoop知识来保活线程。  
+先向当前runloop中添加一个source（如果runloop中一个source、NSTimer或Obserer都没有的话就会退出），然后启动runloop。  
+也就是在线程thread的block中添加2行代码，如下所示：会输出：12。
+```
+- (void)viewDidLoad {
+    NSThread *thread = [[NSThread alloc] initWithBlock:^{
+        NSLog(@"1---%@",[NSThread currentThread]);
+        // 线程保活
+        // 不写以下 runloop 代码的话 运行到performSelector:onThread:withObject:waitUntilDone:会闪退
+        // 先向当前runloop中添加一个source（如果runloop中一个source、NSTime或Obserer都没有的话就会退出）
+        [[NSRunLoop currentRunLoop] addPort:[NSPort new] forMode:NSRunLoopCommonModes];
+        // 然后启动runloop
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }];
+    [thread start];
+    
+    [self performSelector:@selector(printLog) onThread:thread withObject:nil waitUntilDone:YES];
+}
+
+- (void)printLog {
+    NSLog(@"2");
+}
+```
+
+### 2. 如何实现常驻线程？如何通过NSThread和runLoop来实现常驻线程？
 
 由于每次开辟子线程都会消耗cpu，在需要频繁使用子线程的情况下，频繁开辟子线程会消耗大量的cpu，而且创建线程都是任务执行完成之后也就释放了，不能再次利用，那么如何创建一个线程可以让它可以再次工作呢？也就是创建一个常驻线程。
 
@@ -951,7 +1147,7 @@ NSOperation类提供了几种任务状态的判断，可以重写对应的方法
 }
 ```
 
-## 2. NSThread的实现机制是什么？或start方法的内部原理？
+### 3. NSThread的实现机制是什么？或start方法的内部原理？
 
 
 
