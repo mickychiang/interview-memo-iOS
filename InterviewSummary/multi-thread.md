@@ -539,11 +539,11 @@ NSLog(@"5");
 ### 7. 以下代码输出什么结果？
 ```
 - (void)viewDidLoad {
-    dispatch_async(global_queue, ^{
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSLog(@"1");
         [self performSelector: @selector(printLog)
-               withObject: nil 
-               afterDelay: 0];
+                   withObject: nil 
+                   afterDelay: 0];
         NSLog(@"3");
     });
 }
@@ -558,21 +558,23 @@ NSLog(@"5");
 13
 ```
 
-1. Block通过异步方式分派到全局并发队列中，Block会在GCD底层维护的线程池中的某一个线程中执行。
-2. GCD底层分派的线程默认情况下是没有开启对应的runLoop的。
-3. `performSelector:withObject:afterDelay:`方法需要创建相应的一个提交到runLoop上的逻辑的。
-4. 由于GCD底层的线程没有runLoop，performSelector:withObject:afterDelay:方法会失效。
-5. 如果需要有效执行，那么必须是这个方法调用所属的当前线程有runLoop。比如在主队列  
+1. `performSelector:withObject:afterDelay:`的本质是往`RunLoop`中添加定时器(即使延时时间是0秒)。
+2. Block通过异步方式分派到全局并发队列中，由于`dispatch_async`异步函数是开启一个新的子线程去执行任务，而子线程默认是没有启动RunLoop的，所以`performSelector:withObject:afterDelay:`方法会失效，不会执行`printLog`方法。 
+3. 如果需要`performSelector:withObject:afterDelay:`有效执行，那么这个方法所属的当前线程必须有RunLoop。
 
-解决方案1：将global_queue改为dispatch_get_main_queue  
-主队列所在的主线程默认开启runLoop，所以可以执行printLog，输出123。
+#### 解决方案1： 
+**手动启动RunLoop，即在Block里面添加一行代码`[[NSRunLoop currentRunLoop] run]; `。**
+
+#### 解决方案2：
+**将dispatch_get_global_queue(0, 0)改为dispatch_get_main_queue()**  
+主队列所在的主线程默认开启RunLoop，所以可以执行printLog，输出123。
 ```
 - (void)viewDidLoad {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"1");
         [self performSelector: @selector(printLog)
-               withObject: nil 
-               afterDelay: 0];
+                   withObject: nil 
+                   afterDelay: 0];
         NSLog(@"3");
     });
 }
@@ -581,11 +583,12 @@ NSLog(@"5");
     NSLog(@"2");
 }
 ```
-解决方案2：将dispatch_async改成dispatch_sync  
+#### 解决方案3：
+**将dispatch_async改成dispatch_sync**  
 **同步**是在当前线程执行，那么如果当前线程是主线程，可以执行printLog，输出123。
 ```
 - (void)viewDidLoad {
-    dispatch_sync(global_queue, ^{
+    dispatch_sync(dispatch_get_global_queue(0, 0), ^{
         NSLog(@"1");
         [self performSelector: @selector(printLog)
                withObject: nil 
