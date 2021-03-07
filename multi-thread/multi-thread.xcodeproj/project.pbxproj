@@ -14,6 +14,7 @@
 		4FC3EB1D25EF8A8A004C3DD1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC3EB1C25EF8A8A004C3DD1 /* Assets.xcassets */; };
 		4FC3EB2025EF8A8A004C3DD1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FC3EB1E25EF8A8A004C3DD1 /* LaunchScreen.storyboard */; };
 		4FC3EB2325EF8A8A004C3DD1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3EB2225EF8A8A004C3DD1 /* main.m */; };
+		BD55E55B25F25B200002A979 /* GCDMemo.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55E55A25F25B200002A979 /* GCDMemo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		4FC3EB1F25EF8A8A004C3DD1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FC3EB2125EF8A8A004C3DD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4FC3EB2225EF8A8A004C3DD1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BD55E55925F25B200002A979 /* GCDMemo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GCDMemo.h; sourceTree = "<group>"; };
+		BD55E55A25F25B200002A979 /* GCDMemo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GCDMemo.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,8 @@
 				4FC3EB1425EF8A85004C3DD1 /* SceneDelegate.m */,
 				4FC3EB1625EF8A85004C3DD1 /* ViewController.h */,
 				4FC3EB1725EF8A85004C3DD1 /* ViewController.m */,
+				BD55E55925F25B200002A979 /* GCDMemo.h */,
+				BD55E55A25F25B200002A979 /* GCDMemo.m */,
 				4FC3EB1925EF8A85004C3DD1 /* Main.storyboard */,
 				4FC3EB1C25EF8A8A004C3DD1 /* Assets.xcassets */,
 				4FC3EB1E25EF8A8A004C3DD1 /* LaunchScreen.storyboard */,
@@ -148,6 +153,7 @@
 				4FC3EB1825EF8A85004C3DD1 /* ViewController.m in Sources */,
 				4FC3EB1225EF8A85004C3DD1 /* AppDelegate.m in Sources */,
 				4FC3EB2325EF8A8A004C3DD1 /* main.m in Sources */,
+				BD55E55B25F25B200002A979 /* GCDMemo.m in Sources */,
 				4FC3EB1525EF8A85004C3DD1 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

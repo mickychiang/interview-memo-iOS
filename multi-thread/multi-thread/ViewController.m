@@ -6,6 +6,7 @@
 //
 
 #import "ViewController.h"
+#import "GCDMemo.h"
 
 @interface ViewController ()
 
@@ -21,8 +22,45 @@
 //    [self interview2]; // 132
 //    [self interview3]; // 132
 //    [self interview4]; // 123
-    [self interview5]; // 12
+//    [self interview5]; // 12
+    
+    [self gcd_memo];
 }
+
+// MARK: - ********************** GCD Memo **********************
+- (void)gcd_memo {
+    GCDMemo *gcdMemo = [[GCDMemo alloc] init];
+    
+//    // 主队列同步函数 - crash：因队列引起的循环等待而产生死锁
+//    [gcdMemo main_queue_dispatch_sync];
+//    
+//    // 主队列异步函数
+//    [gcdMemo main_queue_dispatch_async];
+//    
+//    // 全局队列同步函数
+//    [gcdMemo global_queue_dispatch_sync];
+//    
+//    // 全局列异步函数
+//    [gcdMemo global_queue_dispatch_async];
+//    
+//    // 自定义串行队列同步函数
+//    [gcdMemo custom_serial_queue_dispatch_sync];
+//    
+//    // 自定义串行队列异步函数
+//    [gcdMemo custom_serial_queue_dispatch_async];
+//    
+//    // 自定义并发队列同步函数
+//    [gcdMemo custom_concurrent_queue_dispatch_sync];
+//    
+//    // 自定义并发队列异步函数
+//    [gcdMemo custom_concurrent_queue_dispatch_async];
+}
+
+
+
+
+
+
 
 // MARK: - ******************************************
 - (void)interview1 {
