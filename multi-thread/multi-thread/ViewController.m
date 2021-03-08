@@ -54,6 +54,26 @@
 //    
 //    // 自定义并发队列异步函数
 //    [gcdMemo custom_concurrent_queue_dispatch_async];
+//
+//    // 同步栅栏函数
+//    [gcdMemo dispatch_barrier_sync];
+//    
+//    // 异步栅栏函数
+//    [gcdMemo dispatch_barrier_async];
+//
+//    // dispatch_group
+//    // dispatch_group_enter() + dispatch_group_leave() + dispatch_async()
+//    [gcdMemo GCDGroup1];
+//
+//    // dispatch_group_async
+//    [gcdMemo GCDGroup2];
+//    
+//    // dispatch_after
+//    [gcdMemo dispatch_after];
+//    // 单例
+//    [gcdMemo dispatch_once_use];
+    // 信号量
+    [gcdMemo dispatch_semaphore];
 }
 
 

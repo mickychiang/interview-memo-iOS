@@ -23,6 +23,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)custom_concurrent_queue_dispatch_sync;
 - (void)custom_concurrent_queue_dispatch_async;
 
+- (void)dispatch_barrier_sync;
+- (void)dispatch_barrier_async;
+
+- (void)GCDGroup1;
+- (void)GCDGroup2;
+
+- (void)dispatch_after;
+
+- (void)dispatch_once_use;
+
+- (void)dispatch_semaphore;
+
 @end
 
 NS_ASSUME_NONNULL_END
