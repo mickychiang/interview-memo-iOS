@@ -4,11 +4,8 @@
 # 前言
 《iOS面试题备忘录(三) - 分类和扩展》是关于iOS的分类和扩展的知识点及面试题的整理。  
 本篇内容会一直持续整理并完善，有理解不正确的地方请路过的大神告知，共勉。  
-[github原文地址](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)
 
 <span id="jump"><h1>目录</h1></span>
-
-<!-- [<span id="jump-1-6">6. 加载调用栈(底层)</span>](#1-6)-->
 
 [<span id="jump-1"><h2>一. 分类Category</h2></span>](#1)
 [<span id="jump-1-1">1. 分类的书写规则？</span>](#1-1)  
@@ -112,18 +109,6 @@ struct category_t {
 [回到目录](#jump-1)
 
 
-<!-- <h3 id="1-6">6. 加载调用栈(底层)</h3> -->
- 
-<!-- images：镜像
-![category_t_use.png](https://i.loli.net/2020/05/23/nxRt9QVrchb7kZ3.png) -->
-<!-- ![加载调用栈](./images/category/category_t_use.png) -->
-
-<!-- **源码分析**  
-**注释写在了源码里且只分析了添加实例方法的逻辑** -->
-
-<!-- [回到目录](#jump-1) -->
-
-
 <h3 id="1-6">6. 为一个类添加了分类A和分类B，两个分类中分别添加了名字相同的实例方法，那么哪个分类的方法最终会生效？[※※※※※]</h3>
 
 **取决于分类的编译顺序。**  
@@ -179,7 +164,6 @@ void objc_removeAssociatedObjects(id _Nonnull object)
  
 关联对象由**AssociationsManager管理**并在**AssociationsHashMap存储**。  
 所有对象的关联内容都在**同一个全局容器**中。
-<!-- ![关联对象的本质](./images/runtime/AssociatedObjectNature.png)  -->
 ![AssociatedObjectNature.png](https://i.loli.net/2020/06/15/hcUzs7LEW51MmCd.png)  
   
 - 1.传递进来的value和policy封装成一个ObjcAssociation结构。  
@@ -187,7 +171,6 @@ void objc_removeAssociatedObjects(id _Nonnull object)
 - 3.ObjectAssociationMap作为object的一个value放到全局容器AssociationsHashMap中。  
 
 设置关联对象的源码分析：  
-<!-- ![设置关联对象的源码分析](./images/runtime/objc_setAssociatedObject.png) -->
 ![objc_setAssociatedObject.png](https://i.loli.net/2020/06/15/dznULg5iIk2fe6O.png) 
 
 [回到目录](#jump-1)
@@ -201,8 +184,7 @@ void objc_removeAssociatedObjects(id _Nonnull object)
 
 
 <h3 id="1-12">12. 关联对象的数据结构</h3>
- 
-<!-- ![数据结构](./images/runtime/AssociatedDataStructure.png) -->
+
 ![AssociatedDataStructure.png](https://i.loli.net/2020/06/15/z415gWQd69LhlGP.png)
 
 [回到目录](#jump-1)
@@ -294,15 +276,4 @@ struct category_t {
 # 参考文档
 
 《新浪微博资深大牛全方位剖析 iOS 高级面试》 
-
-
-# 其他
-《iOS面试题备忘录》系列文章的github原文地址：  
-
-[iOS面试题备忘录(一) - 属性关键字](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)    
-[iOS面试题备忘录(二) - 内存管理](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/memoryManagement.md)   
-[iOS面试题备忘录(三) - 分类和扩展](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)  
-[iOS面试题备忘录(四) - 代理和通知](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/DelegateAndNSNotification.md)  
-[iOS面试题备忘录(五) - KVO和KVC](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/KVOAndKVC.md)  
-[iOS面试题备忘录(六) - runtime](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)  
-[算法](https://github.com/mickychiang/iOSInterviewMemo/blob/master/Algorithm/Algorithm.md)  
+ 
