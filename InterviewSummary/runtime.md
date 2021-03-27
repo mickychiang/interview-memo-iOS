@@ -7,14 +7,13 @@
 **可通过目录自行检测掌握程度，都是重点。**  
 [github原文地址](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)
 
-<!-- ![runtime总结](./images/runtime/runtimeSummary.png) -->
 ![runtimeSummary.png](https://ae01.alicdn.com/kf/Hfb5ebad1066047799f74de1190ae436dH.jpg)
 
 <span id="jump"><h1>目录</h1></span>
 
 [<span id="jump-1"><h2>一. 数据结构</h2></span>](#1)
 
-[<span id="jump-1-1">1. runtime的基础数据结构</span>](#1-1)   
+[<span id="jump-1-1">1. runtime的数据结构</span>](#1-1)   
 [<span id="jump-1-2">2. objc_object是什么？objc_object包含哪些内容？</span>](#1-2)   
 [<span id="jump-1-3">3. objc_class是什么？objc_class包含哪些内容？和objc_object有什么关系？</span>](#1-3)   
 [<span id="jump-1-4">4. Class是否是对象？(什么是类对象？) </span>](#1-4)   
@@ -25,7 +24,7 @@
 [<span id="jump-1-9">9. 简述一下method_t</span>](#1-9)   
 
 
-[<span id="jump-2"><h2>二. 类对象和元类对象</h2></span>](#2)
+[<span id="jump-2"><h2>二. 实例对象、类对象和元类对象</h2></span>](#2)
 [<span id="jump-2-1">1. 类对象和元类对象分别是什么？实例对象与类对象之间的关系？类对象和元类对象的区别和联系？</span>](#2-1)  
 [<span id="jump-2-2">2. 如果我们调用的类方法没有对应的实现，但是有同名的实例方法的实现，那么这时会不会发生crash？或者会不会产生实际的调用？</span>](#2-2)    
 
@@ -49,26 +48,11 @@
 
 # 正文
 
-<!-- 1.编译时语言与OC这种运行时语言的区别？- 👌  
-2.消息传递与函数调用的区别？- 👌  
-3.当我们调用一个方法却没有实现的时候，系统是如何为我们实现消息转发过程的？- 👌  
-4.简述一下runtime的基础数据结构-👌  
-5.类对象与元类对象分别是什么？-👌  
-6.实例对象与类对象之间的关系？-👌  
-7.类对象与元类对象之间的关系？-👌  
-8.Objective-C语言中的消息传递机制？- 👌  
-9.当我们进行消息传递的过程中，如何进行缓存的方法查找？- 👌  
-10.消息转发流程是怎样的？- 👌  
-11.Method Swizzling的应用- 👌  
-12.动态添加方法  
-13.动态方法解析   -->
-
 <h2 id="1">一. 数据结构</h2>
 
-<h3 id="1-1">1. runtime的基础数据结构</h3>
+<h3 id="1-1">1. runtime的数据结构</h3>
 
-记住图中的内容即可
-<!-- ![runtimeStruct](./images/runtime/runtimeStruct.png) -->
+记住图中的内容即可  
 ![runtimeStruct.png](https://i.loli.net/2020/06/04/Rs1TMvgFdz6Nbrm.png)
 
 [回到目录](#jump-1)
@@ -76,16 +60,14 @@
 
 <h3 id="1-2">2. objc_object是什么？objc_object包含哪些内容？</h3>
 
-<!-- ![objc_object结构体](./images/runtime/objc_object_pic.png) -->
 ![objc_object_pic.png](https://i.loli.net/2020/06/04/D8lfNy9BKxZhSrU.png)
 
-- id类型 => objc_object结构体   
-平时开发使用的所有对象都是id类型的，id类型的对象对应到runtime当中是objc_object结构体。
-<!-- ![objc_object结构体源码](./images/runtime/objc_object.png) -->
+- id类型(实例对象) <=> objc_object结构体   
+平时开发使用的所有对象都是id类型的，id类型的对象对应到runtime当中是objc_object结构体。  
 ![objc_object.png](https://i.loli.net/2020/06/04/aGi6yo71ISZnLNV.png)
 
 - objc_object结构体主要包含以下内容：    
-    - isa_t：是一个共用体。
+    - isa_t：是一个共用体。C++共用体类型。在64位架构下是64个0或1的数字；在32位架构下是32个0或1的数字。有**指针型isa**和**非指针型isa**两种。
     - 关于isa操作的相关方法：比如，通过objc_object的isa指针获取其指向的类对象；通过类对象的isa指针来获取其指向的元类对象等。
     - 弱引用的相关方法：比如，标记一个对象它是否曾有过弱引用指针。
     - 关联对象的相关方法：比如，为对象设置关联属性。
@@ -99,17 +81,14 @@
 
 <h3 id="1-3">3. objc_class是什么？objc_class包含哪些内容？和objc_object有什么关系？</h3>
 
-<!-- ![objc_class结构体](./images/runtime/objc_class_pic.png) -->
 ![objc_class_pic.png](https://i.loli.net/2020/06/04/qKXjHPbyw1gzJ5n.png)
 
-- Class类型 => objc_class结构体   
+- Class类型(类对象) <=> objc_class结构体   
 在OC中使用到的Class是一个类，对应到runtime当中是objc_class结构体。
 
 - objc_class结构体继承自objc_object结构体  
 
-<!-- ![objc_class结构体源码](./images/runtime/objc_class.png)
-![objc_class结构体源码](./images/runtime/objc_class_content.png) -->
-![objc_class.png](https://i.loli.net/2020/06/04/sYwo6itEDk3ZO1p.png)
+![objc_class.png](https://i.loli.net/2020/06/04/sYwo6itEDk3ZO1p.png)  
 ![objc_class_content.png](https://i.loli.net/2020/06/04/Lnyj421eQUmbTMP.png)
 
 - objc_class结构体主要包含以下内容：   
@@ -132,14 +111,13 @@ objc_object结构体对应着id类型，而id类型是对象，所以Class是类
 
 <h3 id="1-5">5. isa指针的含义？</h3>
 
+![isaPointer.png](https://i.loli.net/2020/06/04/1SP8FxXw4L9pcAf.png)
+
 - isa指针是一个C++共用体类型(在objc_objct中被定义成isa_t)。
 - 在64位架构上是64个0或者1的数字，在32位架构上是32个0或者1的数字。
 - isa指针包括**指针型isa**和**非指针型isa**。（考点!）
     - 指针型isa：**isa的值**代表Class的地址。比如，objc_object对象可以通过isa内容来获取它的类对象的地址。
     - 非指针型isa：**isa的值的部分**代表Class的地址。比如，在64位架构，其中的30多位代表Class的地址，多出的位置可以用来存储其他相关内容已达到节省内存的目的。这也是有两种isa的初衷。
-
-<!-- ![isa指针](./images/runtime/isaPointer.png) -->
-![isaPointer.png](https://i.loli.net/2020/06/04/1SP8FxXw4L9pcAf.png)
 
 [回到目录](#jump-1)
 
@@ -154,7 +132,6 @@ Class类对象的isa指针指向它对应的MetaClass。
 
 **可以查看问题2中的源代码**
 
-<!-- ![isa指针的指向](./images/runtime/isaPointerTo.png) -->
 ![isaPointerTo.png](https://i.loli.net/2020/06/04/GivQJUBnzWXawkO.png)
 
 注意：
@@ -165,6 +142,8 @@ Class类对象的isa指针指向它对应的MetaClass。
 
 
 <h3 id="1-7">7. 介绍一下objc_class结构体里的cache_t</h3>
+
+![cache_t.png](https://i.loli.net/2020/06/04/bjQJ9XFuzdm1eOc.png)
 
 #### cache_t的特点
 - 用于**快速**查找方法的执行函数
@@ -182,9 +161,6 @@ Class类对象的isa指针指向它对应的MetaClass。
 key对应OC的selector选择器名称；IMP是一个无类型的函数指针，对应方法的实现。  
 比如，**给出一个key，通过哈希算法找出key对应的位于cache_t的位置，然后通过提取IMP来调用函数。**
 
-<!-- ![cache_t的数据结构](./images/runtime/cache_t.png) -->
-![cache_t.png](https://i.loli.net/2020/06/04/bjQJ9XFuzdm1eOc.png)
-
 [回到目录](#jump-1)
 
 
@@ -192,17 +168,16 @@ key对应OC的selector选择器名称；IMP是一个无类型的函数指针，�
 
 - class_data_bits_t是对class_rw_t的封装。包含协议、属性、方法等内容。  
 - class_rw_t：类相关的读写信息，是对class_ro_t的封装。  
-- class_ro_t：类相关的只读信息。  
+- class_ro_t：类相关的只读信息。存储了当前类在编译期就已经确定的属性、方法以及遵循的协议。
+
 注意：  
 rw = readwrite  
 ro = readonly   
 
 #### 8.1 class_rw_t
-<!-- ![class_rw_t结构体的解析](./images/runtime/class_rw_t.png) -->
 ![class_rw_t.png](https://i.loli.net/2020/06/04/yPBF2ODmoe3R4NK.png)
 
 #### 8.2 class_ro_t
-<!-- ![class_ro_t结构体的解析](./images/runtime/class_ro_t.png) -->
 ![class_ro_t.png](https://i.loli.net/2020/06/04/6zfOnmBu8YSpcrM.png)
 
 [回到目录](#jump-1)
@@ -217,7 +192,6 @@ ro = readonly
 - 函数体
 
 **method_t是对函数四要素的封装。**
-<!-- ![method_t结构体的解析](./images/runtime/method_t.png) -->
 ![method_t.png](https://i.loli.net/2020/06/04/rQUemAD1B5I2HMJ.png)
 
 **Type Encodings**
@@ -225,18 +199,18 @@ ro = readonly
 const char *types;
 ```
 函数的返回值类型 + 参数个数(包括每个参数的类型)
-<!-- ![TypeEncodings](./images/runtime/TypeEncodings.png) -->
 ![TypeEncodings.png](https://i.loli.net/2020/06/04/S2X9TnVkGeODPux.png)
 **举例：**
-<!-- ![TypeEncodingsExample](./images/runtime/TypeEncodingsExample.png) -->
 ![TypeEncodingsExample.png](https://i.loli.net/2020/06/04/jdHn1JMUsTclgeo.png)
 
 [回到目录](#jump-1)
 
 
-<h2 id="2">二. 类对象和元类对象</h2>
+<h2 id="2">二. 实例对象、类对象和元类对象</h2>
 
 <h3 id="2-1">1. 类对象和元类对象分别是什么？实例对象与类对象之间的关系？类对象和元类对象的区别和联系？</h3>
+
+![classAndMetaClass.png](https://i.loli.net/2020/06/04/HncBlke8UvmZVy4.png)
 
 #### 1.1 类对象和元类对象分别是什么
 - 类对象：是一种**存储实例方法列表**等信息的数据结构。
@@ -247,9 +221,6 @@ const char *types;
 
 #### 1.3 类对象和元类对象的关系
 类对象通过isa指针找到其对应的元类对象，从而可以访问元类对象里存储的类方法列表等相关信息。
-
-<!-- ![类对象和元类对象](./images/runtime/classAndMetaClass.png) -->
-![classAndMetaClass.png](https://i.loli.net/2020/06/04/HncBlke8UvmZVy4.png)
 
 #### 1.4 类对象和元类对象的区别和联系
 以下知识点都可以当成面试题
@@ -345,7 +316,6 @@ objc_msgSendSuper(super, @selector(class))的super里包含的receiver就是当�
 
 <h3 id="3-3">3. 代码如下图所示，[self class]和[super class]打印出来的内容是什么？</h3>
  
-<!-- ![classAndMetaClassExample](./images/runtime/classAndMetaClassExample.png) -->
 ![classAndMetaClassExample.png](https://i.loli.net/2020/06/04/jAfaxET8u3ZHFMr.png)
 
 回答：  
@@ -400,10 +370,6 @@ bucket_t是方法选择器(selector)和方法实现(IMP)的封装。
 
 <h3 id="3-7">7. 消息转发流程是怎样的？</h3>
 
-<!-- ![MessageForwardingProcess_01](./images/runtime/MessageForwardingProcess_01.png)
-![MessageForwardingProcess_02](./images/runtime/MessageForwardingProcess_02.png)
-![MessageForwardingProcess_03](./images/runtime/MessageForwardingProcess_03.png) -->
-
 当走消息转发流程的时候会顺次执行以下方法直到找到或者没找到。  
 
 举例：实例方法的消息转发流程  
@@ -413,9 +379,9 @@ bucket_t是方法选择器(selector)和方法实现(IMP)的封装。
   - 如果返回了方法签名，那么执行forwardInvocation: => 消息已处理/消息无法处理
   - 如果返回了nil => 消息无法处理
 
-![MessageForwardingProcess_01.png](https://i.loli.net/2020/06/04/er5zmyavJ2nQ917.png)
-![MessageForwardingProcess_02.png](https://i.loli.net/2020/06/04/kyaCYdioUJSb3WP.png)
-![MessageForwardingProcess_03.png](https://i.loli.net/2020/06/04/JxR9jIS3KymHM2Z.png)
+![MessageForwardingProcess_01.png](https://i.loli.net/2020/06/04/er5zmyavJ2nQ917.png)  
+![MessageForwardingProcess_02.png](https://i.loli.net/2020/06/04/kyaCYdioUJSb3WP.png)  
+![MessageForwardingProcess_03.png](https://i.loli.net/2020/06/04/JxR9jIS3KymHM2Z.png)  
 
 完整代码实例请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
 
@@ -433,16 +399,12 @@ runtime应用 - 方法交换
 Method Swizzing是发生在运行时的，主要用于在运行时将两个Method进行交换。  
 我们可以将Method Swizzling代码写到任何地方，但是只有在这段Method Swilzzling代码执行完毕之后互换才起作用。
 
-<!-- ![methodSwizzling](./images/runtime/methodSwizzling.png) -->
 ![methodSwizzling.png](https://i.loli.net/2020/06/04/a8Ae6RgPC39xpvY.png)
 
 #### 1.2 简单实现(不是最佳写法，仅当例子参考)
-<!-- ![methodSwizzling_01](./images/runtime/methodSwizzling_01.png)
-![methodSwizzling_02](./images/runtime/methodSwizzling_02.png)
-![methodSwizzling_03](./images/runtime/methodSwizzling_03.png) -->
-![methodSwizzling_01.png](https://i.loli.net/2020/06/04/UNO4i6mSs85RarG.png)
-![methodSwizzling_02.png](https://i.loli.net/2020/06/04/8MyPfZQnhrA7uO4.png)
-![methodSwizzling_03.png](https://i.loli.net/2020/06/04/q8DKn2Zl7fcP4vz.png)
+![methodSwizzling_01.png](https://i.loli.net/2020/06/04/UNO4i6mSs85RarG.png)  
+![methodSwizzling_02.png](https://i.loli.net/2020/06/04/8MyPfZQnhrA7uO4.png)  
+![methodSwizzling_03.png](https://i.loli.net/2020/06/04/q8DKn2Zl7fcP4vz.png)  
 
 简单实现的完整代码请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
 
@@ -452,8 +414,7 @@ Method Swizzing是发生在运行时的，主要用于在运行时将两个Metho
 - Swizzling在+load中执行时，不要调用[super load]。  
 如果多次调用了[super load]，可能会出现“Swizzle无效”的假象。
 - 为了避免Swizzling的代码被重复执行，我们可以通过GCD的dispatch_once函数来解决，利用dispatch_once函数内代码只会执行一次的特性。
-
-<!-- ![methodSwizzlingAboutInstanceAndClass](./images/runtime/methodSwizzlingAboutInstanceAndClass.png) -->
+ 
 ![methodSwizzlingAboutInstanceAndClass.png](https://i.loli.net/2020/06/05/rdkM3Aznxlf9bP6.png)
 
 #### 1.4 实际应用场景
@@ -479,7 +440,6 @@ runtime应用 - 动态添加方法
 
 #### 1.2 简单实现
 
-<!-- ![dynamicAddMethod](./images/runtime/dynamicAddMethod.png) -->
 ![dynamicAddMethod.png](https://i.loli.net/2020/06/04/XMVJWms95Gz72Ab.png)
 
 简单实现的完整代码请查看：[InterviewSummary工程](https://github.com/mickychiang/iOSInterviewMemo/tree/master/InterviewSummary/InterviewSummary)
@@ -519,7 +479,6 @@ runtime应用 - 动态方法解析@dynamic
 <h2 id="5">五. 消息传递机制具体解析（完整具体答案）</h2>
 
 **缓存是否命中 => 当前类的方法列表是否命中 => 逐级父类的方法列表是否命中 => 消息转发流程**
-<!-- ![消息传递机制的流程图](./images/runtime/messageSend.png) -->
 ![messageSend.png](https://i.loli.net/2020/06/04/MjWKT7goPQdfNtn.png)
 
 ### 1. 缓存中查找
@@ -533,7 +492,6 @@ runtime应用 - 动态方法解析@dynamic
 **缓存查找是一个哈希查找**：  
 根据给定的方法选择器通过一个函数来映射出对应的bucket_t在数组中的索引位置。  
 作用：利用哈希查找来提高查找效率。
-<!-- ![缓存查找](./images/runtime/cacheSearch.png) -->
 ![cacheSearch.png](https://i.loli.net/2020/06/04/3Xi5UCl8pqNPtVT.png)
 
 ### 2. 当前类中查找
@@ -542,12 +500,10 @@ runtime应用 - 动态方法解析@dynamic
 
 ### 3. 父类逐级查找
 当前类的superClass指针向上查找。  
-父类缓存 => 父类方法列表 => 逐级向上。
-<!-- ![父类逐级查找流程图](./images/runtime/superClassLevelByLevelSearch.png) -->
+父类缓存 => 父类方法列表 => 逐级向上。  
 ![superClassLevelByLevelSearch.png](https://i.loli.net/2020/06/04/AJChpINQufeygnV.png)
 
 ### 4. 消息转发流程
-<!-- ![消息转发流程](./images/runtime/MessageForwardingProcess.png) -->
 ![MessageForwardingProcess.png](https://i.loli.net/2020/06/04/bWsKaNhVS53RIc8.png)
 
 详细请看代码~
@@ -556,14 +512,3 @@ runtime应用 - 动态方法解析@dynamic
 
 《新浪微博资深大牛全方位剖析 iOS 高级面试》  
 [iOS开发·runtime原理与实践: 方法交换篇(Method Swizzling)(iOS“黑魔法”，埋点统计，禁止UI控件连续点击，防奔溃处理)](https://juejin.im/post/5aebc6ae6fb9a07aad1761a4)
-
-# 其他
-《iOS面试题备忘录》系列文章的github原文地址：  
-
-[iOS面试题备忘录(一) - 属性关键字](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)    
-[iOS面试题备忘录(二) - 内存管理](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/memoryManagement.md)   
-[iOS面试题备忘录(三) - 分类和扩展](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)  
-[iOS面试题备忘录(四) - 代理和通知](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/DelegateAndNSNotification.md)  
-[iOS面试题备忘录(五) - KVO和KVC](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/KVOAndKVC.md)  
-[iOS面试题备忘录(六) - runtime](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)  
-[算法](https://github.com/mickychiang/iOSInterviewMemo/blob/master/Algorithm/Algorithm.md)  
