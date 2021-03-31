@@ -1,8 +1,8 @@
-# iOS面试题备忘录(六) - runtime
+# interview-memo-iOS runtime
 所有源码基于[objc-runtime-objc.680版本](https://opensource.apple.com/source/objc4/) 
 
 # 前言
-《iOS面试题备忘录(六) - runtime》是关于iOS的runtime机制的相关知识点及面试题的整理，难易程度没做区分，即默认是必须掌握的内容。  
+《interview-memo-iOS runtime》是关于iOS的runtime机制的相关知识点及面试题的整理，难易程度没做区分，即默认是必须掌握的内容。  
 本篇内容会持续整理并不断更新完善，如果哪里有理解不正确的地方请路过的大神告知，共勉。  
 **可通过目录自行检测掌握程度，都是重点。**  
 [github原文地址](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)
@@ -60,18 +60,18 @@
 
 <h3 id="1-2">2. objc_object是什么？objc_object包含哪些内容？</h3>
 
-![objc_object_pic.png](https://i.loli.net/2020/06/04/D8lfNy9BKxZhSrU.png)
-
-- id类型(实例对象) <=> objc_object结构体   
-平时开发使用的所有对象都是id类型的，id类型的对象对应到runtime当中是objc_object结构体。  
+**id类型(实例对象) = objc_object结构体**  
+平时开发使用的**所有对象都是id类型**的，`id类型的对象`对应到runtime当中是`objc_object结构体`。  
 ![objc_object.png](https://i.loli.net/2020/06/04/aGi6yo71ISZnLNV.png)
 
-- objc_object结构体主要包含以下内容：    
-    - isa_t：是一个共用体。C++共用体类型。在64位架构下是64个0或1的数字；在32位架构下是32个0或1的数字。有**指针型isa**和**非指针型isa**两种。
-    - 关于isa操作的相关方法：比如，通过objc_object的isa指针获取其指向的类对象；通过类对象的isa指针来获取其指向的元类对象等。
-    - 弱引用的相关方法：比如，标记一个对象它是否曾有过弱引用指针。
-    - 关联对象的相关方法：比如，为对象设置关联属性。
-    - 内存管理的相关方法：比如，MRC下的retain和release；MRC和ARC下的@autoReleasePool。
+**objc_object结构体主要包含以下内容** 
+![objc_object_pic.png](https://i.loli.net/2020/06/04/D8lfNy9BKxZhSrU.png)
+
+- isa_t：是一个共用体。C++共用体类型。在64位架构下是64个0或1的数字；在32位架构下是32个0或1的数字。有**指针型isa**和**非指针型isa**两种。
+- 关于isa操作的相关方法：比如，通过objc_object的isa指针获取其指向的类对象；通过类对象的isa指针来获取其指向的元类对象等。
+- 弱引用的相关方法：比如，标记一个对象它是否曾有过弱引用指针。
+- 关联对象的相关方法：比如，为对象设置关联属性。
+- 内存管理的相关方法：比如，MRC下的retain和release；MRC和ARC下的@autoReleasePool。
 
 **延伸：**
 内存管理的相关方法都是封装在objc_object结构体中。
