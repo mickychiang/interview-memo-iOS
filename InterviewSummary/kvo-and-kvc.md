@@ -16,8 +16,8 @@
 [<span id="jump-1-4">4. 子类重写setter方法的逻辑和具体实现？[※※※※※]</span>](#1-4)  
 [<span id="jump-1-5">5. KVO具体的代码实现</span>](#1-5)  
 [<span id="jump-1-6">6. 手动实现KVO[※※※※※]</span>](#1-6)  
-[<span id="jump-1-7">7. KVO生效的三种场景[※※※]</span>](#1-7) 
-
+[<span id="jump-1-7">7. KVO生效的三种场景[※※※※※]</span>](#1-7)  
+[<span id="jump-1-8">8. Swift中KVO与计算型属性的关系？</span>](#1-8)    
 
 [<span id="jump-2"><h2>二. KVC</h2></span>](#2)
 [<span id="jump-2-1">1. 什么是KVC？</span>](#2-1)  
@@ -45,7 +45,7 @@ KVO是Key-value observing的缩写。KVO是Objective-C对**观察者设计模式
 
 <h3 id="1-3">3. isa混写技术怎样实现KVO？[※※※※※]</h3>
 
-- 当注册类A的一个对象的观察者的时候，调用了`addObserver:forKeyPath:options:context:`方法，系统会在运行时动态创建一个名叫`NSKVONotifying_A`的类，同时将A的isa指针指向NSKVONotifying_A。    
+- 当类A的实例对象注册观察者的时候，调用了`addObserver:forKeyPath:options:context:`方法，系统会在运行时动态创建一个名叫`NSKVONotifying_A`的类，同时将A的isa指针指向NSKVONotifying_A。    
 - 类NSKVONotifying_A是类A的子类，类NSKVONotifying_A继承类A是为了重写原来类A中的setter方法，**重写的setter方法负责通知所有观察对象**。
 
 ![KVO-isa-swizzling.png](https://ae01.alicdn.com/kf/Ha703a062bfde417ca665c43beb5e9bf69.jpg)
@@ -102,7 +102,7 @@ MObserver.m
 [回到目录](#jump-1)
 
 
-<h3 id="1-7">7. KVO生效的三种场景[※※※]</h3>
+<h3 id="1-7">7. KVO生效的三种场景[※※※※※]</h3>
 
 - 调用KVO监听obj的value属性的变化，obj**通过setter方法修改value**。  
 - 通过KVC设置value，即**使用setValue:forKey:改变value**，KVO可以生效。  
@@ -110,6 +110,36 @@ MObserver.m
   KVC的实现机制和原理  
   通过KVC调用，最终会调用到obj对象的setter方法，系统为我们重写了setter方法可以实现KVO。
 - **成员变量直接修改**需要**手动添加**`willChangeValueForKey`和 `didChangeValueForKey`才会生效。  
+
+[回到目录](#jump-1)
+
+
+<h3 id="1-8">8. Swift中KVO与计算型属性的关系？</h3>
+
+KVO方法如下：
+```
+// 1: 添加观察
+person.addObserver(self, forKeyPath: "name", options: .new, context: nil)
+// 2: 观察响应回调
+override func observeValue(forKeyPath keyPath:, of object:, change: , context:）{}
+// 3: 移除观察
+person.removeObserver(self, forKeyPath: "name")
+```
+
+平时在开发的时候，我们可以通过计算型属性直接观察
+```
+var name: String = "" {
+    willSet {
+        print(newValue)
+    }
+    didSet {
+        print(oldValue)
+    }
+}
+```
+
+根据分析[Swift官方源码](https://github.com/apple/swift)可知：  
+计算型属性在**willSet**里面就调用**willChangeValue**，在**didSet**调用**didChangeValue**，计算型属性和KVO相关方法是有所关联的。
 
 [回到目录](#jump-1)
 
@@ -176,4 +206,7 @@ isKey
 
 # 参考文档
 
-《新浪微博资深大牛全方位剖析 iOS 高级面试》 
+《新浪微博资深大牛全方位剖析 iOS 高级面试》  
+[RxSwift（8）—— KVO底层探索（上）](https://www.jianshu.com/p/163c593bcf66)  
+[RxSwift（9）—— KVO底层探索（下）](https://www.jianshu.com/p/7996efe382d8)  
+
