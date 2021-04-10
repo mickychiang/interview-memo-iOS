@@ -17,6 +17,7 @@
 		4F3F1C4C249DA569007AD66C /* MCBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C4B249DA569007AD66C /* MCBlock.m */; };
 		BD3B0B2126217E7200B9EC50 /* BlockDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3B0B2026217E7200B9EC50 /* BlockDemo.m */; };
 		BD3B0B292621930C00B9EC50 /* MMBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3B0B282621930C00B9EC50 /* MMBlock.m */; };
+		BD3B0B2F2621CF5900B9EC50 /* BlockDemo2.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3B0B2E2621CF5900B9EC50 /* BlockDemo2.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,8 @@
 		BD3B0B2026217E7200B9EC50 /* BlockDemo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlockDemo.m; sourceTree = "<group>"; };
 		BD3B0B272621930C00B9EC50 /* MMBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMBlock.h; sourceTree = "<group>"; };
 		BD3B0B282621930C00B9EC50 /* MMBlock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMBlock.m; sourceTree = "<group>"; };
+		BD3B0B2D2621CF5900B9EC50 /* BlockDemo2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockDemo2.h; sourceTree = "<group>"; };
+		BD3B0B2E2621CF5900B9EC50 /* BlockDemo2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlockDemo2.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +83,8 @@
 				BD3B0B282621930C00B9EC50 /* MMBlock.m */,
 				BD3B0B1F26217E7200B9EC50 /* BlockDemo.h */,
 				BD3B0B2026217E7200B9EC50 /* BlockDemo.m */,
+				BD3B0B2D2621CF5900B9EC50 /* BlockDemo2.h */,
+				BD3B0B2E2621CF5900B9EC50 /* BlockDemo2.m */,
 				4F3F1C4A249DA569007AD66C /* MCBlock.h */,
 				4F3F1C4B249DA569007AD66C /* MCBlock.m */,
 				4F3F1C3A249DA513007AD66C /* Main.storyboard */,
@@ -162,6 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD3B0B2126217E7200B9EC50 /* BlockDemo.m in Sources */,
+				BD3B0B2F2621CF5900B9EC50 /* BlockDemo2.m in Sources */,
 				4F3F1C39249DA513007AD66C /* ViewController.m in Sources */,
 				4F3F1C4C249DA569007AD66C /* MCBlock.m in Sources */,
 				4F3F1C33249DA513007AD66C /* AppDelegate.m in Sources */,

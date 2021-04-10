@@ -13,8 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MMBlock : NSObject
 
 - (void)methodA;
-
 - (void)methodB;
+- (void)methodC;
+
+- (void)method1;
+- (void)method2;
+
+- (void)method;
+- (void)methodd;
 
 @end
 

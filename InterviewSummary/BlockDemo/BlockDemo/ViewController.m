@@ -8,10 +8,14 @@
 
 #import "ViewController.h"
 #import "MCBlock.h"
+#import "MMBlock.h"
 
 typedef int(^Friend)(int);
+typedef int(^DemoBlock)(int num);
 
 @interface ViewController ()
+
+@property (nonatomic, copy) DemoBlock blk;
 
 @end
 
@@ -22,19 +26,30 @@ typedef int(^Friend)(int);
     // Do any additional setup after loading the view.
     
     // 基础部分
-//    [self base];
-//
-//    [self methodA:^int(int friend) {
-//        return 10;
-//    }];
-//
-//    [self methodA2:^int(int friend) {
-//        return 10;
-//    }];
-//
-//    // Friend f = [self methodB];
-//    NSLog(@"Block类型的变量作为返回值：%@", [self methodB]);
-//    NSLog(@"Block类型的变量作为返回值：%@", [self methodB2]);
+    [self base];
+
+    [self methodA:^int(int friend) {
+        return 10;
+    }];
+
+    [self methodA2:^int(int friend) {
+        return 10;
+    }];
+
+    // Friend f = [self methodB];
+    NSLog(@"Block类型的变量作为返回值：%@", [self methodB]);
+    NSLog(@"Block类型的变量作为返回值：%@", [self methodB2]);
+    
+    // ***** *****
+    [[[MMBlock alloc] init] methodA];
+    [[[MMBlock alloc] init] methodB];
+    [[[MMBlock alloc] init] methodC];
+    
+    [[[MMBlock alloc] init] method1];
+    [[[MMBlock alloc] init] method2];
+    
+    [[[MMBlock alloc] init] method];
+    [[[MMBlock alloc] init] methodd];
     
     // ***** *****
     [[[MCBlock alloc] init] method];
@@ -95,6 +110,27 @@ typedef int(^Friend)(int);
     return ^(int count) {
         return count ++;
     };
+}
+
+// ********************
+- (void)method {
+    // 栈上创建的局部变量被__block修饰之后就会变成了一个对象。
+    __block int multiplier = 10;
+    // _blk是对象的成员变量，对它进行赋值操作的时候，实际上是对_blk的copy操作。
+    // 在堆上产生一个一样的_blk副本。
+    _blk = ^int(int num) {
+        return num * multiplier; // multiplier 是堆上的变量。
+    };
+    // 不是对变量进行赋值，而是通过multiplier对象的__forwarding指针对其成员变量进行赋值。
+    // 如果没有之前的_blk的copy操作，那么 multiplier = 6; 修改的是栈上的变量的值；
+    // 如果之前对_blk进行了copy操作，那么 multiplier = 6; 修改的是堆上的副本变量的值。(栈上的变量的__forwarding指针会指向堆上的副本变量)
+    multiplier = 6;
+    [self executeBlock];
+}
+
+- (void)executeBlock {
+    int result = _blk(4); // 调用了堆上的block
+    NSLog(@"result is %d", result);
 }
 
 @end

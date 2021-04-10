@@ -52,7 +52,9 @@
 
 <h3 id="1-1">1. 什么是Block？什么是Block调用？</h3>
 
-- Block是一个**对象**，这个对象封装了**函数**和**函数的执行上下文**。  
+>Block：带有自动变量的匿名函数。 匿名函数：没有函数名的函数，一对{}包裹的内容是匿名函数的作用域。 自动变量：栈上声明的一个变量不是静态变量和全局变量，是不可以在这个栈内声明的匿名函数中使用的，但在Block中却可以。 虽然使用Block不用声明类，但是Block提供了类似Objective-C的类一样可以通过成员变量来保存作用域外变量值的方法，那些在Block的一对{}里使用到但却是在{}作用域以外声明的变量，就是Block截获的自动变量。
+
+- Block是一个**Objective-C对象**，这个对象封装了**函数**和**函数的执行上下文**。  
 - Block调用即**函数的调用**。
 
 #### 源码解析  
@@ -79,9 +81,11 @@ clang -rewrite-objc BlockDemo.m
 ```
 
 **BlockDemo.cpp**  
+__block_impl结构体，即为Block的结构体，可理解为Block的类结构。  
+
 ![BlockDemo.cpp_01.png](https://i.loli.net/2021/04/10/F7MCSXzbRhaGrVL.png)
 
-![BlockDemo.cpp_02.png](https://i.loli.net/2021/04/10/P6urU4RzYTj1kSf.png) 
+![BlockDemo.cpp_02.png](https://i.loli.net/2021/04/10/XZ5TvpRJFdIAEbf.png)
 
 [回到目录](#jump-1)
 
@@ -89,6 +93,20 @@ clang -rewrite-objc BlockDemo.m
 <h2 id="2">二. Block特性：截获变量</h2>
 
 <h3 id="2-1">1. 是否了解Block的截获变量的特性？/ Block的截获变量的特性是怎样的？</h3>
+
+>Block表达式可截获所使用的自动变量的值。  
+截获：保存自动变量的瞬间值。  
+因为是“瞬间值”，所以声明Block之后，即便在Block外修改自动变量的值，也不会对Block内截获的自动变量值产生影响。
+
+```  
+int i = 10;  
+void (^blk)(void) = ^{  
+  NSLog(@"In block, i = %d", i);  
+};  
+i = 20; // Block外修改变量i，也不影响Block内的自动变量  
+blk(); // i修改为20后才执行，打印: In block, i = 10  
+NSLog(@"i = %d", i); // 打印：i = 20 
+```
 
 Block的截获变量的特性对于不同的变量是不同的。
 
@@ -219,6 +237,18 @@ result is 8
 
 <h3 id="3-1">1. 什么场景下使用__block修饰符？</h3>
 
+>自动变量截获的值为Block声明时刻的瞬间值，保存后就不能改写该值，如需对自动变量进行重新赋值，需要在变量声明前附加__block修饰符，这时该变量称为__block变量。
+
+```
+__block int i = 10; // i为__block变量，可在block中重新赋值  
+void (^blk)(void) = ^{  
+  NSLog(@"In block, i = %d", i);  
+};  
+i = 20;  
+blk(); // 打印: In block, i = 20  
+NSLog(@"i = %d", i); // 打印：i = 20  
+```
+
 一般情况下，对**被截获变量**进行**赋值操作**时需要**添加__block修饰符**。  
 
 注意：**赋值操作 不等于 使用操作**  
@@ -228,18 +258,39 @@ result is 8
 
 <h3 id="3-2">2. 以下的两个场景中，是否需要添加__block修饰符？</h3>
 
-**赋值操作 不等于 使用操作。**
+注意：**赋值操作 不等于 使用操作** 
 
 ### 场景1
-![__block_01.png](https://i.loli.net/2020/06/20/49NqpXro7kYcwPe.png)
+```
+- (void)method1 {
+    NSMutableArray *array = [NSMutableArray array];
+    void (^Block)(void) = ^{
+        [array addObject:@123];
+    };
+    Block();
+    NSLog(@"array is %@", array);
+}
+```
 
-不需要。在block内部只是对array进行了**使用操作**。
+不需要加__block修饰符。在block内部只是对array进行了**使用操作**。
 
 ### 场景2
 ![__block_02.png](https://i.loli.net/2020/06/20/tP1VwUcCeDSx2zl.png)
 
+没有__block修饰，编译失败。  
 需要在array的声明处添加__block修饰符。  
-因为在block内部，对array进行了**赋值操作**。
+因为在block内部，对array进行了**赋值操作**。   
+更改为：  
+```
+- (void)method2 {
+    __block NSMutableArray *array = nil;
+    void (^Block)(void) = ^{
+        array = [NSMutableArray array]; // 不加 __block 发生：Variable is not assignable (missing __block type specifier)
+    };
+    Block();
+    NSLog(@"array is %@", array); // ()
+}
+```
 
 [回到目录](#jump-3)
 
@@ -289,9 +340,9 @@ result is 8
 
 <h3 id="4-1">1. Block的种类以及内存分配？</h3>
 
-- 栈Block：存放在栈上。
-- 堆Block：存放在堆上。
-- 全局Block：存放在已初始化数据区中。
+- _NSConcreteStackBlock：在栈上创建的Block对象
+- _NSConcreteMallocBlock：在堆上创建的Block对象
+- _NSConcreteGlobalBlock：在已初始化数据区的Block对象
 
 #### Block的种类  
 ![BlockType.png](https://i.loli.net/2020/06/20/qcuKdsRx1WIPNmf.png)
@@ -304,8 +355,64 @@ result is 8
 
 <h3 id="4-2">2. 什么时候需要对Block进行copy操作？/ 对Block的copy操作的理解？</h3>
 
-对于不同类型的Block进行copy操作的结果不同。
+#### Block复制 
+配置在栈上的Block，如果其所属的栈作用域结束，该Block就会被废弃，对于超出Block作用域仍需使用Block的情况，Block提供了将Block从栈上复制到堆上的方法来解决这种问，即便Block栈作用域已结束，但被拷贝到堆上的Block还可以继续存在。  
+复制到堆上的Block，将_NSConcreteMallocBlock类对象写入Block结构体实例的成员变量isa：
+```
+impl.isa = &_NSConcreteMallocBlock;
+```
 
+#### 什么时候需要对Block进行copy操作
+在ARC有效时，大多数情况下编译器会进行判断，自动生成将Block从栈上复制到堆上的代码(或者直接在堆上创建Block对象)，以下几种情况栈上的Block会自动复制到堆上：
+- 调用Block的copy方法
+- 将Block作为函数返回值时（MRC时此条无效，需手动调用copy）
+- 将Block赋值给__strong修改的变量时（MRC时此条无效）
+- 向Cocoa框架含有usingBlock的方法或者GCD的API传递Block参数时
+
+其它时候，向方法的参数中传递Block时，需要手动调用copy方法复制Block。
+
+```
+- (void)methodd {
+    // 在函数栈上创建的blk，如果没有截获自动变量，Block的结构实例还是会被设置在程序的全局数据区，而非栈上
+    
+    void (^blk)(void) = ^{ // 没有截获自动变量的Block
+        NSLog(@"Stack Block");
+    };
+    blk();
+    NSLog(@"%@",[blk class]); // 打印：__NSGlobalBlock__
+
+    int i = 1;
+    void (^captureBlk)(void) = ^{ // 截获自动变量i的Block
+        NSLog(@"Capture:%d", i);
+    };
+    captureBlk();
+    NSLog(@"%@",[captureBlk class]); // 打印：__NSMallocBlock__
+
+    // 可以看到在栈上：
+    // 没有截获自动变量的Block 打印的类是NSGlobalBlock，表示存储在全局数据区。
+    // 捕获自动变量的Block 打印的类却是设置在堆上的NSMallocBlock，而非栈上的NSStackBlock。
+}
+```
+
+栈上截获了自动变量i的Block之所以在栈上创建，却是NSMallocBlock_类，是因为这个Block对象赋值给了 **__strong修饰的变量 captureBlk**(_strong是ARC下对象的默认修饰符)。   
+因为上面四条规则，在ARC下其实很少见到_NSConcreteStackBlock类的Block，大多数情况编译器都保证了Block是在堆上创建的。  
+如下代码所示，仅最后一行代码直接使用一个不赋值给变量的Block，它的类才是NSStackBlock：
+
+```
+- (void)methodd {
+    int count = 0;
+    void (^blk)(void) = ^(){
+        NSLog(@"In Stack:%d", count);
+    };
+    
+    NSLog(@"blk's Class:%@", [blk class]); // 打印：blk's Class:__NSMallocBlock__
+    NSLog(@"Global Block: %@", [^{NSLog(@"Global Block");} class]); // 打印：Global Block: __NSGlobalBlock__
+    NSLog(@"Copy Block: %@", [[^{NSLog(@"Copy Block:%d",count);} copy] class]); // 打印：Copy Block: __NSMallocBlock__
+    NSLog(@"Stack Block: %@", [^{NSLog(@"Stack Block:%d",count);} class]); // 打印：Stack Block: __NSStackBlock__
+}
+```
+
+对于不同类型的Block进行copy操作的结果不同。
 - 栈Block的copy操作：在堆上产生了一个block。
 - 堆Block的copy操作：增加了引用计数。
 - 全局Block的copy操作：没有变化。
@@ -353,14 +460,60 @@ result is 8
 - 如果没有对栈上__block变量进行copy的话，实际的操作就是对栈上的__block变量。  
 - 如果对栈上__block变量进行了copy操作之后，无论是在栈还是在堆，我们对__block变量的赋值操作都是对堆上的__block变量的操作。同时栈上的__block变量的使用也是使用了堆上的__block变量。
 
+**BlockDemo2.m**
+```
+- (void)method {
+    __block int count = 10;
+    void (^blk)(void) = ^(){
+        count = 20;
+        NSLog(@"In Block: %d", count); //打印：In Block: 20
+    };
+    count ++;
+    NSLog(@"Out Block: %d", count); //打印：Out Block: 11
+    blk();
+}
+```
+
+**BlockDemo2.cpp**
+![BlockDemo2.cpp_01.png](https://i.loli.net/2021/04/10/pZIt1VWbMa6SwKo.png)
+
 [回到目录](#jump-4)
 
 
 <h3 id="4-5">5. 以下的代码输出什么结果？</h3>
 
-![question_04.png](https://i.loli.net/2020/06/20/po7qj4Mt92iYLUe.png)
+```
+typedef int(^DemoBlock)(int num);
 
-输出
+@interface ViewController ()
+
+@property (nonatomic, copy) DemoBlock blk;
+
+@end
+
+
+- (void)method {
+    // 栈上创建的局部变量被__block修饰之后就会变成了一个对象。
+    __block int multiplier = 10;
+    // _blk是对象的成员变量，对它进行赋值操作的时候，实际上是对_blk的copy操作。
+    // 在堆上产生一个一样的_blk副本。
+    _blk = ^int(int num) {
+        return num * multiplier; // multiplier 是堆上的变量。
+    };
+    // 不是对变量进行赋值，而是通过multiplier对象的__forwarding指针对其成员变量进行赋值。
+    // 如果没有之前的_blk的copy操作，那么 multiplier = 6; 修改的是栈上的变量的值；
+    // 如果之前对_blk进行了copy操作，那么 multiplier = 6; 修改的是堆上的副本变量的值。(栈上的变量的__forwarding指针会指向堆上的副本变量)
+    multiplier = 6;
+    [self executeBlock];
+}
+
+- (void)executeBlock {
+    int result = _blk(4); // 调用了堆上的block
+    NSLog(@"result is %d", result);
+}
+```
+
+**输出**
 ```
 result is 24
 ```
@@ -376,7 +529,7 @@ result is 24
 
 会产生一个自循环引用。  
 解决方案如下：  
-block截获的变量如果是一个对象类型的话，会连同其所有权修饰符一起截获。  
+**block截获的变量如果是一个对象类型的话，会连同其所有权修饰符一起截获。**  
 如果在外部定义的对象是__weak修饰的，那么在block结构体中持有的变量也是__weak，所以避免了自循环引用。  
 ![answer_05.png](https://i.loli.net/2020/06/20/VZ7stQSNcRAy4Gk.png)
 
@@ -412,7 +565,23 @@ block截获的变量如果是一个对象类型的话，会连同其所有权修
 <h3 id="5-4">4. 你都遇到过哪些循环引用？你又是怎么解决的？</h3>
 
 - block
-根据面试题1和2来回答。  
+根据面试题1和2来回答。 
+```
+__weak typeof(self) weakSelf = self;
+self.blk = ^{
+    __strong typeof(self) strongSelf = weakSelf;
+    NSLog(@"Use Property:%@", strongSelf.name);
+    //……
+};
+self.blk();
+```
+
+```
+self.blk = ^(UIViewController *vc) {
+    NSLog(@"Use Property:%@", vc.name);
+};
+self.blk(self);
+```
 
 - NSTimer
 
