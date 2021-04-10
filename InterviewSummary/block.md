@@ -8,7 +8,6 @@
 [github原文地址](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/block.md)  
 本篇代码详细内容请至[Block工程](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/BlockDemo)  
 
-<!-- ![BlockSummary.png](./images/block/BlockSummary.png)   -->
 ![BlockSummary.png](https://i.loli.net/2020/06/20/k3GhWRo6gUSqL4M.png)
 
 # 目录
@@ -54,24 +53,35 @@
 <h3 id="1-1">1. 什么是Block？什么是Block调用？</h3>
 
 - Block是一个**对象**，这个对象封装了**函数**和**函数的执行上下文**。  
-- Block调用即是**函数的调用**。
+- Block调用即**函数的调用**。
 
-源码解析  
+#### 源码解析  
 使用如下命令，可以查看编译之后的文件内容    
 ```
-clang -rewrite-objc file.m
+clang -rewrite-objc BlockDemo.m
 ```  
-<!-- ![MCBlock.png](./images/block/MCBlock.png)    
-![MCBlock.cpp_01.png](./images/block/MCBlock.cpp_01.png)    
-![MCBlock.cpp_02.png](./images/block/MCBlock.cpp_02.png)   -->
 
-MCBlock.m  
-![MCBlock.png](https://i.loli.net/2020/06/20/WxBfIkROYQ29rtw.png)   
+**BlockDemo.m**  
+```
+#import "BlockDemo.h"
 
-MCBlock.cpp  
-![MCBlock.cpp_01.png](https://i.loli.net/2020/06/20/DCph1BP3tg6mL2x.png)
+@implementation BlockDemo
 
-![MCBlock.cpp_02.png](https://i.loli.net/2020/06/20/nXUAYBHvIt5mGWo.png)  
+- (void)method {
+    int count = 6;
+    int (^blockName)(int) = ^int(int num) {
+        return num * count;
+    };
+    blockName(2);
+}
+
+@end
+```
+
+**BlockDemo.cpp**  
+![BlockDemo.cpp_01.png](https://i.loli.net/2021/04/10/F7MCSXzbRhaGrVL.png)
+
+![BlockDemo.cpp_02.png](https://i.loli.net/2021/04/10/P6urU4RzYTj1kSf.png) 
 
 [回到目录](#jump-1)
 
@@ -82,51 +92,125 @@ MCBlock.cpp
 
 Block的截获变量的特性对于不同的变量是不同的。
 
-- 局部变量的截获：
+- **局部变量**的截获：
     - 基本数据类型的局部变量的截获：截获其值。
     - 对象类型的局部变量的截获：**连同所有权修饰符**一起截获。
-- 静态局部变量的截获：以指针形式截获。
-- 全局变量的截获：不截获。
-- 静态全局变量的截获：不截获。
+- **静态局部变量**的截获：以指针形式截获。
+- **全局变量**的截获：不截获。
+- **静态全局变量**的截获：不截获。
 
-源码解析  
+#### 源码解析  
 使用如下命令，可以查看编译之后的文件内容  
 ```
-clang -rewrite-objc -fobjc-arc file.m
+clang -rewrite-objc -fobjc-arc MCBlock.m
 ```  
-<!-- ![MCBlock_var.png](./images/block/MCBlock_var.png)  
-![MCBlock.cpp_var.png](./images/block/MCBlock.cpp_var.png)   -->
 
-MCBlock.m  
-![MCBlock_var.png](https://i.loli.net/2020/06/20/kNAzifbTgnME8Iv.png)
+**MCBlock.m**
+```
+#import "MCBlock.h"
 
-MCBlock.cpp  
-![MCBlock.cpp_var.png](https://i.loli.net/2020/06/20/oSC6DOYQMZ8wXhE.png)  
+@implementation MCBlock
+
+// 全局变量
+int global_var = 4;
+
+// 静态全局变量
+static int static_global_var = 5;
+
+- (void)method {
+    
+    // 局部变量(基本数据类型)
+    int var = 1;
+    
+    // 局部变量(对象类型)
+    __unsafe_unretained id unsafe_obj = nil;
+    __strong id strong_obj = nil;
+    
+    // 静态局部变量
+    static int static_var = 3;
+    
+    // ***** Block特性：截获变量 *****
+    void(^Block)(void) = ^{
+        // 1.1 局部变量<基本数据类型>的截获：截获其值。
+        NSLog(@"局部变量<基本数据类型> var = %d", var);
+        // 1.2 局部变量<对象类型>的截获：连同所有权修饰符一起截获。
+        NSLog(@"局部变量<__unsafe_unretained 对象类型> var = %d", unsafe_obj);
+        NSLog(@"局部变量<__strong 对象类型> var = %d", strong_obj);
+        // 2. 静态局部变量的截获：以指针形式截获。
+        NSLog(@"静态局部变量 var = %d", static_var);
+        // 3. 全局变量的截获：不截获。
+        NSLog(@"全局变量 var = %d", global_var);
+        // 4. 静态全局变量的截获：不截获。
+        NSLog(@"静态全局变量 var = %d", static_global_var);
+    };
+    
+    var = 11;
+    unsafe_obj = [[NSObject alloc] init];
+    strong_obj = [[NSObject alloc] init];
+    static_var = 33;
+    global_var = 44;
+    static_global_var = 55;
+    
+    Block();
+}
+
+@end
+```
+
+**输出：**
+```
+2021-04-10 15:50:46.668510+0800 BlockDemo[6226:179160] 局部变量<基本数据类型> var = 1
+2021-04-10 15:50:46.668750+0800 BlockDemo[6226:179160] 局部变量<__unsafe_unretained 对象类型> var = 0
+2021-04-10 15:50:46.668891+0800 BlockDemo[6226:179160] 局部变量<__strong 对象类型> var = 0
+2021-04-10 15:50:46.669021+0800 BlockDemo[6226:179160] 静态局部变量 var = 33
+2021-04-10 15:50:46.669142+0800 BlockDemo[6226:179160] 全局变量 var = 44
+2021-04-10 15:50:46.669283+0800 BlockDemo[6226:179160] 静态全局变量 var = 55
+```
+
+**MCBlock.cpp**  
+![MCBlock.cpp_var.png](https://i.loli.net/2021/04/10/FbEw6uJIcpU7dno.png) 
 
 [回到目录](#jump-2)
 
 
 <h3 id="2-2">2. 以下代码分别输出什么结果？</h3>
 
-<!-- ![question_01.png](./images/block/question_01.png)   -->
 ### 代码1
-![question_01.png](https://i.loli.net/2020/06/20/2bc75xuTjWRN8G1.png) 
+```
+- (void)method {
+    int multiplier = 6;
+    int(^Block)(int) = ^int(int num) {
+        return num * multiplier;
+    };
+    multiplier = 4;
+    NSLog(@"result is %d", Block(2));
+}
+```
 
-输出  
+**输出**  
 ```
 result is 12
 ```
-因为block对于基本数据类型的局部变量的截获是获取其值的。
 
-<!-- ![question_02.png](./images/block/question_02.png)   -->
+block对于**基本数据类型的局部变量的截获是获取其值的**，所以在block代码块里multiplier为6。
+
 ### 代码2
-![question_02.png](https://i.loli.net/2020/06/20/x8ZUluEamyGNB1I.png)  
+```
+- (void)method {
+    static int multiplier = 6;
+    int(^Block)(int) = ^int(int num) {
+        return num * multiplier;
+    };
+    multiplier = 4;
+    NSLog(@"result is %d", Block(2));
+}
+```
 
-输出  
+**输出**  
 ```
 result is 8
 ```
-因为block对于静态局部变量的截获是获取其指针的。当指针指向的内容从6变成了4，那么输出的就是4x2=8。
+因为block对于**静态局部变量的截获是获取其指针的**。当指针指向的内容从6变成了4，那么输出的就是4x2=8。
 
 [回到目录](#jump-2)
 
@@ -135,9 +219,9 @@ result is 8
 
 <h3 id="3-1">1. 什么场景下使用__block修饰符？</h3>
 
-一般情况下，对**被截获变量**进行**赋值**操作时需要添**加__block修饰符**。  
+一般情况下，对**被截获变量**进行**赋值操作**时需要**添加__block修饰符**。  
 
-注意：赋值操作 不等于 使用操作  
+注意：**赋值操作 不等于 使用操作**  
 
 [回到目录](#jump-3)
 
@@ -147,28 +231,25 @@ result is 8
 **赋值操作 不等于 使用操作。**
 
 ### 场景1
-<!-- ![__block_01.png](./images/block/__block_01.png)   -->
 ![__block_01.png](https://i.loli.net/2020/06/20/49NqpXro7kYcwPe.png)
 
-不需要。  
-在block内部只是对array进行了使用操作。
+不需要。在block内部只是对array进行了**使用操作**。
 
 ### 场景2
-<!-- ![__block_02.png](./images/block/__block_02.png)   -->
 ![__block_02.png](https://i.loli.net/2020/06/20/tP1VwUcCeDSx2zl.png)
 
 需要在array的声明处添加__block修饰符。  
-因为在block内部，对array进行了赋值操作。
+因为在block内部，对array进行了**赋值操作**。
 
 [回到目录](#jump-3)
 
 
 <h3 id="3-3">3. 对变量进行赋值时，__block修饰符的具体使用特点？</h3>
 
-__block修饰的变量最终会变成对象。
+**__block修饰的变量最终会变成对象**。
 
 - 需要__block修饰符  
-局部变量（基本数据类型 + 对象类型）
+局部变量(基本数据类型、对象类型)
 
 - 不需要__block修饰符  
 静态局部变量、全局变量、静态全局变量
@@ -178,18 +259,24 @@ __block修饰的变量最终会变成对象。
 
 <h3 id="3-4">4. 以下代码输出什么结果？</h3>
 
-<!-- ![question_03.png](./images/block/question_03.png) -->
-![question_03.png](https://i.loli.net/2020/06/20/yOGngWX6d9aQ17s.png)
+```
+- (void)method {
+    __block int multiplier = 6;
+    int(^Block)(int) = ^int(int num) {
+        return num * multiplier;
+    };
+    multiplier = 4;
+    NSLog(@"result is %d", Block(2));
+}
+```
 
-输出  
+**输出**  
 ```
 result is 8
 ```
 
-__block修饰的变量最终会变成对象。
-
-<!-- ![answer_03.png](./images/block/answer_03.png)
-![answer_03_02.png](./images/block/answer_03_02.png) -->
+**解析**   
+分析源码客可知： **__block修饰的变量最终会变成对象。**
 
 ![answer_03.png](https://i.loli.net/2020/06/20/bFaTc9VOzyMg57Q.png)
 
@@ -207,11 +294,9 @@ __block修饰的变量最终会变成对象。
 - 全局Block：存放在已初始化数据区中。
 
 #### Block的种类  
-<!-- ![BlockType.png](./images/block/BlockType.png)   -->
 ![BlockType.png](https://i.loli.net/2020/06/20/qcuKdsRx1WIPNmf.png)
 
 #### Block的内存分配  
-<!-- ![BlockMemory.png](./images/block/BlockMemory.png)   -->
 ![BlockMemory.png](https://i.loli.net/2020/06/20/LxDr49my7zfgY6s.png)
 
 [回到目录](#jump-4)
@@ -229,7 +314,6 @@ __block修饰的变量最终会变成对象。
 在栈上创建一个block，同时将这个block赋值给成员变量(block)。  
 如果成员变量(block)没有使用copy关键字的话(比如使用了assign)，当我们通过成员变量去访问block时，可能会由于栈所对应的函数退出之后在内存中销毁掉而产生了crash。
 
-<!-- ![BlockCopy.png](./images/block/BlockCopy.png)   -->
 ![BlockCopy.png](https://i.loli.net/2020/06/20/aXlHmQpwSCsuUgd.png)
 
 [回到目录](#jump-4)
@@ -247,11 +331,9 @@ __block修饰的变量最终会变成对象。
 #### 栈上Block的销毁
 栈上的Block和__block变量会在变量作用域结束之后，系统自动销毁。
 
-<!-- ![StackBlockDistory.png](./images/block/StackBlockDistory.png) -->
 ![StackBlockDistory.png](https://i.loli.net/2020/06/20/XeP8F5AHZJc3YTu.png)
 
 #### 栈上Block的copy
-<!-- ![StackBlockCopy.png](./images/block/StackBlockCopy.png) -->
 ![StackBlockCopy.png](https://i.loli.net/2020/06/20/fqwvdrSgNsbyUOj.png)
 
 栈上Block的copy之后会在堆上产生一个一样的block。  
@@ -263,7 +345,6 @@ __block修饰的变量最终会变成对象。
 
 <h3 id="4-4">4. __forwarding指针的存在有什么意义？</h3>
 
-<!-- ![StackBlockVarCopy.png](./images/block/StackBlockVarCopy.png)  -->
 ![StackBlockVarCopy.png](https://i.loli.net/2020/06/20/wVjN5XHpbDcIeAo.png)
 
 对栈上的__block变量进行copy操作之后，栈上的__block变量的__forwarding指针指向了堆上的__block变量。而堆上的__block变量的__forwarding指针指向其自身。
@@ -291,14 +372,12 @@ result is 24
 
 <h3 id="5-1">1. 以下代码有什么问题？怎么解决？</h3>
 
-<!-- ![question_05.png](./images/block/question_05.png) -->
 ![question_05.png](https://i.loli.net/2020/06/20/pGAJISVO3bjxF12.png)
 
 会产生一个自循环引用。  
 解决方案如下：  
 block截获的变量如果是一个对象类型的话，会连同其所有权修饰符一起截获。  
 如果在外部定义的对象是__weak修饰的，那么在block结构体中持有的变量也是__weak，所以避免了自循环引用。  
-<!-- ![answer_05.png](./images/block/answer_05.png) -->
 ![answer_05.png](https://i.loli.net/2020/06/20/VZ7stQSNcRAy4Gk.png)
 
 [回到目录](#jump-5)
@@ -306,17 +385,14 @@ block截获的变量如果是一个对象类型的话，会连同其所有权修
 
 <h3 id="5-2">2. 以下代码有什么问题？怎么解决？</h3>
 
-<!-- ![question_06.png](./images/block/question_06.png) -->
 ![question_06.png](https://i.loli.net/2020/06/20/WUZJNz9hgkfSQK1.png)
 
 - 在MRC下，不会产生循环引用。
 - 在ARC下，会产生多循环引用，引起内存泄漏。  
 通过断环来规避循环引用。  
-<!-- ![answer_06.png](./images/block/answer_06.png) -->
 ![answer_06.png](https://i.loli.net/2020/06/20/8tviU2urP1Y3XGk.png)
 
 解决方案如下：
-<!-- ![answer_06_02.png](./images/block/answer_06_02.png) -->
 ![answer_06_02.png](https://i.loli.net/2020/06/20/VKLvpFDg7Zyk21X.png)  
 这种解决方案有个弊端，如果我们很长时间才调用block或者永远不会调用的话，这个循环引用的环就会一直存在。
 
@@ -345,17 +421,5 @@ block截获的变量如果是一个对象类型的话，会连同其所有权修
 
 
 # 参考文档
-《新浪微博资深大牛全方位剖析 iOS 高级面试》  
-
-
-# 其他
-《iOS面试题备忘录》系列文章的github原文地址：  
-
-[iOS面试题备忘录(一) - 属性关键字](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/PropertyModifier.md)    
-[iOS面试题备忘录(二) - 内存管理](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/memoryManagement.md)   
-[iOS面试题备忘录(三) - 分类和扩展](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/CategoryAndExtension.md)  
-[iOS面试题备忘录(四) - 代理和通知](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/DelegateAndNSNotification.md)  
-[iOS面试题备忘录(五) - KVO和KVC](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/KVOAndKVC.md)  
-[iOS面试题备忘录(六) - runtime](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/runtime.md)  
-[iOS面试题备忘录(七) - block](https://github.com/mickychiang/iOSInterviewMemo/blob/master/InterviewSummary/block.md)   
-[算法](https://github.com/mickychiang/iOSInterviewMemo/blob/master/Algorithm/Algorithm.md)  
+《新浪微博资深大牛全方位剖析 iOS 高级面试》   
+[Block 深入浅出](https://www.jianshu.com/p/157ee1dfedb2)  

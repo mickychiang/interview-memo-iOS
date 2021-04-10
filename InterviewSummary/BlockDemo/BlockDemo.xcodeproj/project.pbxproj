@@ -15,6 +15,8 @@
 		4F3F1C41249DA51B007AD66C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F3F1C3F249DA51B007AD66C /* LaunchScreen.storyboard */; };
 		4F3F1C44249DA51B007AD66C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C43249DA51B007AD66C /* main.m */; };
 		4F3F1C4C249DA569007AD66C /* MCBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3F1C4B249DA569007AD66C /* MCBlock.m */; };
+		BD3B0B2126217E7200B9EC50 /* BlockDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3B0B2026217E7200B9EC50 /* BlockDemo.m */; };
+		BD3B0B292621930C00B9EC50 /* MMBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = BD3B0B282621930C00B9EC50 /* MMBlock.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,10 @@
 		4F3F1C43249DA51B007AD66C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4F3F1C4A249DA569007AD66C /* MCBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCBlock.h; sourceTree = "<group>"; };
 		4F3F1C4B249DA569007AD66C /* MCBlock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCBlock.m; sourceTree = "<group>"; };
+		BD3B0B1F26217E7200B9EC50 /* BlockDemo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockDemo.h; sourceTree = "<group>"; };
+		BD3B0B2026217E7200B9EC50 /* BlockDemo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlockDemo.m; sourceTree = "<group>"; };
+		BD3B0B272621930C00B9EC50 /* MMBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MMBlock.h; sourceTree = "<group>"; };
+		BD3B0B282621930C00B9EC50 /* MMBlock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MMBlock.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +76,10 @@
 				4F3F1C35249DA513007AD66C /* SceneDelegate.m */,
 				4F3F1C37249DA513007AD66C /* ViewController.h */,
 				4F3F1C38249DA513007AD66C /* ViewController.m */,
+				BD3B0B272621930C00B9EC50 /* MMBlock.h */,
+				BD3B0B282621930C00B9EC50 /* MMBlock.m */,
+				BD3B0B1F26217E7200B9EC50 /* BlockDemo.h */,
+				BD3B0B2026217E7200B9EC50 /* BlockDemo.m */,
 				4F3F1C4A249DA569007AD66C /* MCBlock.h */,
 				4F3F1C4B249DA569007AD66C /* MCBlock.m */,
 				4F3F1C3A249DA513007AD66C /* Main.storyboard */,
@@ -151,10 +161,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD3B0B2126217E7200B9EC50 /* BlockDemo.m in Sources */,
 				4F3F1C39249DA513007AD66C /* ViewController.m in Sources */,
 				4F3F1C4C249DA569007AD66C /* MCBlock.m in Sources */,
 				4F3F1C33249DA513007AD66C /* AppDelegate.m in Sources */,
 				4F3F1C44249DA51B007AD66C /* main.m in Sources */,
+				BD3B0B292621930C00B9EC50 /* MMBlock.m in Sources */,
 				4F3F1C36249DA513007AD66C /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
