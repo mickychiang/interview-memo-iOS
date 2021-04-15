@@ -180,6 +180,11 @@ source0和source1有什么区别？
 
 <h3 id="2-8">8. tableview的banner不能自动滚动的原因？</h3>
 
+在设置定时器那里获取当前runLoop并把模式设置为UITrackingRunLoopMode
+```
+[[NSRunLoop currentRunLoop] addTimer:scrollTimer forMode:UITrackingRunLoopMode];
+```
+
 [回到目录](#jump-2)
 
 
