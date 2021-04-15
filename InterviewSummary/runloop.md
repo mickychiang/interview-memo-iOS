@@ -17,6 +17,16 @@
 [3. 为什么app中的main()函数一直活跃，一直保持不退出的状态？](#1-3)  
 
 [<span id="jump-2"><h2>二. RunLoop的数据结构</h2></span>](#2)
+[1. CFRunLoop](#2-1)  
+[2. CFRunLoopMode](#2-2)  
+[3. CFRunLoopSource](#2-3)  
+[4. CFRunLoopTimer](#2-4)  
+[5. CFRunLoopObserver](#2-5)  
+[6. RunLoop、Mode、Source、Timer、Observer的关系？](#2-6)  
+[7. RunLoop为什么会有多个Mode？](#2-7)  
+[8. tableview的banner不能自动滚动的原因？](#2-8)  
+[9. 一个Timer想要加入到两个Mode，怎么处理？](#2-9)  
+[10. 什么是CommonMode？](#2-10)  
 
 [<span id="jump-3"><h2>三. RunLoop的事件循环机制</h2></span>](#3)
 [1. RunLoop事件循环的实现机制？](#3-1)  
@@ -54,12 +64,12 @@
 - 有消息需要处理时，会发生从**内核态到用户态的切换**，当前线程立刻被**唤醒**。  
 
 **扩展1**：
-- 没有消息需要处理时，休眠以避免资源占用；  
-RunLoop休眠：从用户态到内核态的切换
+- **没有消息需要处理时，休眠以避免资源占用；**  
+**RunLoop`休眠`：从`用户态`到`内核态`的切换**  
 ![event-loop-dormancy.png](https://i.loli.net/2021/03/08/1DIRjp6UYAkK3ec.png)
 
-- 有消息需要处理时，立刻被唤醒。  
-RunLoop唤醒：从内核态到用户态的切换
+- **有消息需要处理时，立刻被唤醒。**  
+**RunLoop`唤醒`：从`内核态`到`用户态`的切换**  
 ![event-loop-awaken.png](https://i.loli.net/2021/03/08/4vDIJjLErWVxi8B.png)
 
 **扩展2**：  
@@ -76,7 +86,7 @@ RunLoop唤醒：从内核态到用户态的切换
 
 ![main__.png](https://i.loli.net/2021/03/08/DMFjtVbKQqBza94.png)
 
-在main()函数中调用的`UIApplicationMain`函数的内部会**启动主线程的runloop**，而runloop又是对**事件循环**的一种维护机制，可以做到有事做的时候做事，没有事情做的时候会通过**用户态到内核态的切换**，避免资源占用，让当前线程处于休眠状态。
+在main()函数中调用的`UIApplicationMain`函数的内部会**启动主线程的runLoop**，而runloop又是对**事件循环**的一种维护机制，可以做到有事做的时候做事，没有事情做的时候会通过**用户态到内核态的切换**，避免资源占用，让当前线程处于休眠状态。
 
 [回到目录](#jump-1)
 
@@ -89,7 +99,7 @@ NSRunLoop是CFRunLoop的封装，提供了面向对象的API。
 - CFRunLoopMode
 - CFRunLoopSource/CFRunLoopTimer/CFRunLoopObserver
 
-### CFRunLoop
+<h3 id="2-1">1. CFRunLoop</h3>
 
 ![CFRunLoop.png](https://i.loli.net/2021/03/08/gQPlwSqzu4HkfCt.png)
 
@@ -99,7 +109,10 @@ NSRunLoop是CFRunLoop的封装，提供了面向对象的API。
 - commonModes：NSMutableSet<NSString *>
 - commonModeItems：也是一个集合，包括多个Observer、多个Timer、多个Source
 
-### CFRunLoopMode
+[回到目录](#jump-2)
+
+
+<h3 id="2-2">2. CFRunLoopMode</h3>
 
 ![CFRunLoopMode.png](https://i.loli.net/2021/03/08/bYmU2uZHGqKnO79.png)
 
@@ -109,18 +122,27 @@ NSRunLoop是CFRunLoop的封装，提供了面向对象的API。
 - observers：MutableArray（数组有序）
 - timers：MutableArray
 
-### CFRunLoopSource
+[回到目录](#jump-2)
+
+
+<h3 id="2-3">3. CFRunLoopSource</h3>
 
 source0和source1有什么区别？
 
 - source0：需要手动唤醒线程  
 - source1：具备唤醒线程的能力
 
-### CFRunLoopTimer
+[回到目录](#jump-2)
+
+
+<h3 id="2-4">4. CFRunLoopTimer</h3>
 
 基于事件的定时器，和NSTimer是具备免费桥转换（toll-free bridged）的。
 
-### CFRunLoopObserver
+[回到目录](#jump-2)
+
+
+<h3 id="2-5">5. CFRunLoopObserver</h3>
 
 观测时间点
 
@@ -132,26 +154,36 @@ source0和source1有什么区别？
 - **kCFRunLoopAfterWaiting**：内核态切换到用户态后。
 - kCFRunLoopExit：
 
-### 各个数据结构之间的关系
+[回到目录](#jump-2)
+
+
+<h3 id="2-6">6. RunLoop、Mode、Source、Timer、Observer的关系？</h3>
 
 ![data.png](https://i.loli.net/2021/03/08/ZPEOHFt1l4MYyqL.png)
-
-RunLoop、Mode、Source、Timer、Observer的关系？
 
 - 线程和RunLoop是一一对应的关系
 - RunLoop和Mode是一对多的关系
 - Mode分别和Source、Timer、Observer是一对多的关系
 
-### RunLoop的Mode
+[回到目录](#jump-2)
 
+
+<h3 id="2-7">7. RunLoop为什么会有多个Mode？</h3>
+
+**RunLoop的Mode**  
 ![runloop2.png](https://i.loli.net/2021/03/08/Wp3SCM68L45Gszx.png)
-
-#### 1. RunLoop为什么会有多个Mode？  
+ 
 当我们运行在mode1上时，只能接收处理mode1当中的source1、timers、observers，不能处理mode2、mode3里的。
 
-#### 2. tableview的banner不能自动滚动的原因？  
+[回到目录](#jump-2)
 
-#### 3. 一个Timer想要加入到两个Mode，怎么处理？
+
+<h3 id="2-8">8. tableview的banner不能自动滚动的原因？</h3>
+
+[回到目录](#jump-2)
+
+
+<h3 id="2-9">9. 一个Timer想要加入到两个Mode，怎么处理？</h3>
 
 ![runloop3.png](https://i.loli.net/2021/03/09/tkPTGfWlY9MAwRj.png)
 
@@ -161,9 +193,14 @@ NSRunLoopCommonModes字符串常量来表达CommonMode。
 - CommonMode并不是实际存在的mode。
 - 是同步source、timer、observer到多个mode的一个技术方案。
 
-#### 4. 什么是CommonMode？
+[回到目录](#jump-2)
+
+
+<h3 id="2-10">10. 什么是CommonMode？</h3>
+
 CommonMode是同步Source/Timer/Observer到多个Mode的一个技术方案。
 
+[回到目录](#jump-2)
 
 
 <h2 id="3">三. RunLoop的事件循环机制</h2>
