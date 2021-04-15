@@ -6,20 +6,32 @@
 //
 
 #import "GCDMemo.h"
-
+/*
+ 同步和异步主要体现在能不能开启新的线程，以及会不会阻塞当前线程。
+ 同步：在当前线程中执行任务，不具备开启新线程的能力。同步任务会阻塞当前线程。
+ 异步：在新的线程中执行任务，具备开启新线程的能力。并不一定会开启新线程，比如在主队列中通过异步执行任务并不会开启新线程。异步任务不会阻塞当前线程。
+ 
+ 串行和并发主要影响任务的执行方式。
+ 串行：一个任务执行完毕后，再执行下一个任务。
+ 并发：多个任务并发(同时)执行。
+ 注意：如果当前队列是串行队列，通过同步函数向当前队列中添加任务会造成死锁。(串行队列中添加异步任务和并发队列中添加同步任务都不会死锁。)
+ */
 @implementation GCDMemo
 
+// MARK: - 一.主队列 dispatch_get_main_queue
+// MARK: - 1.主队列同步
 /*
- 主队列同步函数
+ 主队列同步
  
  运行结果：crash
  原因：因队列引起的循环等待而产生死锁
  
- 分析：当前线程是主线程
+ 分析：
+ [前提条件：当前线程是主线程]
  1.同步函数是在当前线程中执行任务，不具备开启新线程的能力；同步任务会阻塞当前线程。
  2.主队列是串行队列，如果通过同步函数向主队列中添加任务，那么并不会开启子线程来执行这个任务，而是在主线程中执行。
  3.将main_queue_dispatch_sync方法称作task1，将dispatch_sync同步函数添加的任务称作task2。
- 4.队列遵循先进先出原则，task1和task2都在主队列中，主队列先安排task1到主线程执行，等task1执行完了才能安排task2到主线程执行，而task1又必须等task2执行完了才能继续往下执行，
+ 4.队列遵循先进先出原则：task1和task2都在主队列中，主队列先安排task1到主线程执行，等task1执行完了才能安排task2到主线程执行，而task1又必须等task2执行完了才能继续往下执行，
  而task2又必须等task1执行完了才能被主队列安排执行，这样就造成了相互等待而卡死(死锁)。
  5.只要当前队列是串行队列，通过同步函数往当前队列添加任务都会造成死锁。
  */
@@ -38,8 +50,9 @@
     NSLog(@"----end----");
 }
 
+// MARK: - 2.主队列同步
 /*
- 主队列异步函数
+ 主队列异步
  
  运行结果：
  2021-03-05 20:50:44.520862+0800 multi-thread[13329:4238571] 主队列异步函数
@@ -50,7 +63,8 @@
  2021-03-05 20:50:48.550152+0800 multi-thread[13329:4238571] 3--<NSThread: 0x600000b04380>{number = 1, name = main}
  2021-03-05 20:50:49.551625+0800 multi-thread[13329:4238571] 4--<NSThread: 0x600000b04380>{number = 1, name = main}
  
- 分析：当前线程是主线程
+ 分析：
+ [前提条件：当前线程是主线程]
  1.异步函数是在新的线程中执行任务，具备开启新线程的能力，但并不一定会开启新线程，比如在主队列中通过异步执行任务并不会开启新线程；异步任务不会阻塞当前线程。
  2.主队列是串行队列，通过异步函数向主队列中添加任务，并不会开启新线程，即任务都是在主线程执行，并且是串行执行(FIFO原则)。
  */
@@ -69,8 +83,10 @@
     NSLog(@"----end----");
 }
 
+// MARK: - 二.全局队列 dispatch_get_global_queue
+// MARK: - 1.全局队列同步
 /*
- 全局队列同步函数
+ 全局队列同步
  
  运行结果：
  2021-03-05 21:13:56.015161+0800 multi-thread[13691:4251767] 全局队列同步函数
@@ -81,7 +97,8 @@
  2021-03-05 21:14:01.020616+0800 multi-thread[13691:4251767] 4--<NSThread: 0x600002c985c0>{number = 1, name = main}
  2021-03-05 21:14:01.020999+0800 multi-thread[13691:4251767] ----end----
  
- 分析：当前线程是主线程
+ 分析：
+ [前提条件：当前线程是主线程]
  1.同步函数是在当前线程中执行任务，不具备开启新线程的能力；同步任务会阻塞当前线程。
  2.全局队列是并发队列，如果通过同步函数向全局队列中添加任务，那么并不会开启子线程来执行这个任务，而是在主线程中执行。并且是串行执行(FIFO原则)。
  */
@@ -100,8 +117,9 @@
     NSLog(@"----end----");
 }
 
+// MARK: - 2.全局队列异步
 /*
- 全局队列异步函数
+ 全局队列异步
  
  运行结果：
  2021-03-05 21:15:08.304741+0800 multi-thread[13734:4253807] 全局队列异步函数
@@ -112,7 +130,8 @@
  2021-03-05 21:15:09.307091+0800 multi-thread[13734:4253882] 2--<NSThread: 0x600001e3b3c0>{number = 5, name = (null)}
  2021-03-05 21:15:09.307216+0800 multi-thread[13734:4253889] 3--<NSThread: 0x600001e48340>{number = 8, name = (null)}
  
- 分析：当前线程是主线程
+ 分析：
+ [前提条件：当前线程是主线程]
  1.异步函数是在新的线程中执行任务，具备开启新线程的能力，但并不一定会开启新线程，比如在主队列中通过异步执行任务并不会开启新线程；异步任务不会阻塞当前线程。
  2.全局队列是并发队列，通过异步函数向全局队列添加的任务不是在当前线程执行，而是多个任务是在不同的线程中执行，并且是并发执行。
  */
@@ -131,8 +150,11 @@
     NSLog(@"----end----");
 }
 
+// MARK: - 三.自定义队列 dispatch_queue_create
+// MARK: - 1.自定义串行队列 DISPATCH_QUEUE_SERIAL
+// MARK: - 1-1.自定义串行队列同步
 /*
- 自定义串行队列同步函数
+ 自定义串行队列同步
  
  运行结果：
  2021-03-05 22:57:11.760386+0800 multi-thread[14883:4306213] 自定义串行队列同步函数
@@ -143,13 +165,15 @@
  2021-03-05 22:57:16.763464+0800 multi-thread[14883:4306213] 4--<NSThread: 0x600003388040>{number = 1, name = main}
  2021-03-05 22:57:16.763777+0800 multi-thread[14883:4306213] ----end----
  
- 分析：当前线程是主线程
+ 分析：
+ [前提条件：当前线程是主线程]
  1.同步函数是在当前线程中执行任务，不具备开启新线程的能力；同步任务会阻塞当前线程。
  2.通过同步函数向自定义串行队列中添加的任务都是在当前线程中执行，不会开启新的线程，而且是串行执行(FIFO)。
  3.注意这个和通过同步函数向主队列添加任务不同。
  将custom_serial_queue_dispatch_sync方法称作task1，将同步函数添加的任务称作task2。
  这里两个task属于2个不同的队列，task1由主队列安排执行，task2由自定义串行队列来安排执行。
- 首先主队列安排task1到主线程中执行，当执行到task2的地方时，由自定义串行队列安排task2到主线程中执行(无需等待task1完成)，等task2执行完后继续执行task1，所以这里不会造成线程堵塞。
+ 首先主队列安排task1到主线程中执行，当执行到task2的地方时，由自定义串行队列安排task2到主线程中执行(无需等待task1完成)，
+ 等task2执行完后继续执行task1，所以这里不会造成线程堵塞。
  */
 - (void)custom_serial_queue_dispatch_sync {
     NSLog(@"自定义串行队列同步函数");
@@ -166,8 +190,9 @@
     NSLog(@"----end----");
 }
 
+// MARK: - 1-2.自定义串行队列异步
 /*
- 自定义串行队列异步函数
+ 自定义串行队列异步
  
  运行结果：
  2021-03-05 22:58:26.405791+0800 multi-thread[14920:4307665] 自定义串行队列异步函数
@@ -178,7 +203,8 @@
  2021-03-05 22:58:30.413534+0800 multi-thread[14920:4307741] 3--<NSThread: 0x600001fbc480>{number = 6, name = (null)}
  2021-03-05 22:58:31.416662+0800 multi-thread[14920:4307741] 4--<NSThread: 0x600001fbc480>{number = 6, name = (null)}
  
- 分析：当前线程是主线程
+ 分析：
+ [前提条件：当前线程是主线程]
  通过异步函数向自定义串行队列中添加的任务是在新开启的线程中执行，而且所有任务都是在同一个子线程中执行(也就是说多个任务只会开启一个子线程)，而且是串行执行(FIFO)。
  */
 - (void)custom_serial_queue_dispatch_async {
@@ -196,11 +222,13 @@
     NSLog(@"----end----");
 }
 
+// MARK: - 2.自定义并发队列 DISPATCH_QUEUE_CONCURRENT
+// MARK: - 2-1.自定义并发队列同步
 /*
- 自定义并发队列同步函数
+ 自定义并发队列同步
  
  运行结果：
- 2021-03-05 22:59:09.580891+0800 multi-thread[14949:4308578] 自定义并发队列同步函数<##>
+ 2021-03-05 22:59:09.580891+0800 multi-thread[14949:4308578] 自定义并发队列同步函数
  2021-03-05 22:59:10.581620+0800 multi-thread[14949:4308578] 0--<NSThread: 0x600003120180>{number = 1, name = main}
  2021-03-05 22:59:11.582128+0800 multi-thread[14949:4308578] 1--<NSThread: 0x600003120180>{number = 1, name = main}
  2021-03-05 22:59:12.582819+0800 multi-thread[14949:4308578] 2--<NSThread: 0x600003120180>{number = 1, name = main}
@@ -208,7 +236,8 @@
  2021-03-05 22:59:14.584434+0800 multi-thread[14949:4308578] 4--<NSThread: 0x600003120180>{number = 1, name = main}
  2021-03-05 22:59:14.584671+0800 multi-thread[14949:4308578] ----end----
  
- 分析：当前线程是主线程
+ 分析：
+ [前提条件：当前线程是主线程]
  通过同步函数向自定义并发队列中添加的任务是在当前线程中执行，而且是串行执行(FIFO)。
  */
 - (void)custom_concurrent_queue_dispatch_sync {
@@ -226,8 +255,9 @@
     NSLog(@"----end----");
 }
 
+// MARK: - 2-2.自定义并发队列异步
 /*
- 自定义并发队列异步函数
+ 自定义并发队列异步
  
  运行结果：
  2021-03-05 22:59:44.289713+0800 multi-thread[14974:4309431] 自定义并发队列异步函数<##>
@@ -238,7 +268,8 @@
  2021-03-05 22:59:45.294478+0800 multi-thread[14974:4309534] 2--<NSThread: 0x600002b9cb00>{number = 3, name = (null)}
  2021-03-05 22:59:45.294596+0800 multi-thread[14974:4309530] 4--<NSThread: 0x600002be2440>{number = 9, name = (null)}
  
- 分析：当前线程是主线程
+ 分析：
+ [前提条件：当前线程是主线程]
  通过异步函数向自定义并发队列添加的任务不是在当前线程执行，而是多个任务是在不同的线程中执行，并且是并发执行。
  */
 - (void)custom_concurrent_queue_dispatch_async {
@@ -256,6 +287,33 @@
     NSLog(@"----end----");
 }
 
+// MARK: - 四.栅栏函数 dispatch_barrier
+/*
+ 栅栏函数 dispatch_barrier
+ 
+ [概念]
+ 栅栏函数是GCD提供的用于阻塞分割任务的一组函数。
+ 其主要作用就是在队列中设置栅栏，来人为干预队列中任务的执行顺序。
+ 也可以理解为用来设置任务之间的依赖关系。
+ 栅栏函数分为同步栅栏函数和异步栅栏函数。
+ 
+ [同步栅栏函数和异步栅栏函数的异同点]
+ 相同点：
+ 它们都将多个任务分割成了3个部分。
+ 第一个部分是栅栏函数之前的任务，是最先执行的；
+ 第二个部分是栅栏函数添加的任务，这个任务要等栅栏函数之前的任务都执行完了才会执行；
+ 第三个部分是栅栏函数之后的任务，这个部分要等栅栏函数里面的任务执行完了才会执行。
+ 
+ 不同点：
+ 同步栅栏函数不会开启新线程，其添加的任务在当前线程执行，会阻塞当前线程；
+ 异步栅栏函数会开启新线程来执行其添加的任务，不会阻塞当前线程。
+ 
+ [注意事项]
+ 1.全局队列对栅栏函数是不生效的，必须是自己创建的并发队列。
+ 2.所有任务(包括栅栏函数添加的任务)都必须在同一个派发队列中，否则栅栏函数不生效。
+ 使用第三方网络框架(比如AFNetworking)进行网络请求时使用栅栏函数无效的正是因为这个原因导致。
+ */
+
 // *************** 业务场景 ***************
 /*
  场景：
@@ -266,6 +324,7 @@
  这4个任务执行顺序是task1和task2并发异步执行，这两个任务都执行完了后再执行task3，task3执行完了再执行task4。
  */
 
+// MARK: - 1.同步栅栏函数
 /*
  同步栅栏函数
  
@@ -284,7 +343,8 @@
  2021-03-08 20:35:23.308201+0800 multi-thread[23824:4808907] 开始写入磁盘---<NSThread: 0x60000313e300>{number = 6, name = (null)}
  2021-03-08 20:35:24.312640+0800 multi-thread[23824:4808907] 完成写入磁盘---<NSThread: 0x60000313e300>{number = 6, name = (null)}
  
- 分析：当前线程是主线程
+ 分析：
+ [前提条件：当前线程是主线程]
  运行结果可以看出，需求的功能是实现了，但是有个问题，同步栅栏函数在分割任务的同时也阻塞了当前线程，
  这里当前线程是主线程，这就意味着在task1、task2和task3这3个任务都完成之前，UI界面是出于卡死状态的，
  这种用户体验显然是非常糟糕的。
@@ -295,38 +355,39 @@
     dispatch_queue_t concurrent_queue = dispatch_queue_create("com.memo.concurrentQueue", DISPATCH_QUEUE_CONCURRENT);
     
     dispatch_async(concurrent_queue, ^{
-        NSLog(@"开始下载part1---%@",[NSThread currentThread]);
+        NSLog(@"开始下载part1---%@", [NSThread currentThread]);
         [NSThread sleepForTimeInterval:2.0f]; // 模拟下载耗时2s
-        NSLog(@"完成下载part1---%@",[NSThread currentThread]);
+        NSLog(@"完成下载part1---%@", [NSThread currentThread]);
     });
     
     NSLog(@"当前线程2");
     
     dispatch_async(concurrent_queue, ^{
-        NSLog(@"开始下载part2---%@",[NSThread currentThread]);
+        NSLog(@"开始下载part2---%@", [NSThread currentThread]);
         [NSThread sleepForTimeInterval:1.0f]; // 模拟下载耗时1s
-        NSLog(@"完成下载part2---%@",[NSThread currentThread]);
+        NSLog(@"完成下载part2---%@", [NSThread currentThread]);
     });
     
     NSLog(@"当前线程3");
     
     dispatch_barrier_sync(concurrent_queue, ^{
-        NSLog(@"开始合并part1和part2---%@",[NSThread currentThread]);
+        NSLog(@"开始合并part1和part2---%@", [NSThread currentThread]);
         [NSThread sleepForTimeInterval:1.0f]; // 模拟下载耗时1s
-        NSLog(@"完成合并part1和part2---%@",[NSThread currentThread]);
+        NSLog(@"完成合并part1和part2---%@", [NSThread currentThread]);
     });
     
     NSLog(@"当前线程4");
     
     dispatch_async(concurrent_queue, ^{
-        NSLog(@"开始写入磁盘---%@",[NSThread currentThread]);
+        NSLog(@"开始写入磁盘---%@", [NSThread currentThread]);
         [NSThread sleepForTimeInterval:1.0f]; // 模拟下载耗时1s
-        NSLog(@"完成写入磁盘---%@",[NSThread currentThread]);
+        NSLog(@"完成写入磁盘---%@", [NSThread currentThread]);
     });
     
     NSLog(@"当前线程5");
 }
 
+// MARK: - 2.异步栅栏函数 [xxxxx]
 /*
  异步栅栏函数
  
@@ -345,7 +406,8 @@
  2021-03-08 20:39:06.297539+0800 multi-thread[23885:4812785] 开始写入磁盘---<NSThread: 0x6000001878c0>{number = 4, name = (null)}
  2021-03-08 20:39:07.301790+0800 multi-thread[23885:4812785] 完成写入磁盘---<NSThread: 0x6000001878c0>{number = 4, name = (null)}
  
- 分析：当前线程是主线程
+ 分析：
+ [前提条件：当前线程是主线程]
  从上面运行结果可以看出，异步栅栏函数不会阻塞当前线程，也就是说UI界面并不会被卡死。
  */
 - (void)dispatch_barrier_async {
@@ -354,38 +416,39 @@
     dispatch_queue_t concurrent_queue = dispatch_queue_create("com.memo.concurrentQueue", DISPATCH_QUEUE_CONCURRENT);
     
     dispatch_async(concurrent_queue, ^{
-        NSLog(@"开始下载part1---%@",[NSThread currentThread]);
+        NSLog(@"开始下载part1---%@", [NSThread currentThread]);
         [NSThread sleepForTimeInterval:2.0f]; // 模拟下载耗时2s
-        NSLog(@"完成下载part1---%@",[NSThread currentThread]);
+        NSLog(@"完成下载part1---%@", [NSThread currentThread]);
     });
     
     NSLog(@"当前线程2");
     
     dispatch_async(concurrent_queue, ^{
-        NSLog(@"开始下载part2---%@",[NSThread currentThread]);
+        NSLog(@"开始下载part2---%@", [NSThread currentThread]);
         [NSThread sleepForTimeInterval:1.0f]; // 模拟下载耗时1s
-        NSLog(@"完成下载part2---%@",[NSThread currentThread]);
+        NSLog(@"完成下载part2---%@", [NSThread currentThread]);
     });
     
     NSLog(@"当前线程3");
     
     dispatch_barrier_async(concurrent_queue, ^{
-        NSLog(@"开始合并part1和part2---%@",[NSThread currentThread]);
+        NSLog(@"开始合并part1和part2---%@", [NSThread currentThread]);
         [NSThread sleepForTimeInterval:1.0f]; // 模拟下载耗时1s
-        NSLog(@"完成合并part1和part2---%@",[NSThread currentThread]);
+        NSLog(@"完成合并part1和part2---%@", [NSThread currentThread]);
     });
     
     NSLog(@"当前线程4");
     
     dispatch_async(concurrent_queue, ^{
-        NSLog(@"开始写入磁盘---%@",[NSThread currentThread]);
+        NSLog(@"开始写入磁盘---%@", [NSThread currentThread]);
         [NSThread sleepForTimeInterval:1.0f]; // 模拟下载耗时1s
-        NSLog(@"完成写入磁盘---%@",[NSThread currentThread]);
+        NSLog(@"完成写入磁盘---%@", [NSThread currentThread]);
     });
     
     NSLog(@"当前线程5");
 }
 
+// MARK: - 五.任务组 dispatch_group
 // *************** 业务场景 ***************
 /*
  场景：
@@ -397,6 +460,7 @@
  也可以通过dispatch_group_async这个API来实现。
  */
 
+// MARK: - 1. dispatch_group_create + dispatch_group_enter + dispatch_group_leave + dispatch_async + dispatch_group_notify
 /*
  dispatch_group_enter() + dispatch_group_leave() + dispatch_async()
  
@@ -413,6 +477,10 @@
  
  分析：
  dispatch_group_notify监听任务组并不会阻塞当前线程
+ 
+ 如果换成dispatch_group_wait会阻塞当前线程。
+ // 将等待时间设置为DISPATCH_TIME_FOREVER，表示永不超时，等任务组中任务全部都完成后才会执行其后面的代码
+ dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
  */
 - (void)GCDGroup1 {
     dispatch_group_t group = dispatch_group_create();
@@ -451,6 +519,7 @@
     NSLog(@"当前线程4");
 }
 
+// MARK: - 2. dispatch_group_create + dispatch_group_async + dispatch_group_notify [xxxxx]
 /*
  dispatch_group_async
  
@@ -467,6 +536,10 @@
  
  分析：
  dispatch_group_notify监听任务组并不会阻塞当前线程
+ 
+ 如果换成dispatch_group_wait会阻塞当前线程。
+ // 将等待时间设置为DISPATCH_TIME_FOREVER，表示永不超时，等任务组中任务全部都完成后才会执行其后面的代码
+ dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
  */
 - (void)GCDGroup2 {
     dispatch_group_t group = dispatch_group_create();
@@ -498,6 +571,7 @@
     NSLog(@"当前线程4");
 }
 
+// MARK: - 六.GCD中用于延迟将某个任务添加到队列中 dispatch_after
 /*
  dispatch_after
  
@@ -506,7 +580,6 @@
  运行结果：
  2021-03-08 20:52:34.267477+0800 multi-thread[24252:4825532] 现在时间--2021-03-08 12:52:34 +0000
  2021-03-08 20:52:37.268168+0800 multi-thread[24252:4825532] 到主线程刷新UI--2021-03-08 12:52:37 +0000
- 
  */
 - (void)dispatch_after {
     NSLog(@"现在时间--%@", [NSDate date]);
@@ -516,6 +589,7 @@
     });
 }
 
+// MARK: - 七.单例 dispatch_once 
 /*
  GCD提供了dispatch_once()函数保证在应用程序生命周期中只执行一次指定处理。比如来生成单例。
  
@@ -541,9 +615,10 @@
     });
 }
 
+// MARK: - 八.信号量 dispatch_semaphore
 /*
- 信号量 dispatch_semaphore
- 
+ 信号量 dispatch_semaphore  [ˈseməfɔːr]
+
  运行结果：
  2021-03-08 21:02:08.785467+0800 multi-thread[24467:4834923] 第1次开始执行--<NSThread: 0x6000002e4d40>{number = 4, name = (null)}
  2021-03-08 21:02:08.785470+0800 multi-thread[24467:4834926] 第0次开始执行--<NSThread: 0x6000002a6980>{number = 7, name = (null)}
@@ -583,4 +658,45 @@
     NSLog(@"******当前线程******");
 }
 
+// MARK: - 八.dispatch_semaphore 保证线程安全：为线程加锁。[xxxxx]
+/*
+ 保证线程安全：为线程加锁。
+ 
+ // 创建一个信号量并初始化信号的总量
+ dispatch_semaphore_create(1);
+
+ // 发送一个信号，让信号总量加1
+ dispatch_semaphore_signal(semaphore);
+
+ // 可以使总信号量减1，当信号总量为0时就会一直等待(阻塞所在线程)，否则就可以正常执行。
+ // 参数1：等待的信号量是哪个，参数2：等待的时长
+ dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+ 
+ - (void)viewDidLoad() {
+     // 初始化信号量是1
+     _semaphore = dispatch_semaphore_create(1);
+     
+     for (NSInteger i = 0; i < 100; i++) {
+         // 异步并发调用asyncTask
+         dispatch_async(dispatch_get_global_queue(0, 0), ^{
+             [self asyncTask];
+         });
+     }
+ }
+
+ - (void)asyncTask {
+     dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
+     count ++;
+     sleep(1);
+     NSLog(@"执行任务：%zd", count);
+     dispatch_semaphore_signal(_semaphore);
+ }
+ 
+ 打印是从任务"1"顺序执行到"100"，没有发生两个任务同时执行的情况。
+
+ 原因如下：
+ 在子线程中并发执行asyncTask，那么第一个添加到并发队列里的，会将信号量减1，此时信号量等于0，可以执行接下来的任务。
+ 而并发队列中其他任务，由于此时信号量不等于0，必须等当前正在执行的任务执行完毕后调用dispatch_semaphore_signal，将信号量加1，才可以继续执行接下来的任务。
+ 以此类推，从而达到线程加锁的目的。
+ */
 @end

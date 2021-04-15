@@ -73,7 +73,7 @@
 //    // 单例
 //    [gcdMemo dispatch_once_use];
     // 信号量
-    [gcdMemo dispatch_semaphore];
+//    [gcdMemo dispatch_semaphore];
 }
 
 

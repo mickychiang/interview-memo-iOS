@@ -15,6 +15,9 @@
 		4FC3EB2025EF8A8A004C3DD1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FC3EB1E25EF8A8A004C3DD1 /* LaunchScreen.storyboard */; };
 		4FC3EB2325EF8A8A004C3DD1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC3EB2225EF8A8A004C3DD1 /* main.m */; };
 		BD55E55B25F25B200002A979 /* GCDMemo.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55E55A25F25B200002A979 /* GCDMemo.m */; };
+		BDC3BCD02628903C000CFF69 /* multi-thread.png in Resources */ = {isa = PBXBuildFile; fileRef = BDC3BCCF2628903C000CFF69 /* multi-thread.png */; };
+		BDC3BCD3262890F2000CFF69 /* queue-priority.png in Resources */ = {isa = PBXBuildFile; fileRef = BDC3BCD2262890F2000CFF69 /* queue-priority.png */; };
+		BDC3BCD6262890F9000CFF69 /* sync-async-serial-concurrent.png in Resources */ = {isa = PBXBuildFile; fileRef = BDC3BCD5262890F9000CFF69 /* sync-async-serial-concurrent.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		4FC3EB2225EF8A8A004C3DD1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BD55E55925F25B200002A979 /* GCDMemo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GCDMemo.h; sourceTree = "<group>"; };
 		BD55E55A25F25B200002A979 /* GCDMemo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GCDMemo.m; sourceTree = "<group>"; };
+		BDC3BCCF2628903C000CFF69 /* multi-thread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "multi-thread.png"; sourceTree = "<group>"; };
+		BDC3BCD2262890F2000CFF69 /* queue-priority.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "queue-priority.png"; sourceTree = "<group>"; };
+		BDC3BCD5262890F9000CFF69 /* sync-async-serial-concurrent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync-async-serial-concurrent.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,9 @@
 				4FC3EB1725EF8A85004C3DD1 /* ViewController.m */,
 				BD55E55925F25B200002A979 /* GCDMemo.h */,
 				BD55E55A25F25B200002A979 /* GCDMemo.m */,
+				BDC3BCD2262890F2000CFF69 /* queue-priority.png */,
+				BDC3BCD5262890F9000CFF69 /* sync-async-serial-concurrent.png */,
+				BDC3BCCF2628903C000CFF69 /* multi-thread.png */,
 				4FC3EB1925EF8A85004C3DD1 /* Main.storyboard */,
 				4FC3EB1C25EF8A8A004C3DD1 /* Assets.xcassets */,
 				4FC3EB1E25EF8A8A004C3DD1 /* LaunchScreen.storyboard */,
@@ -137,9 +146,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDC3BCD3262890F2000CFF69 /* queue-priority.png in Resources */,
 				4FC3EB2025EF8A8A004C3DD1 /* LaunchScreen.storyboard in Resources */,
+				BDC3BCD6262890F9000CFF69 /* sync-async-serial-concurrent.png in Resources */,
 				4FC3EB1D25EF8A8A004C3DD1 /* Assets.xcassets in Resources */,
 				4FC3EB1B25EF8A85004C3DD1 /* Main.storyboard in Resources */,
+				BDC3BCD02628903C000CFF69 /* multi-thread.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,4 +1,4 @@
-# iOS面试题备忘录(七) - 多线程
+# interview-memo-iOS multi-thread 
 
 ![multi-thread.png](https://i.loli.net/2021/02/24/RDuT1bgNvxXdlo2.png)
 
