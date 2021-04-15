@@ -87,13 +87,13 @@ void (^Block)(void) = ^{
 - (void)methodd {
     int count = 0;
     void (^blk)(void) = ^(){
-        NSLog(@"In Stack:%d", count);
+        NSLog(@"In Stack: %d", count);
     };
     
-    NSLog(@"blk's Class:%@", [blk class]); // 打印：blk's Class:__NSMallocBlock__
-    NSLog(@"Global Block: %@", [^{NSLog(@"Global Block");} class]); // 打印：Global Block: __NSGlobalBlock__
-    NSLog(@"Copy Block: %@", [[^{NSLog(@"Copy Block:%d",count);} copy] class]); // 打印：Copy Block: __NSMallocBlock__
-    NSLog(@"Stack Block: %@", [^{NSLog(@"Stack Block:%d",count);} class]); // 打印：Stack Block: __NSStackBlock__
+    NSLog(@"blk's Class: %@", [blk class]); // blk's Class: __NSMallocBlock__
+    NSLog(@"Global Block: %@", [^{ NSLog(@"Global Block"); } class]); // Global Block: __NSGlobalBlock__
+    NSLog(@"Copy Block: %@", [[^{ NSLog(@"Copy Block:%d",count); } copy] class]); // Copy Block: __NSMallocBlock__
+    NSLog(@"Stack Block: %@", [^{ NSLog(@"Stack Block:%d",count); } class]); // Stack Block: __NSStackBlock__
 }
 
 @end

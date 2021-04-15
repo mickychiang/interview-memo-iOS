@@ -353,8 +353,16 @@ NSLog(@"i = %d", i); // 打印：i = 20
 不需要加__block修饰符。在block内部只是对array进行了**使用操作**。
 
 ### 场景2
-![__block_02.png](https://i.loli.net/2020/06/20/tP1VwUcCeDSx2zl.png)
-
+```
+- (void)method2 {
+    NSMutableArray *array = nil;
+    void (^Block)(void) = ^{
+        array = [NSMutableArray array];
+    };
+    Block();
+    NSLog(@"array is %@", array);
+}
+```
 没有__block修饰，编译失败。  
 需要在array的声明处添加__block修饰符。  
 因为在block内部，对array进行了**赋值操作**。   
@@ -363,7 +371,8 @@ NSLog(@"i = %d", i); // 打印：i = 20
 - (void)method2 {
     __block NSMutableArray *array = nil;
     void (^Block)(void) = ^{
-        array = [NSMutableArray array]; // 不加 __block 发生：Variable is not assignable (missing __block type specifier)
+        // 不加 __block 发生：Variable is not assignable (missing __block type specifier)
+        array = [NSMutableArray array]; 
     };
     Block();
     NSLog(@"array is %@", array); // ()
@@ -418,12 +427,13 @@ result is 8
 
 <h3 id="4-1">1. Block的种类以及内存分配？</h3>
 
+#### Block的种类 
 - _NSConcreteStackBlock：在栈上创建的Block对象
 - _NSConcreteMallocBlock：在堆上创建的Block对象
 - _NSConcreteGlobalBlock：在已初始化数据区的Block对象
-
-#### Block的种类  
-![BlockType.png](https://i.loli.net/2020/06/20/qcuKdsRx1WIPNmf.png)
+```
+impl.isa = &_NSConcreteMallocBlock;
+```
 
 #### Block的内存分配  
 ![BlockMemory.png](https://i.loli.net/2020/06/20/LxDr49my7zfgY6s.png)
@@ -433,9 +443,9 @@ result is 8
 
 <h3 id="4-2">2. 什么时候需要对Block进行copy操作？/ 对Block的copy操作的理解？</h3>
 
-#### Block复制 
-配置在栈上的Block，如果其所属的栈作用域结束，该Block就会被废弃，对于超出Block作用域仍需使用Block的情况，Block提供了将Block从栈上复制到堆上的方法来解决这种问，即便Block栈作用域已结束，但被拷贝到堆上的Block还可以继续存在。  
-复制到堆上的Block，将_NSConcreteMallocBlock类对象写入Block结构体实例的成员变量isa：
+#### Block的copy操作
+配置在栈上的Block，如果其所属的栈作用域结束，该Block就会被废弃，对于超出Block作用域仍需使用Block的情况，Block提供了将Block从栈上copy到堆上的方法来解决这种问题，即便Block栈作用域已结束，但被copy到堆上的Block还可以继续存在。  
+copy到堆上的Block，将_NSConcreteMallocBlock类对象写入Block结构体实例的成员变量isa：
 ```
 impl.isa = &_NSConcreteMallocBlock;
 ```
@@ -480,13 +490,13 @@ impl.isa = &_NSConcreteMallocBlock;
 - (void)methodd {
     int count = 0;
     void (^blk)(void) = ^(){
-        NSLog(@"In Stack:%d", count);
+        NSLog(@"In Stack: %d", count);
     };
     
-    NSLog(@"blk's Class:%@", [blk class]); // 打印：blk's Class:__NSMallocBlock__
-    NSLog(@"Global Block: %@", [^{NSLog(@"Global Block");} class]); // 打印：Global Block: __NSGlobalBlock__
-    NSLog(@"Copy Block: %@", [[^{NSLog(@"Copy Block:%d",count);} copy] class]); // 打印：Copy Block: __NSMallocBlock__
-    NSLog(@"Stack Block: %@", [^{NSLog(@"Stack Block:%d",count);} class]); // 打印：Stack Block: __NSStackBlock__
+    NSLog(@"blk's Class: %@", [blk class]); // blk's Class: __NSMallocBlock__
+    NSLog(@"Global Block: %@", [^{ NSLog(@"Global Block"); } class]); // Global Block: __NSGlobalBlock__
+    NSLog(@"Copy Block: %@", [[^{ NSLog(@"Copy Block:%d",count); } copy] class]); // Copy Block: __NSMallocBlock__
+    NSLog(@"Stack Block: %@", [^{ NSLog(@"Stack Block:%d",count); } class]); // Stack Block: __NSStackBlock__
 }
 ```
 
@@ -613,6 +623,7 @@ typedef NSString*(^StrBlock)(NSString *str);
 - (void)demo1 {
     _array = [NSMutableArray arrayWithObject:@"block"];
     _strBlk = ^NSString*(NSString *str) {
+        // Capturing 'self' strongly in this block is likely to lead to a retain cycle
         return [NSString stringWithFormat:@"%@_%@", str, _array[0]];
     };
     _strBlk(@"hello");
