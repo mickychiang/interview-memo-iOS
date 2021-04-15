@@ -12,10 +12,16 @@
 
 typedef int(^Friend)(int);
 typedef int(^DemoBlock)(int num);
+typedef NSString*(^StrBlock)(NSString *str);
 
 @interface ViewController ()
 
 @property (nonatomic, copy) DemoBlock blk;
+
+@property (nonatomic, copy) NSMutableArray *array;
+@property (nonatomic, copy) StrBlock strBlk;
+
+@property (nonatomic, assign) int var;
 
 @end
 
@@ -39,20 +45,30 @@ typedef int(^DemoBlock)(int num);
     // Friend f = [self methodB];
     NSLog(@"Block类型的变量作为返回值：%@", [self methodB]);
     NSLog(@"Block类型的变量作为返回值：%@", [self methodB2]);
-    
+
     // ***** *****
     [[[MMBlock alloc] init] methodA];
     [[[MMBlock alloc] init] methodB];
     [[[MMBlock alloc] init] methodC];
-    
+
     [[[MMBlock alloc] init] method1];
     [[[MMBlock alloc] init] method2];
-    
+
     [[[MMBlock alloc] init] method];
     [[[MMBlock alloc] init] methodd];
-    
+
     // ***** *****
     [[[MCBlock alloc] init] method];
+    
+    
+    
+    
+    // ************************* Block的循环引用 *************************
+    [self demo1];
+    [self demo1Change];
+    _var = 2;
+    [self demo2];
+    [self demo2Change];
 }
 
 // Block 深入浅出 https://www.jianshu.com/p/157ee1dfedb2
@@ -131,6 +147,46 @@ typedef int(^DemoBlock)(int num);
 - (void)executeBlock {
     int result = _blk(4); // 调用了堆上的block
     NSLog(@"result is %d", result);
+}
+
+
+// ************************* Block的循环引用 *************************
+- (void)demo1 {
+    _array = [NSMutableArray arrayWithObject:@"block"];
+    _strBlk = ^NSString*(NSString *str) {
+        // Capturing 'self' strongly in this block is likely to lead to a retain cycle
+        return [NSString stringWithFormat:@"%@_%@", str, _array[0]];
+    };
+    _strBlk(@"hello");
+}
+
+- (void)demo1Change {
+    _array = [NSMutableArray arrayWithObject:@"block"];
+    __weak NSMutableArray *weakArray = _array;
+    _strBlk = ^NSString*(NSString *str) {
+        return [NSString stringWithFormat:@"%@_%@", str, weakArray[0]];
+    };
+    _strBlk(@"hello"); // hello_block
+}
+
+- (void)demo2 {
+    __block ViewController *blockSelf = self;
+    _blk = ^int(int num) {
+        // var = 2
+        return num * blockSelf.var;
+    };
+    _blk(3);
+}
+
+- (void)demo2Change {
+    __block ViewController *blockSelf = self;
+    _blk = ^int(int num) {
+        // var = 2
+        int result = num * blockSelf.var;
+        blockSelf = nil;
+        return result;
+    };
+    _blk(3);
 }
 
 @end
